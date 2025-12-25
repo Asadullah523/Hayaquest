@@ -8,12 +8,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
-        name: 'Antigravity Study Tracker',
-        short_name: 'Antigravity',
-        description: 'Track your studies and ace your exams.',
-        theme_color: '#ffffff',
+        name: 'HayaQuest - Study Tracker',
+        short_name: 'HayaQuest',
+        description: 'Track your studies and ace your IMAT & MDCAT exams.',
+        theme_color: '#6366f1',
         icons: [
           {
             src: 'pwa-192x192.png',
