@@ -12,9 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/sync', syncRoutes);
+// Routes - no /api prefix needed, Vercel already routes /api/* here
+app.use('/auth', authRoutes);
+app.use('/sync', syncRoutes);
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/haya-tracking';
 
