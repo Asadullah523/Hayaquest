@@ -33,13 +33,12 @@ export const useEnglishStore = create<EnglishStore>()(
       vocabularySessionId: 'initial',
       wordsRead: [],
 
-      markWordAsLearned: (wordId) =>
+      markWordAsLearned: (wordId) => {
         set((state) => {
           const newWordsLearned = state.wordsLearned.includes(wordId)
             ? state.wordsLearned
             : [...state.wordsLearned, wordId];
           
-          // If the word is learned, we should also remove it from the shuffled list if it exists
           const newShuffledWordIds = state.shuffledWordIds 
             ? state.shuffledWordIds.filter(id => id !== wordId)
             : null;
@@ -61,7 +60,7 @@ export const useEnglishStore = create<EnglishStore>()(
         syncService.triggerAutoBackup();
       },
 
-      markStoryAsRead: (storyId) =>
+      markStoryAsRead: (storyId) => {
         set((state) => ({
           storiesRead: state.storiesRead.includes(storyId)
             ? state.storiesRead
@@ -70,7 +69,7 @@ export const useEnglishStore = create<EnglishStore>()(
         syncService.triggerAutoBackup();
       },
 
-      toggleFavoriteStory: (storyId) =>
+      toggleFavoriteStory: (storyId) => {
         set((state) => ({
           favoriteStories: state.favoriteStories.includes(storyId)
             ? state.favoriteStories.filter(id => id !== storyId)
@@ -79,7 +78,7 @@ export const useEnglishStore = create<EnglishStore>()(
         syncService.triggerAutoBackup();
       },
 
-      markGrammarTopicAsMastered: (topicId) =>
+      markGrammarTopicAsMastered: (topicId) => {
         set((state) => ({
           grammarTopicsMastered: state.grammarTopicsMastered.includes(topicId)
             ? state.grammarTopicsMastered
