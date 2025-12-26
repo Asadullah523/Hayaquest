@@ -1,11 +1,44 @@
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../../server/.env') });
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const User = require('../../server/models/User');
+const bcrypt = require('bcryptjs');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_fallback_secret_key';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/haya-tracking';
+
+// Define User Schema directly to avoid path issues on Vercel
+const userSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    avatar: {
+        type: String,
+        default: 'fox'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Check if model exists before compiling
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 let isConnected = false;
 
@@ -41,31 +74,30 @@ module.exports = async (req, res) => {
     try {
         console.log('Login attempt started...');
         await connectDB();
-        console.log('DB connected, finding user...');
 
         const { email, password } = req.body;
-        const user = await User.findOne({ email });
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
 
-        if (!user || !(await user.comparePassword(password))) {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         const token = jwt.sign({ userId: user._id }, JWT_SECRET);
         res.json({ token, user: { email: user.email, name: user.name, avatar: user.avatar } });
     } catch (err) {
-        console.error('SERVERLESS LOGIN ERROR:', {
-            message: err.message,
-            stack: err.stack,
-            uri: MONGODB_URI ? 'SET' : 'MISSING'
-        });
+        console.error('SERVERLESS LOGIN ERROR:', err);
         res.status(500).json({
             message: 'Server error',
             error: err.message,
-            stack: err.stack,
-            env: {
-                hasMongo: !!process.env.MONGODB_URI,
-                hasJwt: !!process.env.JWT_SECRET
-            }
+            stack: err.stack
         });
     }
 };
