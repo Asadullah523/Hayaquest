@@ -28,19 +28,29 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     setError('');
 
     try {
+      let res;
       if (isLogin) {
-        const res = await api.post('/auth/login', { email, password });
-        login(res.data.user, res.data.token);
-        setLocalName(res.data.user.name);
-        await syncService.restore(); // Restore data from cloud after login
-        await syncService.backup();  // Ensure local-to-cloud sync is active immediately
+        res = await api.post('/auth/login', { email, password });
       } else {
-        const res = await api.post('/auth/signup', { email, password, name });
-        login(res.data.user, res.data.token);
-        setLocalName(res.data.user.name);
-        await syncService.backup(); // Backup current local data to new account
+        res = await api.post('/auth/signup', { email, password, name });
       }
+
+      // If we got here, auth was successful
+      login(res.data.user, res.data.token);
+      setLocalName(res.data.user.name);
       onClose();
+
+      // Perform sync in the background/quietly
+      try {
+        if (isLogin) {
+          await syncService.restore();
+        }
+        await syncService.backup();
+      } catch (syncErr) {
+        console.error('Initial sync failed after login:', syncErr);
+        // We don't show an error to the user here because they ARE logged in.
+        // The auto-sync or manual sync will handle it later.
+      }
     } catch (err: any) {
       if (!err.response) {
         setError('Server is offline. Please start the backend server.');
