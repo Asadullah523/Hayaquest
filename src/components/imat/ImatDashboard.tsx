@@ -5,23 +5,31 @@ import { TopicManager } from './TopicManager';
 import { GraduationCap, ArrowLeft, TrendingUp, FileText, BookOpen, ChevronRight, Library as LibraryIcon } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { PastPapersModal } from './PastPapersModal';
-import { imatPastPapers } from '../../data/pastPapers';
+import { imatPastPapers, subjectPracticePapers } from '../../data/pastPapers';
 import { type Subject } from '../../types';
 import { QuizView } from '../quiz/QuizView';
 import { type PastPaper } from '../../data/pastPapers';
 import { Library } from './Library';
+import { type ViewState } from './PastPapersList';
 
 export const ImatDashboard: React.FC = () => {
     const { subjects, topics, loadSubjects } = useSubjectStore();
     const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
-    const [showPastPapers, setShowPastPapers] = useState(false);
-    const [completedPapers, setCompletedPapers] = useState(0);
+    const [showOfficialModal, setShowOfficialModal] = useState(false);
+    const [showPracticeModal, setShowPracticeModal] = useState(false);
+    const [completedOfficial, setCompletedOfficial] = useState(0);
+    const [completedPractice, setCompletedPractice] = useState(0);
     const [selectedPaper, setSelectedPaper] = useState<PastPaper | null>(null);
     const [view, setView] = useState<'dashboard' | 'library'>('dashboard');
 
     const [resumePaper, setResumePaper] = useState<PastPaper | null>(null);
+    
+    // Persistent view states for modals
+    const [lastOfficialView, setLastOfficialView] = useState<ViewState | undefined>();
+    const [lastPracticeView, setLastPracticeView] = useState<ViewState | undefined>();
 
-    const totalPapers = imatPastPapers.length;
+    const totalOfficial = imatPastPapers.length;
+    const totalPractice = subjectPracticePapers.length;
 
     useEffect(() => {
         loadSubjects();
@@ -30,13 +38,14 @@ export const ImatDashboard: React.FC = () => {
     useEffect(() => {
         // Check localStorage for completed papers and active progress
         const checkProgress = () => {
-            let count = 0;
+            let officialCount = 0;
+            let practiceCount = 0;
             let foundResume: PastPaper | null = null;
             let foundResumeTimestamp = 0;
 
             imatPastPapers.forEach(paper => {
                 if (localStorage.getItem(`quiz_completed_${paper.id}`)) {
-                    count++;
+                    officialCount++;
                 }
                 const progress = localStorage.getItem(`quiz_progress_${paper.id}`);
                 if (progress) {
@@ -49,7 +58,25 @@ export const ImatDashboard: React.FC = () => {
                     } catch (e) { }
                 }
             });
-            setCompletedPapers(count);
+
+            subjectPracticePapers.forEach(paper => {
+                if (localStorage.getItem(`quiz_completed_${paper.id}`)) {
+                    practiceCount++;
+                }
+                const progress = localStorage.getItem(`quiz_progress_${paper.id}`);
+                if (progress) {
+                    try {
+                        const parsed = JSON.parse(progress);
+                        if (!foundResume || (parsed.timestamp && parsed.timestamp > (foundResumeTimestamp || 0))) {
+                            foundResume = paper;
+                            foundResumeTimestamp = parsed.timestamp || 0;
+                        }
+                    } catch (e) { }
+                }
+            });
+
+            setCompletedOfficial(officialCount);
+            setCompletedPractice(practiceCount);
             setResumePaper(foundResume);
         };
 
@@ -161,7 +188,6 @@ export const ImatDashboard: React.FC = () => {
                         <div className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl md:rounded-[2rem] p-4 md:p-6 text-white shadow-xl shadow-indigo-600/20 relative overflow-hidden group flex items-center justify-between cursor-pointer"
                              onClick={() => {
                                  setSelectedPaper(resumePaper);
-                                 setShowPastPapers(true);
                              }}
                         >
                             <div className="absolute top-0 right-0 w-32 md:w-64 h-32 md:h-64 bg-white/10 rounded-full blur-2xl md:blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-white/20 transition-colors" />
@@ -230,9 +256,9 @@ export const ImatDashboard: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* 2. Exam Simulator Card */}
+                        {/* 2. Exam Simulator Card (Official) */}
                         <div 
-                            onClick={() => setShowPastPapers(true)}
+                            onClick={() => setShowOfficialModal(true)}
                             className="group relative glass-card p-6 rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[220px]"
                         >
                             <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-5 blur-2xl transition-all group-hover:opacity-10 group-hover:scale-110 bg-blue-600" />
@@ -241,23 +267,66 @@ export const ImatDashboard: React.FC = () => {
                                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-sm bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                                     <FileText size={28} />
                                 </div>
+                                <span className="px-2 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs font-bold uppercase tracking-wider">
+                                    Official
+                                </span>
                             </div>
                             
                             <div className="z-10 relative">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Exam Simulator</h3>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Official Past Papers</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                                    Solve real IMAT papers from 2011 to 2024.
+                                </p>
                                 <div className="flex items-center gap-2 mb-4">
                                      <div className="h-1.5 flex-1 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
                                         <div 
                                             className="h-full rounded-full bg-blue-600"
-                                            style={{ width: `${totalPapers > 0 ? (completedPapers / totalPapers) * 100 : 0}%` }}
+                                            style={{ width: `${totalOfficial > 0 ? (completedOfficial / totalOfficial) * 100 : 0}%` }}
                                         />
                                     </div>
-                                    <span className="text-xs font-bold text-blue-600">{completedPapers}/{totalPapers}</span>
+                                    <span className="text-xs font-bold text-blue-600">{completedOfficial}/{totalOfficial}</span>
                                 </div>
                             </div>
                             
                             <div className="mt-auto z-10 relative flex items-center gap-2 text-sm font-bold text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                Start Session <ChevronRight size={16} />
+                                Exam Simulator <ChevronRight size={16} />
+                            </div>
+                        </div>
+
+                        {/* 3. Subject-wise Practice Card */}
+                        <div 
+                            onClick={() => setShowPracticeModal(true)}
+                            className="group relative glass-card p-6 rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[220px]"
+                        >
+                            <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-5 blur-2xl transition-all group-hover:opacity-10 group-hover:scale-110 bg-green-600" />
+                            
+                            <div className="flex justify-between items-start mb-6 z-10 relative">
+                                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-sm bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400">
+                                    <GraduationCap size={28} />
+                                </div>
+                                <span className="px-2 py-1 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-300 text-xs font-bold uppercase tracking-wider">
+                                    Practice
+                                </span>
+                            </div>
+                            
+                            <div className="z-10 relative">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Subject-wise Practice</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                                    Master Bio, Chem, Math & Physics with high-yield MCQs.
+                                </p>
+                                <div className="flex items-center gap-2 mb-4">
+                                     <div className="h-1.5 flex-1 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div 
+                                            className="h-full rounded-full bg-green-600"
+                                            style={{ width: `${totalPractice > 0 ? (completedPractice / totalPractice) * 100 : 0}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-xs font-bold text-green-600">{completedPractice}/{totalPractice}</span>
+                                </div>
+                            </div>
+                            
+                            <div className="mt-auto z-10 relative flex items-center gap-2 text-sm font-bold text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                                Browse Questions <ChevronRight size={16} />
                             </div>
                         </div>
                         
@@ -277,14 +346,29 @@ export const ImatDashboard: React.FC = () => {
                     />
                 )}
 
-                {showPastPapers && !selectedPaper && (
+                {showOfficialModal && !selectedPaper && (
                     <PastPapersModal 
                         papers={imatPastPapers} 
-                        onClose={() => setShowPastPapers(false)}
+                        onClose={() => setShowOfficialModal(false)}
                         onSelectPaper={(paper) => {
                             setSelectedPaper(paper);
                         }}
-                        title="IMAT Exam Simulator"
+                        title="Official Past Papers"
+                        initialViewState={lastOfficialView}
+                        onViewStateChange={setLastOfficialView}
+                    />
+                )}
+
+                {showPracticeModal && !selectedPaper && (
+                    <PastPapersModal 
+                        papers={subjectPracticePapers} 
+                        onClose={() => setShowPracticeModal(false)}
+                        onSelectPaper={(paper) => {
+                            setSelectedPaper(paper);
+                        }}
+                        title="Subject-wise Practice"
+                        initialViewState={lastPracticeView}
+                        onViewStateChange={setLastPracticeView}
                     />
                 )}
             </div>
@@ -295,7 +379,7 @@ export const ImatDashboard: React.FC = () => {
                     paper={selectedPaper} 
                     onClose={() => {
                         setSelectedPaper(null);
-                        setShowPastPapers(true);
+                        // No need to reopen modal here, let user choose
                     }} 
                 />
             )}

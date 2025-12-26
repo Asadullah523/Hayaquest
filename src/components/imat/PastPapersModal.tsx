@@ -3,15 +3,25 @@ import { createPortal } from 'react-dom';
 import { X, GraduationCap } from 'lucide-react';
 import { PastPapersList } from './PastPapersList';
 import { type PastPaper } from '../../data/pastPapers';
+import { type ViewState } from './PastPapersList';
 
 interface PastPapersModalProps {
     papers: PastPaper[];
     onClose: () => void;
     onSelectPaper?: (paper: PastPaper) => void;
     title?: string;
+    initialViewState?: ViewState;
+    onViewStateChange?: (view: ViewState) => void;
 }
 
-export const PastPapersModal: React.FC<PastPapersModalProps> = ({ papers, onClose, onSelectPaper, title = "Exam Simulator" }) => {
+export const PastPapersModal: React.FC<PastPapersModalProps> = ({ 
+    papers, 
+    onClose, 
+    onSelectPaper, 
+    title = "Exam Simulator",
+    initialViewState,
+    onViewStateChange
+}) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -66,7 +76,12 @@ export const PastPapersModal: React.FC<PastPapersModalProps> = ({ papers, onClos
 
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
-                    <PastPapersList papers={papers} onSelectPaper={onSelectPaper} />
+                    <PastPapersList 
+                        papers={papers} 
+                        onSelectPaper={onSelectPaper}
+                        initialViewState={initialViewState}
+                        onViewStateChange={onViewStateChange}
+                    />
                 </div>
             </div>
         </div>,

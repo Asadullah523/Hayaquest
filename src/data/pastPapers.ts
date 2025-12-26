@@ -13,6 +13,8 @@ export interface PastPaper {
     year: string;
     description: string;
     subjectId?: number;
+    category: 'Official' | 'Practice';
+    subject?: string;
     questions: Question[];
     durationMinutes: number;
     totalMarks: number;
@@ -714,6 +716,9 @@ import { imat2021Questions } from './imat2021';
 import { imat2022Questions } from './imat2022';
 import { imat2023Questions } from './imat2023';
 import { imat2024Questions } from './imat2024';
+import { imatChemistryMCQs } from './imatChemistryMCQs';
+import { imatMathPhysicsMCQs } from './imatMathPhysicsMCQs';
+import { imatBiologyMCQs } from './imatBiologyMCQs';
 
 export const imatPastPapers: PastPaper[] = [
     {
@@ -721,6 +726,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2025 (Predicted)",
         year: "2025",
         description: "Practice with high-yield predicted questions based on current trends.",
+        category: "Official",
         questions: imat2025Questions,
         durationMinutes: 100,
         totalMarks: imat2025Questions.length * 1.5
@@ -730,6 +736,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2024 (Real)",
         year: "2024",
         description: "Official IMAT 2024 Past Paper. Real exam questions.",
+        category: "Official",
         questions: imat2024Questions,
         durationMinutes: 100,
         totalMarks: imat2024Questions.length * 1.5
@@ -739,6 +746,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2023 (Real)",
         year: "2023",
         description: "Official IMAT 2023 Past Paper. Real exam questions.",
+        category: "Official",
         questions: imat2023Questions,
         durationMinutes: 100,
         totalMarks: imat2023Questions.length * 1.5
@@ -748,6 +756,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2022 (Real)",
         year: "2022",
         description: "Official IMAT 2022 Past Paper. Includes filtered questions and placeholders for unparseable content.",
+        category: "Official",
         questions: imat2022Questions,
         durationMinutes: 100,
         totalMarks: imat2022Questions.length * 1.5
@@ -757,6 +766,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2021 (Real)",
         year: "2021",
         description: "Official IMAT 2021 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2021Questions,
         durationMinutes: 100,
         totalMarks: imat2021Questions.length * 1.5
@@ -766,6 +776,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2020 (Real)",
         year: "2020",
         description: "Official IMAT 2020 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2020Questions,
         durationMinutes: 100,
         totalMarks: imat2020Questions.length * 1.5
@@ -775,6 +786,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2019 (Real)",
         year: "2019",
         description: "Official IMAT 2019 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2019Questions,
         durationMinutes: 100,
         totalMarks: imat2019Questions.length * 1.5
@@ -784,6 +796,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2018 (Real)",
         year: "2018",
         description: "Official IMAT 2018 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2018Questions,
         durationMinutes: 100,
         totalMarks: imat2018Questions.length * 1.5
@@ -793,6 +806,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2017 (Real)",
         year: "2017",
         description: "Official IMAT 2017 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2017Questions,
         durationMinutes: 100,
         totalMarks: imat2017Questions.length * 1.5
@@ -802,6 +816,7 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2016 (Real)",
         year: "2016",
         description: "Official IMAT 2016 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2016Questions,
         durationMinutes: 100,
         totalMarks: imat2016Questions.length * 1.5
@@ -811,9 +826,214 @@ export const imatPastPapers: PastPaper[] = [
         title: "IMAT 2015 (Real)",
         year: "2015",
         description: "Official IMAT 2015 Past Paper. Practice with real exam questions.",
+        category: "Official",
         questions: imat2015Questions,
         durationMinutes: 100,
         totalMarks: imat2015Questions.length * 1.5
+    },
+];
+
+export const subjectPracticePapers: PastPaper[] = [
+    // Chemistry Practice
+    {
+        id: 3001,
+        title: "Chemistry Practice - Set 1",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 1-100). Shuffled options.",
+        questions: imatChemistryMCQs.slice(0, 100),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3002,
+        title: "Chemistry Practice - Set 2",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 101-200). Shuffled options.",
+        questions: imatChemistryMCQs.slice(100, 200),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3003,
+        title: "Chemistry Practice - Set 3",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 201-300). Shuffled options.",
+        questions: imatChemistryMCQs.slice(200, 300),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3004,
+        title: "Chemistry Practice - Set 4",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 301-400). Shuffled options.",
+        questions: imatChemistryMCQs.slice(300, 400),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3005,
+        title: "Chemistry Practice - Set 5",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 401-500). Shuffled options.",
+        questions: imatChemistryMCQs.slice(400, 500),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3006,
+        title: "Chemistry Practice - Set 6",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 501-600). Shuffled options.",
+        questions: imatChemistryMCQs.slice(500, 600),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    // Math & Physics Practice
+    {
+        id: 4001,
+        title: "Math & Physics Practice - Set 1",
+        year: "Practice",
+        category: "Practice",
+        subject: "Math & Physics",
+        description: "100 High-yield Math & Physics MCQs (Questions 1-100). Shuffled options.",
+        questions: imatMathPhysicsMCQs.slice(0, 100),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 4002,
+        title: "Math & Physics Practice - Set 2",
+        year: "Practice",
+        category: "Practice",
+        subject: "Math & Physics",
+        description: "100 High-yield Math & Physics MCQs (Questions 101-200). Shuffled options.",
+        questions: imatMathPhysicsMCQs.slice(100, 200),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 4003,
+        title: "Math & Physics Practice - Set 3",
+        year: "Practice",
+        category: "Practice",
+        subject: "Math & Physics",
+        description: "100 High-yield Math & Physics MCQs (Questions 201-300). Shuffled options.",
+        questions: imatMathPhysicsMCQs.slice(200, 300),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 4004,
+        title: "Math & Physics Practice - Set 4",
+        year: "Practice",
+        category: "Practice",
+        subject: "Math & Physics",
+        description: "100 High-yield Math & Physics MCQs (Questions 301-400). Shuffled options.",
+        questions: imatMathPhysicsMCQs.slice(300, 400),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 4005,
+        title: "Math & Physics Practice - Set 5",
+        year: "Practice",
+        category: "Practice",
+        subject: "Math & Physics",
+        description: "100 High-yield Math & Physics MCQs (Questions 401-500). Shuffled options.",
+        questions: imatMathPhysicsMCQs.slice(400, 500),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 4006,
+        title: "Math & Physics Practice - Set 6",
+        year: "Practice",
+        category: "Practice",
+        subject: "Math & Physics",
+        description: "86 High-yield Math & Physics MCQs (Questions 501-586). Shuffled options.",
+        questions: imatMathPhysicsMCQs.slice(500, 586),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    // Biology Practice
+    {
+        id: 2101,
+        title: "Biology Practice - Set 1",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 1-100). Shuffled options.",
+        questions: imatBiologyMCQs.slice(0, 100),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2102,
+        title: "Biology Practice - Set 2",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 101-200). Shuffled options.",
+        questions: imatBiologyMCQs.slice(100, 200),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2103,
+        title: "Biology Practice - Set 3",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 201-300). Shuffled options.",
+        questions: imatBiologyMCQs.slice(200, 300),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2104,
+        title: "Biology Practice - Set 4",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 301-400). Shuffled options.",
+        questions: imatBiologyMCQs.slice(300, 400),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2105,
+        title: "Biology Practice - Set 5",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 401-500). Shuffled options.",
+        questions: imatBiologyMCQs.slice(400, 500),
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2106,
+        title: "Biology Practice - Set 6",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 501-600). Shuffled options.",
+        questions: imatBiologyMCQs.slice(500, 600),
+        durationMinutes: 100,
+        totalMarks: 150
     }
 ];
 
@@ -868,6 +1088,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2024 (KPK)",
         year: "2024",
         description: "Expected/Mock MDCAT paper based on 2024 syllabus.",
+        category: "Official",
         durationMinutes: 210,
         totalMarks: 200,
         questions: generateQuestions(200, mdcatSubjects)
@@ -877,6 +1098,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2023 (KPK)",
         year: "2023",
         description: "Official KPK MDCAT paper. Contains real questions from the 2023 exam.",
+        category: "Official",
         durationMinutes: 210,
         totalMarks: 200,
         questions: [...kpk2023RealQuestions, ...generateQuestions(195, mdcatSubjects).map(q => ({...q, id: q.id + 5}))]
@@ -886,6 +1108,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2022 (KPK)",
         year: "2022",
         description: "Official KPK MDCAT paper from 2022.",
+        category: "Official",
         durationMinutes: 210,
         totalMarks: 200,
         questions: generateQuestions(200, mdcatSubjects)
@@ -895,6 +1118,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2021 (KPK/National)",
         year: "2021",
         description: "PMC National MDCAT 2021 (conducted in KPK).",
+        category: "Official",
         durationMinutes: 210,
         totalMarks: 200,
         questions: generateQuestions(200, mdcatSubjects)
@@ -904,6 +1128,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2020 (KPK)",
         year: "2020",
         description: "KMU MDCAT 2020 Past Paper.",
+        category: "Official",
         durationMinutes: 150,
         totalMarks: 200,
         questions: generateQuestions(200, mdcatSubjects)
@@ -913,6 +1138,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2019 (KPK)",
         year: "2019",
         description: "Official ETEA Medical Entrance Exam 2019.",
+        category: "Official",
         durationMinutes: 150,
         totalMarks: 200,
         questions: generateQuestions(200, mdcatSubjects)
@@ -922,6 +1148,7 @@ export const mdcatPastPapers: PastPaper[] = [
         title: "MDCAT 2018 (KPK)",
         year: "2018",
         description: "Official ETEA Medical Entrance Exam 2018.",
+        category: "Official",
         durationMinutes: 150,
         totalMarks: 200,
         questions: generateQuestions(200, mdcatSubjects)

@@ -36,7 +36,8 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
             localStorage.setItem(`quiz_progress_${paper.id}`, JSON.stringify({
                 index: currentQuestionIndex,
                 savedAnswers: answers,
-                savedTime: timeLeft
+                savedTime: timeLeft,
+                timestamp: Date.now()
             }));
             // Notify dashboard to update "Resume" button
             window.dispatchEvent(new Event('storage'));
@@ -102,7 +103,8 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
         localStorage.setItem(`quiz_progress_${paper.id}`, JSON.stringify({
             index: currentQuestionIndex,
             savedAnswers: answers,
-            savedTime: timeLeft
+            savedTime: timeLeft,
+            timestamp: Date.now()
         }));
         window.dispatchEvent(new Event('storage'));
         onClose();
