@@ -9,7 +9,7 @@ import { physicsSyllabus } from '../data/physicsSyllabus';
 const IMAT_PARENT_NAME = 'IMAT Prep';
 const MDCAT_PARENT_NAME = 'MDCAT Prep';
 // Bump this version whenever you update the syllabus data to force a re-sync
-const SYLLABUS_VERSION = 'v3.0'; 
+const SYLLABUS_VERSION = 'v3.1'; 
 
 let isInitializing = false;
 
@@ -30,7 +30,7 @@ export async function initializePresetSubjects(): Promise<void> {
     console.log('🚀 DEEP SYNC: Implementing Hierarchical Prep Sections...');
 
     // 1. DEDUPLICATE ROOT PARENTS
-    const imatParentId = await deduplicateParent(IMAT_PARENT_NAME, '🎓', '#10b981');
+    const imatParentId = await deduplicateParent(IMAT_PARENT_NAME, '🎓', '#818cf8');
     const mdcatParentId = await deduplicateParent(MDCAT_PARENT_NAME, '🩺', '#ec4899');
     
     // 2. ROOT SCIENCE BOOKS (Kept separate)
