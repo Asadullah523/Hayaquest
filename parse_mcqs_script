@@ -1,0 +1,92 @@
+import re
+import json
+import random
+import sys
+import os
+
+def parse_questions(text):
+    # Split by common question markers
+    blocks = re.split(r'(?i)Question[\s\xb0]*[Nn][o\.\xb0\s]*\d+[:\.]*|## Question N\xb0\s*\d+|## Question\s*\d+', text)
+    questions = []
+    
+    # Improved option regex to handle - A) or A) or **A)**
+    option_regex = re.compile(r'(?i)(?:^|[\-\s\*]*)\b([A-E])\)[\s:]*(.*?)(?=\b[B-E]\)|$)', re.IGNORECASE | re.DOTALL)
+    
+    for block in blocks:
+        if not block.strip(): continue
+        
+        # Split by the first option to find text
+        parts = re.split(r'(?i)\bA\)[\s:]*', block, maxsplit=1, flags=re.IGNORECASE)
+        if len(parts) < 2: continue
+        
+        q_text = parts[0].strip()
+        q_text = q_text.strip('#*-\n\t ').strip()
+        
+        found_options = option_regex.findall(block)
+        options = [opt[1].strip() for opt in found_options]
+        options = [opt.strip('#*-\n\t ').strip() for opt in options]
+        
+        if q_text and options:
+            questions.append({"text": q_text, "options": options})
+    return questions
+
+def process_questions(new_questions, existing_texts, subject):
+    processed = []
+    for q in new_questions:
+        std_text = re.sub(r'[^a-zA-Z0-9]', '', q["text"]).lower()
+        if std_text in existing_texts:
+            continue
+        existing_texts.add(std_text)
+        
+        orig_options = q["options"]
+        if not orig_options: continue
+        
+        correct_answer_text = orig_options[0]
+        shuffled = list(orig_options)
+        while len(shuffled) < 5: shuffled.append("N/A")
+        shuffled = shuffled[:5]
+        
+        random.shuffle(shuffled)
+        correct_index = shuffled.index(correct_answer_text)
+        
+        processed.append({
+            "text": q["text"],
+            "options": shuffled,
+            "correctAnswer": correct_index,
+            "subject": subject
+        })
+    return processed
+
+def load_existing(path):
+    if not os.path.exists(path): return [], set()
+    with open(path, 'r') as f:
+        content = f.read()
+        texts = set()
+        for m in re.finditer(r'text:\s*"(.*?)",', content):
+            std = re.sub(r'[^a-zA-Z0-9]', '', m.group(1)).lower()
+            texts.add(std)
+        return [], texts # We just need texts for deduplication if we rebuild from raw every time
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('files', nargs='+', help='Raw text files')
+    parser.add_argument('--subject', required=True, help='Question subject')
+    parser.add_argument('--start-id', type=int, required=True, help='Starting ID')
+    parser.add_argument('--var-name', required=True, help='TS Export variable name')
+    args = parser.parse_args()
+    
+    existing_texts = set()
+    all_raw = ""
+    for file_path in args.files:
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                all_raw += f.read() + "\n"
+        
+    all_qs_parsed = parse_questions(all_raw)
+    final_processed = process_questions(all_qs_parsed, existing_texts, args.subject)
+    
+    for i, q in enumerate(final_processed):
+        q["id"] = args.start_id + i
+        
+    print(f"export const {args.var_name} = " + json.dumps(final_processed, indent=2) + ";")

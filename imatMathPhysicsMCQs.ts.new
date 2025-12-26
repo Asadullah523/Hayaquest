@@ -1,0 +1,345 @@
+export const imatMathPhysicsMCQs = [
+  {
+    id: 1001,
+    text: "What is the area of a circle circumscribed around a square with area 7 cm\u00b2?",
+    options: ["7\u03c0 cm\u00b2", "14 cm\u00b2", "7\u03c0/2 cm\u00b2", "7\u03c0/2 cm\u00b2", "7\u03c0\u221a2 cm\u00b2"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1002,
+    text: "What is the value of the expression 9^(1/3) \u00b7 3^(1/2) + 7^(1/4) \u00b7 7\u00b2 : 7^(5/2)?",
+    options: ["\u2076\u221a(3/7) + 1/\u2074\u221a7", "10", "\u00b3\u221a10", "\u2076\u221a3 + \u2075\u221a7", "\u00b9\u2070\u221a10"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1003,
+    text: "What is the area of a right triangle with one leg equal to 3 cm and hypotenuse equal to 5 cm?",
+    options: ["3 cm\u00b2", "12 cm\u00b2", "10 cm\u00b2", "7.5 cm\u00b2", "6 cm\u00b2"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1004,
+    text: "What is the name in physics for the motion of a body that travels a trajectory at constant speed?",
+    options: ["Circular", "Parabolic", "Rectilinear", "Uniform", "Harmonic"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1005,
+    text: "All the listed functions have the same period, EXCEPT one: which one?",
+    options: ["tan(x/2) + cot(x)", "cos(2x + 3)", "tan(x + 1) + sin(2x)", "1/sec(x)\u00b2", "tan(x + 2\u03c0) + 3"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1006,
+    text: "What is the supplementary angle of 12\u00b0?",
+    options: ["78\u00b0", "88\u00b0", "258\u00b0", "348\u00b0", "168\u00b0"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1007,
+    text: "The function f(x) = k\u00b2 sin(\u03c0x/k + k) has period \u221a3. What is its amplitude?",
+    options: ["1/\u221a3", "3/4", "3", "3/2", "1/3"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1008,
+    text: "What is the explementary angle of 51\u00b0?",
+    options: ["39\u00b0", "219\u00b0", "49\u00b0", "129\u00b0", "309\u00b0"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1009,
+    text: "What is the period of the function y = tan(2x - \u03c0) / cot(2x + \u03c0)?",
+    options: ["\u03c0/4", "\u03c0/4", "\u03c0/2", "2\u03c0", "\u03c0"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1010,
+    text: "If [condition with formula], what is the value of the expression [formula]?",
+    options: ["1/2", "1/4", "1", "1/2", "1/4"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1011,
+    text: "What is the perimeter of a rhombus with a side equal to 26 cm?",
+    options: ["130 cm", "78 cm", "52 cm", "208 cm", "104 cm"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1012,
+    text: "Knowing that y is obtained by adding 4 to the cube of (x + 1), how can x be written as a function of y?",
+    options: ["x = (y + 1)\u00b3 + 4", "x = (y - 1)\u00b3 - 4", "x = \u00b3\u221a(y - 4) - 1", "x = (y - 4)\u00b3 - 1", "x = \u00b3\u221ay + 3"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1013,
+    text: "All the listed expressions are equivalent to each other, EXCEPT one: which one?",
+    options: ["4 \u00b7 (3^(x-1))/9^x", "(2 \u00b7 3^(-x+1/2))\u00b2", "4/9^(x-1/2)", "4 \u00b7 3^(1-2x)", "(2/3^x)\u00b2 \u00b7 3"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1014,
+    text: "Which of the following is a possible simplification of the expression \u2078\u221a(12\u2074/10)?",
+    options: ["\u2078\u221a(81/5)", "2 \u00b7 \u2078\u221a(81/10)", "2 \u00b7 \u2078\u221a(27/10)", "2 \u00b7 \u2078\u221a(27/5)", "2 \u00b7 \u2078\u221a(81/5)"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1015,
+    text: "For which values of x is the equation log(6) + log(x - 4) - log(x - 1) = log(12) - log(x) valid?",
+    options: ["For x = 4 + \u221a2", "For x = 7/5 + \u221a2", "For every x > 4", "For x = 3 + \u221a7", "For x = 3 - \u221a7"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1016,
+    text: "How many real numbers satisfy the equation x\u2074 + x\u00b2 - 2 = 0?",
+    options: ["Infinitely many", "4", "2", "0", "1"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1017,
+    text: "Let f(x) = 2 - x and g(x) = 3x - 4. What is f(g(x)) - g(f(x)) equal to?",
+    options: ["4", "0", "10 - 6x", "3x + 2", "4"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1018,
+    text: "There is a common solution to all the listed equations, EXCEPT one: which one?",
+    options: ["(4/3)^(x-1) = 2\u221a3/3", "4^x - 8 = 9^(x-1) - 3", "2 \u00b7 (9/4)^x = 9", "8 \u00b7 9^x = 27 \u00b7 4^x", "9^x = 4^x + 19"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1019,
+    text: "The height of a rectangle is 5/2 of its base; the perimeter of the rectangle is 28 m. What is the area of the rectangle?",
+    options: ["20 m\u00b2", "56 m\u00b2", "80 m\u00b2", "40 m\u00b2", "160 m\u00b2"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1020,
+    text: "The listed equations all have one solution in common, EXCEPT one: which one?",
+    options: ["tan(x) - 1 = 0", "sin(2x) = -cos(4x)", "sec(x)\u00b2 = 2", "cos(x) + sin(x) - 2 = 0", "cos(3x + \u03c0/4) = -1"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1021,
+    text: "A right triangle has legs measuring 10 m and 24 m. What is the measure of the median relative to the hypotenuse?",
+    options: ["26 m", "12 m", "13 m", "16 m", "15 m"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1022,
+    text: "What is the sum of the interior angles of a convex decagon?",
+    options: ["3600\u00b0", "1620\u00b0", "1260\u00b0", "1800\u00b0", "1440\u00b0"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1023,
+    text: "Which of the following equations is an identity?",
+    options: ["sin(x)\u00b2cos(x)\u00b2 - cos(x)\u2074 = cos(x)\u00b2(cos(2x)/2)", "(cos(x) + sin(x))\u00b2 = 1 + sin(2x)", "cos(2x) + sin(x)tan(x) = 1", "tan(2x) = 1/(cos(x)\u00b2 - sin(x)\u00b2)", "cos(2x) + tan(x) = (2 sin(x) + cos(x))sec(x)/2"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1024,
+    text: "The expression [(17 - 18) - (14 - 15) + (-16 + 10)] equals:",
+    options: ["6", "36", "6", "26", "8"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1025,
+    text: "Disregarding the non-homogeneity of the units of measurement, for which real values of x is the sum of the area of the rectangle with sides x and 2x and its semi-perimeter equal to 5?",
+    options: ["For no real value x", "x = \u00b11", "x = 5/2", "x = 1", "x = 1 \u2228 x = -5/2"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1026,
+    text: "For which values of k is the function f(x) = e^(kx - 2) strictly positive?",
+    options: ["For every k > 0", "For every value of k", "For every k > 2", "For every k \u2260 1/2", "For no value of k"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1027,
+    text: "What is the value of the expression 30 : 10 + 25 - (2 \u00b7 7 + 6)?",
+    options: ["317", "20", "2", "8", "18"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1028,
+    text: "For which values of k can a rectangle with base 2 cm and height 3 cm be drawn inside a circle with area 3k\u03c0 cm\u00b2?",
+    options: ["For k \u2265 12\u221a\u03c0", "For k \u2264 13", "For k \u2264 13/\u03c0", "For k \u2265 13/12", "For k \u2265 \u221a13"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1029,
+    text: "The fraction 3/40 is equivalent to the decimal number:",
+    options: ["0.075", "0.25", "0.005", "0.7", "0.05"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1030,
+    text: "Given the parabola with equation y = 2x\u00b2 + 3x - 2. The equation of its axis of symmetry is given by:",
+    options: ["x = 1", "x = -3/4", "y = 2", "y = -1/4", "x = 1/2"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1031,
+    text: "What is the explementary angle of 0\u00b0?",
+    options: ["360\u00b0", "180\u00b0", "270\u00b0", "90\u00b0", "100\u00b0"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1032,
+    text: "What is the complementary angle of 8\u00b0?",
+    options: ["262\u00b0", "92\u00b0", "82\u00b0", "172\u00b0", "352\u00b0"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1033,
+    text: "Knowing that -3\u03c0/2 < x < -\u03c0/2, which of the listed expressions is equivalent to sin(x) \u00b7 tan(x) + cos(x)?",
+    options: ["sin(x)\u00b2", "cosec(x)", "cot(x)", "tan(x)", "sec(x)"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1034,
+    text: "In an isosceles triangle, the two equal sides measure \u221a3 m and enclose an angle of 2\u03c0/3 radians. How long is the third side of the triangle?",
+    options: ["4\u221a3 m", "\u221a3 m", "3 m", "2/\u221a3 m", "2/3 m"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1035,
+    text: "What is the value of the expression (-6 + 11) + (7 - 8) - (4 - 5)?",
+    options: ["5", "17", "3", "3", "5"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1036,
+    text: "What is the area of the ellipse with equation 9x\u00b2 + 4y\u00b2 = 36?",
+    options: ["8\u03c0", "12\u03c0", "6\u03c0", "2\u03c0", "4\u03c0"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1037,
+    text: "The result of the operations indicated in the expression 30 + 24 : 3 \u00b7 2 equals:",
+    options: ["9", "40", "36", "76", "46"],
+    correctAnswer: 4,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1038,
+    text: "What percentage of 380 does the number 76 correspond to?",
+    options: ["30%", "20%", "50%", "80%", "10%"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1039,
+    text: "For which values of k does the hyperbola with equation x\u00b2/k - ky\u00b2/16 = k have foci at points with abscissa -5 and 5?",
+    options: ["For k = \u00b13", "Only for k = \u221a3", "Only for k = -3", "For k = \u00b1\u221a3", "Only for k = 9"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1040,
+    text: "A rational number is defined as:",
+    options: ["the ratio of two integers a and b, with b different from 0", "the ratio of two integers a and b, such that it generates a terminating decimal", "the ratio of two integers a and b, with b greater than 0", "the ratio of two integers a and b, such that it generates a non-repeating decimal", "any decimal number, terminating or non-terminating"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1041,
+    text: "What is the prime factorization of the number 4875?",
+    options: ["3 \u00b7 5\u00b3 \u00b7 13", "2 \u00b7 5\u00b2 \u00b7 13", "3 \u00b7 5\u00b2 \u00b7 23", "11 \u00b7 5\u00b3 \u00b7 7", "3 \u00b7 5 \u00b7 7\u00b3"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1042,
+    text: "For which real values x and y does the rectangle with sides 3x and y/3 have area equal to 4 and perimeter equal to 8?",
+    options: ["For no pair (x; y) of real values", "x = 2; y = 2", "x = 2/3; y = 6", "x = 1; y = 12", "x = 4; y = 1"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1043,
+    text: "The listed equations describe parabolas that all have the same axis, EXCEPT one: which one?",
+    options: ["y = -2x\u00b2 + (4/3)x + 4/3", "y = 6x\u00b2 - 3x + 1", "y = (9/2)x\u00b2 - 3x - 5", "y = x\u00b2/2 - x/3 + 1/3", "y = -3x\u00b2 + 2x - 7"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1044,
+    text: "Calculate the area of a rectangle that has a perimeter of 56 cm and height of 18 cm.",
+    options: ["360 square centimeters", "180 square centimeters", "720 square centimeters", "112 square centimeters", "342 square centimeters"],
+    correctAnswer: 1,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1045,
+    text: "How many square meters is the area of an isosceles triangle with a base length of 300 cm and height of 12 m?",
+    options: ["360 m\u00b2", "180 m\u00b2", "18 m\u00b2", "1,800 m\u00b2", "36 m\u00b2"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1046,
+    text: "Given points A = (1; 2) and B = (2; 1), what is the length of segment AB?",
+    options: ["0", "2", "1", "\u221a2", "1/\u221a2"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1047,
+    text: "The orthocenter, the point of intersection of the altitudes of a triangle, is:",
+    options: ["always external to the triangle", "external to the triangle if it is acute", "always internal to the triangle", "external to the triangle if it is obtuse", "internal to the triangle only if it is right-angled"],
+    correctAnswer: 3,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1048,
+    text: "What are the solutions of the equation 5x\u00b2 - 7x + 2 = 0?",
+    options: ["x = -5, x = 7", "x = 2, x = 1/5", "x = 2/5, x = 1", "x = -1, x = 1/5", "x = -1/2, x = 2/5"],
+    correctAnswer: 2,
+    subject: "Math & Physics"
+  },
+  {
+    id: 1049,
+    text: "What is the value of the derivative of the function f(x) = x\u00b3 - 2x at point x = -1?",
+    options: ["1", "1", "3", "0", "2"],
+    correctAnswer: 0,
+    subject: "Math & Physics"
+  }
+];
