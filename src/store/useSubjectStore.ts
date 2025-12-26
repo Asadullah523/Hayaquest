@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { db } from '../db/db';
 import type { Subject, Topic } from '../types';
 import { useGamificationStore } from './useGamificationStore';
+import { syncService } from '../services/syncService';
 
 interface SubjectState {
   subjects: Subject[];
@@ -99,6 +100,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       // but we can import it at the top level or use it here if safely imported.
       // For now, let's assume we can trigger it or let the component do it.
       // Actually, better to do it in the store to ensure it always happens.
+      syncService.triggerAutoBackup();
       return id;
     } catch (error) {
       set({ error: 'Failed to add subject' });
@@ -112,6 +114,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       set((state) => ({
         subjects: state.subjects.map(s => s.id === id ? { ...s, ...changes } : s)
       }));
+      syncService.triggerAutoBackup();
     } catch (error) {
       set({ error: 'Failed to update subject' });
       throw error;
@@ -126,6 +129,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       set((state) => ({
         subjects: state.subjects.filter(s => s.id !== id)
       }));
+      syncService.triggerAutoBackup();
     } catch (error) {
       set({ error: 'Failed to delete subject' });
       throw error;
@@ -153,6 +157,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       const id = await db.topics.add(topic as Topic);
       const newTopic = { ...topic, id };
       set((state) => ({ topics: [...state.topics, newTopic] }));
+      syncService.triggerAutoBackup();
       return id;
     } catch (error) {
       set({ error: 'Failed to add topic' });
@@ -182,6 +187,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
             set((state) => ({
                 topics: state.topics.map(t => t.id === topicId ? { ...t, isCompleted: newIsCompleted, status: newStatus as any } : t)
             }));
+            syncService.triggerAutoBackup();
         }
     } catch (e) {
         console.error("Failed to toggle topic", e);
@@ -194,6 +200,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       set((state) => ({
         topics: state.topics.map(t => t.id === id ? { ...t, ...changes } : t)
       }));
+      syncService.triggerAutoBackup();
     } catch (error) {
        set({ error: 'Failed to update topic' });
        throw error;
@@ -206,6 +213,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       set((state) => ({
         topics: state.topics.filter(t => t.id !== id)
       }));
+      syncService.triggerAutoBackup();
     } catch (error) {
       set({ error: 'Failed to delete topic' });
       throw error;
@@ -357,6 +365,8 @@ export const useSubjectStore = create<SubjectState>((set) => ({
         const updatedTopics = await db.topics.where('subjectId').equals(topic.subjectId).toArray();
         set({ topics: updatedTopics });
         
+        syncService.triggerAutoBackup();
+
         // Award XP for completing daily task
         useGamificationStore.getState().addXp(10);
       }

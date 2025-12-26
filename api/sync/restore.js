@@ -21,7 +21,9 @@ const dataBackupSchema = new mongoose.Schema({
         gamification: Object,
         achievements: Array,
         writingChecker: Object,
-        englishProgress: Object
+        englishProgress: Object,
+        user: Object,
+        timer: Object
     },
     lastSynced: {
         type: Date,

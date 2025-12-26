@@ -36,28 +36,55 @@ function App() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const bootstrap = async () => {
+    const handleFocus = async () => {
+      // Use getState to get current auth status
+      import('./store/useAuthStore').then(({ useAuthStore }) => {
+        if (useAuthStore.getState().isAuthenticated) {
+          console.log('App focused: Syncing with cloud...');
+          syncService.restore().catch(err => console.error('Focus sync failed', err));
+        }
+      });
+    };
 
-      
+    const bootstrap = async () => {
       try {
-        // 1. Initialize DB structure (optimized to run only when needed)
+        // 1. Initialize DB structure
         await initializePresetSubjects();
         
-        // 2. Load data in parallel
+        // 2. Load data from local DB
         await Promise.all([
           loadSubjects(),
           loadAllTopics()
         ]);
 
         // 3. Initialize Auto-sync
-        syncService.initAutoSync();
+        syncService.initAutoSync(2);
+
+        // 4. Cloud Restore on Refresh
+        const token = localStorage.getItem('auth-token');
+        if (token) {
+          console.log('Token found, performing initial cloud restore...');
+          try {
+            await syncService.restore();
+          } catch (err) {
+            console.error('Initial restore failed:', err);
+          }
+        }
+
+        // 5. Add focus listener
+        window.addEventListener('focus', handleFocus);
       } catch (error) {
         console.error("Failed to bootstrap application:", error);
       }
       
       setIsReady(true);
     };
+
     bootstrap();
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [loadSubjects, loadAllTopics]);
 
   if (!isReady) {

@@ -3,6 +3,7 @@ import { X, Calendar, BookOpen, ChevronRight, Check, Clock, ChevronDown } from '
 import { useSubjectStore } from '../../store/useSubjectStore';
 import { useLogStore } from '../../store/useLogStore';
 import { SubjectVisual } from '../subjects/SubjectVisual';
+import { syncService } from '../../services/syncService';
 
 interface LogSessionModalProps {
   isOpen: boolean;
@@ -132,6 +133,7 @@ export const LogSessionModal: React.FC<LogSessionModalProps> = ({ isOpen, onClos
         } as any);
 
         console.log("Log added successfully");
+        syncService.triggerAutoBackup();
         
         setIsSubmitting(false);
         setIsSuccess(true);

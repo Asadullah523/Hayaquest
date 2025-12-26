@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { syncService } from '../services/syncService';
 
 type TimerMode = 'focus' | 'shortBreak' | 'longBreak';
 
@@ -809,6 +810,9 @@ export const useTimerStore = create<TimerState>()(
           todayStats: newStats,
           activeSession: null,
         });
+
+        // Trigger cloud backup
+        syncService.triggerAutoBackup();
       },
 
       getTodayStats: () => {

@@ -8,6 +8,8 @@ import { useAchievementsStore } from '../store/useAchievementsStore';
 import { useWritingCheckerStore } from '../store/useWritingCheckerStore';
 import { useEnglishStore } from '../store/useEnglishStore';
 import { useAuthStore } from '../store/useAuthStore';
+import { useUserStore } from '../store/useUserStore';
+import { useTimerStore } from '../store/useTimerStore';
 
 export const syncService = {
   async getAllLocalData() {
@@ -24,6 +26,8 @@ export const syncService = {
     const achievements = useAchievementsStore.getState();
     const writingChecker = useWritingCheckerStore.getState();
     const english = useEnglishStore.getState();
+    const user = useUserStore.getState();
+    const timer = useTimerStore.getState();
 
     return {
       subjects,
@@ -52,6 +56,16 @@ export const syncService = {
         dailyStreak: english.dailyStreak,
         lastStudyDate: english.lastStudyDate,
         wordsRead: english.wordsRead,
+      },
+      user: {
+        name: user.name,
+        avatar: user.avatar,
+        dailyGoalMinutes: user.dailyGoalMinutes
+      },
+      timer: {
+        todayStats: timer.todayStats,
+        sessionHistory: timer.sessionHistory,
+        config: timer.config
       }
     };
   },
@@ -116,6 +130,35 @@ export const syncService = {
           ...remoteData.englishProgress
         });
       }
+      
+      if (remoteData.user) {
+        useUserStore.setState({
+          name: remoteData.user.name,
+          avatar: remoteData.user.avatar,
+          dailyGoalMinutes: remoteData.user.dailyGoalMinutes
+        });
+        
+        // Also update auth user if exists for consistency
+        const auth = useAuthStore.getState();
+        if (auth.isAuthenticated) {
+          auth.updateUser({
+            name: remoteData.user.name,
+            avatar: remoteData.user.avatar
+          });
+        }
+      }
+
+      if (remoteData.timer) {
+        useTimerStore.setState({
+          todayStats: remoteData.timer.todayStats,
+          sessionHistory: remoteData.timer.sessionHistory,
+          config: remoteData.timer.config,
+          // Reset local active session to avoid stale state
+          activeSession: null,
+          isActive: false,
+          timeLeft: remoteData.timer.config?.focusDuration || 25 * 60
+        });
+      }
 
       // Reload stores that pull from Dexie
       await useSubjectStore.getState().loadSubjects();
@@ -144,18 +187,36 @@ export const syncService = {
     }
   },
 
-  initAutoSync(intervalMinutes = 5) {
+  initAutoSync(intervalMinutes = 2) {
     const interval = intervalMinutes * 60 * 1000;
+    
+    // Background interval for both backup and restore
     setInterval(async () => {
       const { isAuthenticated } = useAuthStore.getState();
       if (isAuthenticated) {
-        console.log('Auto-sync: performing background backup...');
+        console.log('Auto-sync: performing background sync...');
         try {
+          // Backup local changes first
           await this.backup();
+          // Then restore any remote changes
+          await this.restore();
         } catch (err) {
           console.error('Auto-sync failed', err);
         }
       }
     }, interval);
+  },
+
+  // Helper for immediate debounced backup after updates
+  _backupTimeout: null as any,
+  triggerAutoBackup() {
+    if (this._backupTimeout) clearTimeout(this._backupTimeout);
+    this._backupTimeout = setTimeout(() => {
+      const { isAuthenticated } = useAuthStore.getState();
+      if (isAuthenticated) {
+        console.log('Triggered auto-backup...');
+        this.backup().catch(console.error);
+      }
+    }, 5000); // 5 second debounce
   }
 };

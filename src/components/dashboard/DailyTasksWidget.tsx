@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { useSubjectStore } from '../../store/useSubjectStore';
 import { useTimetableStore } from '../../store/useTimetableStore';
 import { useTimerStore } from '../../store/useTimerStore';
+import { syncService } from '../../services/syncService';
 import { NavLink } from 'react-router-dom';
 import { SubjectVisual } from '../subjects/SubjectVisual';
 import type { Subject, Topic } from '../../types';
@@ -43,12 +44,14 @@ export const DailyTasksWidget: React.FC = () => {
   const handleMarkComplete = async (topicId: number) => {
     setAnimatingTask(topicId);
     await markDailyTaskComplete(topicId);
+    syncService.triggerAutoBackup();
     setTimeout(() => setAnimatingTask(null), 600);
   };
 
   const handleToggleSlot = (slotId: number) => {
     setAnimatingSlot(slotId);
     toggleSlotComplete(todayDateStr, slotId);
+    syncService.triggerAutoBackup();
     setTimeout(() => setAnimatingSlot(null), 600);
   };
 
