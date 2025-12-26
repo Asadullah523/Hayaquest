@@ -39,7 +39,9 @@ module.exports = async (req, res) => {
     }
 
     try {
+        console.log('Login attempt started...');
         await connectDB();
+        console.log('DB connected, finding user...');
 
         const { email, password } = req.body;
         const user = await User.findOne({ email });
@@ -51,7 +53,19 @@ module.exports = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, JWT_SECRET);
         res.json({ token, user: { email: user.email, name: user.name, avatar: user.avatar } });
     } catch (err) {
-        console.error('Login error:', err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+        console.error('SERVERLESS LOGIN ERROR:', {
+            message: err.message,
+            stack: err.stack,
+            uri: MONGODB_URI ? 'SET' : 'MISSING'
+        });
+        res.status(500).json({
+            message: 'Server error',
+            error: err.message,
+            stack: err.stack,
+            env: {
+                hasMongo: !!process.env.MONGODB_URI,
+                hasJwt: !!process.env.JWT_SECRET
+            }
+        });
     }
 };
