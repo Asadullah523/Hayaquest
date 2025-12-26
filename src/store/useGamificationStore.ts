@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { syncService } from '../services/syncService';
 
 export interface Badge {
     id: string;
@@ -49,6 +50,7 @@ export const useGamificationStore = create<GamificationState>()(
         });
         
         get().checkBadges();
+        syncService.triggerAutoBackup();
       },
 
       checkBadges: () => {
@@ -64,6 +66,7 @@ export const useGamificationStore = create<GamificationState>()(
           if (newBadges.length > 0) {
               set(s => ({ unlockedBadges: [...s.unlockedBadges, ...newBadges] }));
               console.log("Unlocked Badges:", newBadges);
+              syncService.triggerAutoBackup();
           }
       },
 
@@ -72,6 +75,7 @@ export const useGamificationStore = create<GamificationState>()(
               if (state.unlockedBadges.includes(badgeId)) return state;
               return { unlockedBadges: [...state.unlockedBadges, badgeId] };
           });
+          syncService.triggerAutoBackup();
       }
     }),
     {

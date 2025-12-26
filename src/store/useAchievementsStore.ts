@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { syncService } from '../services/syncService';
 
 export type AchievementCategory = 'Consistency' | 'Productivity' | 'Subject Mastery' | 'Exam Readiness';
 
@@ -307,6 +308,7 @@ export const useAchievementsStore = create<AchievementsState>()(
       updateStats: (stats) => {
         set((state) => ({ ...state, ...stats }));
         get().checkAchievements();
+        syncService.triggerAutoBackup();
       },
 
       checkAchievements: () => {
@@ -331,6 +333,7 @@ export const useAchievementsStore = create<AchievementsState>()(
             unlockedAchievements: [...s.unlockedAchievements, ...newUnlocks] 
           }));
           console.log('🏆 New Achievements Unlocked:', newUnlocks);
+          syncService.triggerAutoBackup();
         }
       },
 

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { UserProgress } from '../types/english';
+import { syncService } from '../services/syncService';
 
 interface EnglishStore extends UserProgress {
   markWordAsLearned: (wordId: string) => void;
@@ -47,35 +48,45 @@ export const useEnglishStore = create<EnglishStore>()(
             wordsLearned: newWordsLearned,
             shuffledWordIds: newShuffledWordIds,
           };
-        }),
+        });
+        syncService.triggerAutoBackup();
+      },
 
-      toggleFavoriteWord: (wordId) =>
+      toggleFavoriteWord: (wordId) => {
         set((state) => ({
           favoriteWords: state.favoriteWords.includes(wordId)
             ? state.favoriteWords.filter(id => id !== wordId)
             : [...state.favoriteWords, wordId],
-        })),
+        }));
+        syncService.triggerAutoBackup();
+      },
 
       markStoryAsRead: (storyId) =>
         set((state) => ({
           storiesRead: state.storiesRead.includes(storyId)
             ? state.storiesRead
             : [...state.storiesRead, storyId],
-        })),
+        }));
+        syncService.triggerAutoBackup();
+      },
 
       toggleFavoriteStory: (storyId) =>
         set((state) => ({
           favoriteStories: state.favoriteStories.includes(storyId)
             ? state.favoriteStories.filter(id => id !== storyId)
             : [...state.favoriteStories, storyId],
-        })),
+        }));
+        syncService.triggerAutoBackup();
+      },
 
       markGrammarTopicAsMastered: (topicId) =>
         set((state) => ({
           grammarTopicsMastered: state.grammarTopicsMastered.includes(topicId)
             ? state.grammarTopicsMastered
             : [...state.grammarTopicsMastered, topicId],
-        })),
+        }));
+        syncService.triggerAutoBackup();
+      },
 
       updateDailyStreak: () => {
         const today = new Date().toISOString().split('T')[0];
@@ -92,9 +103,13 @@ export const useEnglishStore = create<EnglishStore>()(
         } else {
           set({ dailyStreak: 1, lastStudyDate: today });
         }
+        syncService.triggerAutoBackup();
       },
 
-      setVocabularyIndex: (index) => set({ vocabularyIndex: index }),
+      setVocabularyIndex: (index) => {
+        set({ vocabularyIndex: index });
+        syncService.triggerAutoBackup();
+      },
 
       shuffleVocabulary: (allWordIds) => {
         const shuffled = [...allWordIds];
@@ -107,28 +122,37 @@ export const useEnglishStore = create<EnglishStore>()(
           vocabularyIndex: Math.floor(Math.random() * shuffled.length),
           vocabularySessionId: Date.now().toString()
         });
+        syncService.triggerAutoBackup();
       },
 
-      clearShuffle: () => set({ 
-        shuffledWordIds: null, 
-        vocabularyIndex: 0,
-        vocabularySessionId: Date.now().toString()
-      }),
+      clearShuffle: () => {
+        set({ 
+          shuffledWordIds: null, 
+          vocabularyIndex: 0,
+          vocabularySessionId: Date.now().toString()
+        });
+        syncService.triggerAutoBackup();
+      },
 
-      resetProgress: () => set({
-        wordsLearned: [],
-        wordsRead: [],
-        vocabularyIndex: 0,
-        shuffledWordIds: null,
-        vocabularySessionId: Date.now().toString()
-      }),
+      resetProgress: () => {
+        set({
+          wordsLearned: [],
+          wordsRead: [],
+          vocabularyIndex: 0,
+          shuffledWordIds: null,
+          vocabularySessionId: Date.now().toString()
+        });
+        syncService.triggerAutoBackup();
+      },
 
-      markWordAsRead: (wordId) =>
+      markWordAsRead: (wordId) => {
         set((state) => ({
           wordsRead: state.wordsRead.includes(wordId)
             ? state.wordsRead
             : [...state.wordsRead, wordId],
-        })),
+        }));
+        syncService.triggerAutoBackup();
+      },
     }),
     {
       name: 'english-storage',

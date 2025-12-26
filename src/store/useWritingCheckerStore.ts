@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { syncService } from '../services/syncService';
 import type { Draft, UserPreferences } from '../types/writingChecker';
 
 interface WritingCheckerState {
@@ -40,6 +41,8 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
           drafts: [newDraft, ...state.drafts],
           currentDraftId: newDraft.id,
         }));
+        
+        syncService.triggerAutoBackup();
 
         return newDraft.id;
       },
@@ -52,6 +55,7 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
               : draft
           ),
         }));
+        syncService.triggerAutoBackup();
       },
 
       deleteDraft: (id) => {
@@ -59,6 +63,7 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
           drafts: state.drafts.filter((draft) => draft.id !== id),
           currentDraftId: state.currentDraftId === id ? null : state.currentDraftId,
         }));
+        syncService.triggerAutoBackup();
       },
 
       loadDraft: (id) => {
@@ -68,12 +73,14 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
 
       setCurrentDraft: (id) => {
         set({ currentDraftId: id });
+        syncService.triggerAutoBackup();
       },
 
       updatePreferences: (preferences) => {
         set((state) => ({
           preferences: { ...state.preferences, ...preferences },
         }));
+        syncService.triggerAutoBackup();
       },
     }),
     {

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { db } from '../db/db';
 import type { StudyLog } from '../types';
 import { useGamificationStore } from './useGamificationStore';
+import { syncService } from '../services/syncService';
 
 interface LogState {
   logs: StudyLog[];
@@ -38,6 +39,8 @@ export const useLogStore = create<LogState>((set, get) => ({
 
       // Recalculate streak after adding
       await get().calculateStreak();
+      
+      syncService.triggerAutoBackup();
     } catch (error) {
       set({ error: 'Failed to add log' });
       throw error;

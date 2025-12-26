@@ -217,6 +217,6 @@ export const syncService = {
         console.log('Triggered auto-backup...');
         this.backup().catch(console.error);
       }
-    }, 5000); // 5 second debounce
+    }, 2000); // 2 second debounce
   }
 };

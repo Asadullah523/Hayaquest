@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { db } from '../db/db';
 import type { TimetableSlot } from '../types';
+import { syncService } from '../services/syncService';
 
 interface TimetableState {
   slots: TimetableSlot[];
@@ -90,6 +91,7 @@ export const useTimetableStore = create<TimetableState>()(
                   [date]: newDaySlots
               }
           });
+          syncService.triggerAutoBackup();
       },
 
       isSlotCompleted: (date: string, slotId: number) => {
@@ -117,6 +119,7 @@ export const useTimetableStore = create<TimetableState>()(
             // Reload
             const slots = await db.timetable.toArray();
             set({ slots });
+            syncService.triggerAutoBackup();
         } catch (error) {
             set({ error: 'Failed to assign slot' });
             console.error(error);
@@ -134,6 +137,7 @@ export const useTimetableStore = create<TimetableState>()(
                    // Reload
                    const slots = await db.timetable.toArray();
                    set({ slots });
+                   syncService.triggerAutoBackup();
                }
           } catch (error) {
               console.error(error);
@@ -169,6 +173,7 @@ export const useTimetableStore = create<TimetableState>()(
               // Reload
               const slots = await db.timetable.toArray();
               set({ slots });
+              syncService.triggerAutoBackup();
 
           } catch (error) {
               console.error("Failed to move slot", error);
@@ -177,6 +182,7 @@ export const useTimetableStore = create<TimetableState>()(
 
       updateTimetableHours: (start, end) => {
         set({ startHour: start, endHour: end });
+        syncService.triggerAutoBackup();
       },
 
       getTodaySlots: () => {
