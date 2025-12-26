@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_fallback_secret_key';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/haya-tracking';
@@ -43,10 +43,7 @@ const User = mongoose.models.User || mongoose.model('User', userSchema);
 let isConnected = false;
 
 const connectDB = async () => {
-    if (isConnected) {
-        return;
-    }
-
+    if (isConnected) return;
     try {
         await mongoose.connect(MONGODB_URI);
         isConnected = true;
@@ -57,7 +54,7 @@ const connectDB = async () => {
     }
 };
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -91,7 +88,7 @@ module.exports = async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id }, JWT_SECRET);
-        res.json({ token, user: { email: user.email, name: user.name, avatar: user.avatar } });
+        res.status(200).json({ token, user: { email: user.email, name: user.name, avatar: user.avatar } });
     } catch (err) {
         console.error('SERVERLESS LOGIN ERROR:', err);
         res.status(500).json({
@@ -100,4 +97,4 @@ module.exports = async (req, res) => {
             stack: err.stack
         });
     }
-};
+}

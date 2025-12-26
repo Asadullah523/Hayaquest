@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_fallback_secret_key';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/haya-tracking';
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Middleware to hash password - only if needed in standalone
+// Middleware to hash password
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     try {
@@ -51,10 +51,7 @@ const User = mongoose.models.User || mongoose.model('User', userSchema);
 let isConnected = false;
 
 const connectDB = async () => {
-    if (isConnected) {
-        return;
-    }
-
+    if (isConnected) return;
     try {
         await mongoose.connect(MONGODB_URI);
         isConnected = true;
@@ -65,7 +62,7 @@ const connectDB = async () => {
     }
 };
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -106,4 +103,4 @@ module.exports = async (req, res) => {
             stack: err.stack
         });
     }
-};
+}
