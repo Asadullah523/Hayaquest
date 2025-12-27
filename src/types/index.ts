@@ -19,6 +19,7 @@ export interface Subject {
   planStartDate?: number; // Timestamp when plan started
   isPreset?: boolean; // True for IMAT/MDCAT preset subjects
   parentId?: number; // NEW: To group subjects (e.g., Biology under IMAT)
+  updatedAt?: number; // timestamp for sync conflict resolution
 }
 
 export interface Topic {
@@ -37,6 +38,7 @@ export interface Topic {
   completionDates?: string[]; // Array of dates (YYYY-MM-DD) when task was completed
   lastCompletedDate?: string; // Last date marked complete (YYYY-MM-DD)
   completedAt?: number; // Timestamp when marked as completed (for streak calc)
+  updatedAt?: number; // timestamp for sync conflict resolution
 }
 
 export interface StudyLog {

@@ -141,7 +141,49 @@ export const syncService = {
       await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
         const syncTable = async (table: any, remoteItems: any[]) => {
             if (!remoteItems) return;
-            await table.bulkPut(remoteItems);
+            
+            const localItems = await table.toArray();
+            const localMap = new Map(localItems.map((i: any) => [i.id, i]));
+            
+            const toUpdate: any[] = [];
+            
+            for (const remoteItem of remoteItems) {
+                const localItem = localMap.get(remoteItem.id) as any;
+                
+                if (!localItem) {
+                    // New item from remote
+                    toUpdate.push(remoteItem);
+                } else {
+                    // Conflict Resolution Logic (LWW + Progress Union)
+                    const remoteUpdated = (remoteItem as any).updatedAt || 0;
+                    const localUpdated = (localItem as any).updatedAt || 0;
+                    
+                    // 1. Progress Union: If either is completed, keep it completed
+                    // This protects against "reverting" a checkbox due to stale sync
+                    const mergedIsCompleted = localItem.isCompleted || remoteItem.isCompleted;
+                    
+                    if (remoteUpdated > localUpdated) {
+                        // Remote is newer, but we still apply Progress Union for safety
+                        toUpdate.push({
+                            ...remoteItem,
+                            isCompleted: mergedIsCompleted // Higher progress wins
+                        });
+                    } else if (mergedIsCompleted && !localItem.isCompleted) {
+                        // Even if local is newer (or same), if remote has progress we don't have, take it
+                        toUpdate.push({
+                            ...localItem,
+                            isCompleted: true,
+                            updatedAt: Date.now() // Record this merge
+                        });
+                    }
+                }
+            }
+
+            if (toUpdate.length > 0) {
+                await table.bulkPut(toUpdate);
+            }
+            
+            // 2. Find and delete local items that are no longer in remote
             const remoteIds = new Set(remoteItems.map((i: any) => i.id).filter((id: any) => id !== undefined));
             const localKeys = await table.toCollection().primaryKeys();
             const toDelete = localKeys.filter((k: any) => !remoteIds.has(k));
@@ -160,15 +202,20 @@ export const syncService = {
 
       // Restore to Zustand stores
       if (remoteData.gamification) {
+        // XP/Level: take higher value
+        const currentGamification = useGamificationStore.getState();
         useGamificationStore.setState({
-          xp: remoteData.gamification.xp,
-          level: remoteData.gamification.level,
-          unlockedBadges: remoteData.gamification.unlockedBadges,
+          xp: Math.max(currentGamification.xp, remoteData.gamification.xp),
+          level: Math.max(currentGamification.level, remoteData.gamification.level),
+          unlockedBadges: Array.from(new Set([...currentGamification.unlockedBadges, ...(remoteData.gamification.unlockedBadges || [])])),
         });
       }
 
       if (remoteData.achievements) {
-        useAchievementsStore.setState({ unlockedAchievements: remoteData.achievements });
+        const currentAchievements = useAchievementsStore.getState().unlockedAchievements;
+        useAchievementsStore.setState({ 
+          unlockedAchievements: Array.from(new Set([...currentAchievements, ...(remoteData.achievements || [])]))
+        });
       }
 
       if (remoteData.writingChecker) {
@@ -209,11 +256,19 @@ export const syncService = {
         });
       }
 
-      // Restore quiz data to localStorage
+      // Restore quiz data to localStorage (Union Merge)
       if (remoteData.quiz) {
           Object.entries(remoteData.quiz).forEach(([key, value]) => {
               if (typeof value === 'string') {
-                  localStorage.setItem(key, value);
+                  // For completion keys, only set if it's 'true' and we don't have it or have 'false'
+                  if (key.startsWith('quiz_completed_')) {
+                      if (value === 'true' && localStorage.getItem(key) !== 'true') {
+                          localStorage.setItem(key, value);
+                      }
+                  } else {
+                      // For progress/other keys, take newest (but quiz progress is ephemeral anyway)
+                      localStorage.setItem(key, value);
+                  }
               }
           });
           // Dispatch storage event so components can update immediately

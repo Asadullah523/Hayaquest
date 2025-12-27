@@ -92,7 +92,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
   addSubject: async (subject) => {
     try {
       const id = await db.subjects.add(subject as Subject);
-      const newSubject = { ...subject, id };
+      const newSubject = { ...subject, id, updatedAt: Date.now() };
       set((state) => ({ subjects: [...state.subjects, newSubject] }));
       
       // NEW: Trigger achievement check on subject creation
@@ -110,9 +110,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   updateSubject: async (id, changes) => {
     try {
-      await db.subjects.update(id, changes);
+      const updatedChanges = { ...changes, updatedAt: Date.now() };
+      await db.subjects.update(id, updatedChanges);
       set((state) => ({
-        subjects: state.subjects.map(s => s.id === id ? { ...s, ...changes } : s)
+        subjects: state.subjects.map(s => s.id === id ? { ...s, ...updatedChanges } : s)
       }));
       syncService.triggerAutoBackup();
     } catch (error) {
@@ -155,7 +156,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
   addTopic: async (topic) => {
     try {
       const id = await db.topics.add(topic as Topic);
-      const newTopic = { ...topic, id };
+      const newTopic = { ...topic, id, updatedAt: Date.now() };
       set((state) => ({ topics: [...state.topics, newTopic] }));
       syncService.triggerAutoBackup();
       return id;
@@ -172,11 +173,13 @@ export const useSubjectStore = create<SubjectState>((set) => ({
             const newIsCompleted = !topic.isCompleted;
             const newStatus = newIsCompleted ? 'completed' : 'not-started';
             
+            const updatedAt = Date.now();
             await db.topics.update(topicId, { 
                 isCompleted: newIsCompleted,
                 status: newStatus as any, 
                 masteryLevel: newIsCompleted ? 1 : 0,
-                completedAt: newIsCompleted ? Date.now() : undefined
+                completedAt: newIsCompleted ? Date.now() : undefined,
+                updatedAt
             });
 
             // Gamification Hook
@@ -185,7 +188,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
             }
 
             set((state) => ({
-                topics: state.topics.map(t => t.id === topicId ? { ...t, isCompleted: newIsCompleted, status: newStatus as any } : t)
+                topics: state.topics.map(t => t.id === topicId ? { ...t, isCompleted: newIsCompleted, status: newStatus as any, updatedAt } : t)
             }));
             syncService.triggerAutoBackup();
         }
@@ -196,9 +199,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   updateTopic: async (id, changes) => {
     try {
-      await db.topics.update(id, changes);
+      const updatedChanges = { ...changes, updatedAt: Date.now() };
+      await db.topics.update(id, updatedChanges);
       set((state) => ({
-        topics: state.topics.map(t => t.id === id ? { ...t, ...changes } : t)
+        topics: state.topics.map(t => t.id === id ? { ...t, ...updatedChanges } : t)
       }));
       syncService.triggerAutoBackup();
     } catch (error) {
