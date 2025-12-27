@@ -28,6 +28,13 @@ export const ImatDashboard: React.FC = () => {
     const [lastOfficialView, setLastOfficialView] = useState<ViewState | undefined>();
     const [lastPracticeView, setLastPracticeView] = useState<ViewState | undefined>();
 
+    const [completedPracticeQuestions, setCompletedPracticeQuestions] = useState(0);
+
+    // Calculate total practice questions available
+    const totalPracticeQuestions = useMemo(() => {
+        return subjectPracticePapers.reduce((acc, paper) => acc + paper.questions.length, 0);
+    }, []);
+
     const totalOfficial = imatPastPapers.length;
     const totalPractice = subjectPracticePapers.length;
 
@@ -40,6 +47,7 @@ export const ImatDashboard: React.FC = () => {
         const checkProgress = () => {
             let officialCount = 0;
             let practiceCount = 0;
+            let practiceQuestionsCount = 0;
             let foundResume: PastPaper | null = null;
             let foundResumeTimestamp = 0;
 
@@ -62,6 +70,7 @@ export const ImatDashboard: React.FC = () => {
             subjectPracticePapers.forEach(paper => {
                 if (localStorage.getItem(`quiz_completed_${paper.id}`)) {
                     practiceCount++;
+                    practiceQuestionsCount += paper.questions.length;
                 }
                 const progress = localStorage.getItem(`quiz_progress_${paper.id}`);
                 if (progress) {
@@ -77,6 +86,7 @@ export const ImatDashboard: React.FC = () => {
 
             setCompletedOfficial(officialCount);
             setCompletedPractice(practiceCount);
+            setCompletedPracticeQuestions(practiceQuestionsCount);
             setResumePaper(foundResume);
         };
 
@@ -112,12 +122,25 @@ export const ImatDashboard: React.FC = () => {
             t.subjectId && allRelevantIds.includes(t.subjectId)
         );
         
-        const total = relevantTopics.length;
-        const completed = relevantTopics.filter(t => t.isCompleted).length;
-        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const totalTopics = relevantTopics.length;
+        const completedTopics = relevantTopics.filter(t => t.isCompleted).length;
+        
+        // Weighted Calculation
+        // 1 Topic = 10 Points
+        // 1 Practice Question = 1 Point
+        const TOPIC_WEIGHT = 10;
+        
+        const totalPoints = (totalTopics * TOPIC_WEIGHT) + totalPracticeQuestions;
+        const completedPoints = (completedTopics * TOPIC_WEIGHT) + completedPracticeQuestions;
+        
+        const percentage = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
+        
+        // For display counts, we still show items (Topics + Papers)
+        const totalItems = totalTopics + totalPractice;
+        const completedItems = completedTopics + completedPractice;
 
-        return { total, completed, percentage };
-    }, [imatSubjects, subjects, topics]);
+        return { total: totalItems, completed: completedItems, percentage };
+    }, [imatSubjects, subjects, topics, totalPractice, completedPractice, totalPracticeQuestions, completedPracticeQuestions]);
 
 
     if (view === 'library') {
@@ -176,7 +199,7 @@ export const ImatDashboard: React.FC = () => {
                             <p className="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mb-0.5 md:mb-1 truncate">Overall Mastery</p>
                             <div className="flex items-center gap-1.5 md:gap-2 text-primary font-bold text-[10px] sm:text-xs md:text-base">
                                 <TrendingUp size={12} className="flex-shrink-0 md:w-4 md:h-4 text-[10px] sm:text-xs" />
-                                <span className="truncate">{overallStats.completed} / {overallStats.total} Topics</span>
+                                <span className="truncate">{overallStats.completed} / {overallStats.total} Items Mastered</span>
                             </div>
                         </div>
                     </div>

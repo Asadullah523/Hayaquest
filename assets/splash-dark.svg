@@ -1,0 +1,30 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Background Circle -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818cf8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main Background -->
+  <circle cx="24" cy="24" r="22" fill="url(#logoGradient)" />
+  
+  <!-- Open Book Shape -->
+  <path d="M14 18 C14 16, 16 14, 18 14 C20 14, 22 15, 24 16 C26 15, 28 14, 30 14 C32 14, 34 16, 34 18 L34 30 C34 30, 32 29, 30 29 C28 29, 26 30, 24 31 C22 30, 20 29, 18 29 C16 29, 14 30, 14 30 Z" fill="white" opacity="0.95"/>
+  
+  <!-- Book Pages Detail -->
+  <line x1="24" y1="16" x2="24" y2="31" stroke="url(#accentGradient)" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Star/Achievement Symbol (top right accent) -->
+  <circle cx="36" cy="14" r="5" fill="url(#accentGradient)"/>
+  <path d="M36 11 L36.8 13.2 L39 14 L36.8 14.8 L36 17 L35.2 14.8 L33 14 L35.2 13.2 Z" fill="white"/>
+  
+  <!-- Quest Path/Arrow (suggesting journey) -->
+  <path d="M12 35 Q18 33, 24 35 T36 35" stroke="white" stroke-width="2" fill="none" opacity="0.7" stroke-linecap="round"/>
+  <path d="M34 33 L36 35 L34 37" stroke="white" stroke-width="2" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
