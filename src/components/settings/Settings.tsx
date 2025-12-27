@@ -269,15 +269,15 @@ export const Settings: React.FC = () => {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   return (
-    <div className="space-y-4 sm:space-y-8 animate-fade-in p-2 pb-20 max-w-2xl mx-auto">
+    <div className="space-y-4 sm:space-y-8 animate-fade-in p-2 max-w-2xl mx-auto">
       <div>
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">Settings</h1>
         <p className="text-gray-500 dark:text-gray-400">Customize your experience and manage your data.</p>
       </div>
 
       {/* Personal Profile */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-4 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4 sm:mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700">
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-3 sm:mb-6">
               <User size={20} className="text-primary" /> Personal Profile
           </h2>
           
@@ -305,7 +305,7 @@ export const Settings: React.FC = () => {
                               }
                           }}
                           placeholder="Enter your name"
-                          className="w-full bg-gray-50 dark:bg-slate-900/50 border-2 border-transparent focus:border-primary/50 focus:bg-white dark:focus:bg-slate-900 rounded-2xl px-5 py-3 text-gray-900 dark:text-white font-bold transition-all outline-none"
+                          className="w-full bg-gray-50 dark:bg-slate-900/50 border-2 border-transparent focus:border-primary/50 focus:bg-white dark:focus:bg-slate-900 rounded-xl sm:rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 text-sm sm:text-base text-gray-900 dark:text-white font-bold transition-all outline-none"
                       />
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 dark:text-gray-600 group-focus-within:text-primary transition-colors">
                            <User size={18} />
@@ -351,8 +351,8 @@ export const Settings: React.FC = () => {
        </div>
 
        {/* Study Goals */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-4 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4 sm:mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700">
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-3 sm:mb-6">
               <Target size={20} className="text-primary" /> Study Goals
           </h2>
            
@@ -388,8 +388,8 @@ export const Settings: React.FC = () => {
        </div>
 
       {/* Appearance */}
-      <div className="bg-white dark:bg-slate-800 rounded-3xl p-4 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4 sm:mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700">
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-3 sm:mb-6">
           </h2>
           
           <div className="space-y-6">
@@ -415,29 +415,29 @@ export const Settings: React.FC = () => {
                       <p className="text-[10px] sm:text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-2">
                           <Sun size={14} /> Light Premium
                       </p>
-                      <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2">
+                      <div className="flex overflow-x-auto pb-4 gap-3 sm:flex-col sm:pb-0 sm:gap-2 custom-scrollbar scroll-smooth snap-x">
                           {[
-                              { id: 'light', label: 'Default Light', color: 'bg-white' },
-                              { id: 'light-sakura', label: 'Sakura Petals', color: 'bg-rose-100' },
-                              { id: 'light-ocean', label: 'Deep Oceanic', color: 'bg-blue-100' },
-                              { id: 'light-forest', label: 'Magic Forest', color: 'bg-emerald-100' },
-                              { id: 'light-lilac', label: 'Lilac Bloom', color: 'bg-purple-100 shadow-[0_0_10px_rgba(168,85,247,0.2)]' },
+                              { id: 'light', label: 'Default', color: 'bg-white' },
+                              { id: 'light-sakura', label: 'Sakura', color: 'bg-rose-100' },
+                              { id: 'light-ocean', label: 'Oceanic', color: 'bg-blue-100' },
+                              { id: 'light-forest', label: 'Forest', color: 'bg-emerald-100' },
+                              { id: 'light-lilac', label: 'Lilac', color: 'bg-purple-100 shadow-[0_0_10px_rgba(168,85,247,0.2)]' },
                           ].map((t) => (
                               <button
                                 key={t.id}
                                 onClick={() => setTheme(t.id as any)}
                                 className={clsx(
-                                    "flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition-all border-2",
+                                    "relative flex-shrink-0 snap-center flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-2 sm:gap-0 w-20 h-20 sm:w-auto sm:h-auto p-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-xl text-[10px] sm:text-sm font-bold transition-all border-2",
                                     theme === t.id 
-                                        ? "border-primary bg-primary/5 text-primary" 
+                                        ? "border-primary bg-primary/5 text-primary shadow-lg shadow-primary/10 scale-105 sm:scale-100" 
                                         : "border-transparent bg-gray-50 dark:bg-slate-900/30 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-900/50"
                                 )}
                               >
-                                  <span className="flex items-center gap-2.5 sm:gap-3">
-                                      <div className={clsx("w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-gray-200 shadow-sm", t.color)} />
-                                      {t.label}
+                                  <span className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+                                      <div className={clsx("w-6 h-6 sm:w-4 sm:h-4 rounded-full border border-gray-200 shadow-sm", t.color)} />
+                                      <span className="truncate max-w-[60px] sm:max-w-none">{t.label}</span>
                                   </span>
-                                  {theme === t.id && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary animate-pulse" />}
+                                  {theme === t.id && <div className="absolute top-1 right-1 sm:static w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary animate-pulse" />}
                               </button>
                           ))}
                       </div>
@@ -448,29 +448,29 @@ export const Settings: React.FC = () => {
                       <p className="text-[10px] sm:text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-2">
                           <Moon size={14} /> Dark Premium
                       </p>
-                      <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2">
+                      <div className="flex overflow-x-auto pb-4 gap-3 sm:flex-col sm:pb-0 sm:gap-2 custom-scrollbar scroll-smooth snap-x">
                           {[
-                              { id: 'dark', label: 'Default Dark', color: 'bg-slate-800' },
-                              { id: 'dark-violet', label: 'Electric Violet', color: 'bg-[#6F00FF] shadow-[0_0_15px_rgba(111,0,255,0.4)]' },
-                              { id: 'dark-aurora', label: 'Midnight Aurora', color: 'bg-teal-900 shadow-[0_0_10px_rgba(45,212,191,0.2)]' },
-                              { id: 'dark-galaxy', label: 'Galaxy Stars', color: 'bg-indigo-950 shadow-[0_0_10px_rgba(129,140,248,0.3)]' },
-                              { id: 'dark-amethyst', label: 'Royal Amethyst', color: 'bg-purple-900 shadow-[0_0_15px_rgba(168,85,247,0.4)]' },
+                              { id: 'dark', label: 'Default', color: 'bg-slate-800' },
+                              { id: 'dark-violet', label: 'Violet', color: 'bg-[#6F00FF] shadow-[0_0_15px_rgba(111,0,255,0.4)]' },
+                              { id: 'dark-aurora', label: 'Aurora', color: 'bg-teal-900 shadow-[0_0_10px_rgba(45,212,191,0.2)]' },
+                              { id: 'dark-galaxy', label: 'Galaxy', color: 'bg-indigo-950 shadow-[0_0_10px_rgba(129,140,248,0.3)]' },
+                              { id: 'dark-amethyst', label: 'Amethyst', color: 'bg-purple-900 shadow-[0_0_15px_rgba(168,85,247,0.4)]' },
                           ].map((t) => (
                               <button
                                 key={t.id}
                                 onClick={() => setTheme(t.id as any)}
                                 className={clsx(
-                                    "flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition-all border-2",
+                                    "relative flex-shrink-0 snap-center flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-2 sm:gap-0 w-20 h-20 sm:w-auto sm:h-auto p-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-xl text-[10px] sm:text-sm font-bold transition-all border-2",
                                     theme === t.id 
-                                        ? "border-primary bg-primary/5 text-primary" 
+                                        ? "border-primary bg-primary/5 text-primary shadow-lg shadow-primary/10 scale-105 sm:scale-100" 
                                         : "border-transparent bg-gray-50 dark:bg-slate-900/30 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-900/50"
                                 )}
                               >
-                                  <span className="flex items-center gap-2.5 sm:gap-3">
-                                      <div className={clsx("w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-white/10 shadow-sm", t.color)} />
-                                      {t.label}
+                                  <span className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+                                      <div className={clsx("w-6 h-6 sm:w-4 sm:h-4 rounded-full border border-white/10 shadow-sm", t.color)} />
+                                      <span className="truncate max-w-[60px] sm:max-w-none">{t.label}</span>
                                   </span>
-                                  {theme === t.id && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary animate-pulse" />}
+                                  {theme === t.id && <div className="absolute top-1 right-1 sm:static w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary animate-pulse" />}
                               </button>
                           ))}
                       </div>
@@ -492,7 +492,7 @@ export const Settings: React.FC = () => {
                           key={t.id}
                           onClick={() => setTheme(t.id as any)}
                           className={clsx(
-                              "relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all group",
+                              "relative flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl sm:rounded-2xl border-2 transition-all group",
                               theme === t.id 
                                   ? "bg-white dark:bg-slate-800 border-primary shadow-lg ring-4 ring-primary/10" 
                                   : "bg-gray-50/50 dark:bg-slate-900/50 border-transparent hover:border-gray-200 dark:hover:border-slate-700"
@@ -514,8 +514,8 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Data Management */}
-       <div className="bg-white dark:bg-slate-800 rounded-3xl p-4 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700 relative overflow-hidden">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+       <div className="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700 relative overflow-hidden">
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
               <Download size={20} className="text-primary" /> Data Management
           </h2>
 
@@ -661,10 +661,10 @@ export const Settings: React.FC = () => {
               <button 
                 onClick={handleExportData}
                 disabled={status.type === 'loading'}
-                className="flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-6 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-3xl hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all text-gray-700 dark:text-gray-300 font-bold group disabled:opacity-50"
+                className="flex items-center justify-center gap-2 sm:gap-3 p-2.5 sm:p-6 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl sm:rounded-3xl hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all text-gray-700 dark:text-gray-300 font-bold group disabled:opacity-50"
               >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all group-hover:rotate-12">
-                    <Download size={20} />
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all group-hover:rotate-12">
+                    <Download size={16} className="sm:w-5 sm:h-5" />
                   </div>
                   <div className="text-left">
                       <p className="text-sm sm:text-base text-gray-900 dark:text-white">Local Backup</p>
@@ -673,12 +673,12 @@ export const Settings: React.FC = () => {
               </button>
               <label 
                 className={clsx(
-                    "flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-6 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-3xl hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all text-gray-700 dark:text-gray-300 font-bold cursor-pointer group",
+                    "flex items-center justify-center gap-2 sm:gap-3 p-2.5 sm:p-6 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl sm:rounded-3xl hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all text-gray-700 dark:text-gray-300 font-bold cursor-pointer group",
                     status.type === 'loading' && "opacity-50 pointer-events-none"
                 )}
               >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all group-hover:-rotate-12">
-                    <Upload size={20} />
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gray-100 dark:bg-slate-700 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all group-hover:-rotate-12">
+                    <Upload size={16} className="sm:w-5 sm:h-5" />
                   </div>
                   <div className="text-left">
                       <p className="text-sm sm:text-base text-gray-900 dark:text-white">Local Restore</p>
@@ -733,10 +733,10 @@ export const Settings: React.FC = () => {
                               </button>
                               <button
                                 onClick={() => setShowLogoutConfirm(true)}
-                                className="p-3 bg-white dark:bg-slate-900 text-slate-400 hover:text-red-500 rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
+                                className="p-2 sm:p-3 bg-white dark:bg-slate-900 text-slate-400 hover:text-red-500 rounded-lg sm:rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
                                 title="Sign Out"
                               >
-                                  <LogOut size={20} />
+                                  <LogOut size={16} className="sm:w-5 sm:h-5" />
                               </button>
                           </div>
                       ) : (
@@ -754,9 +754,9 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Danger Zone */}
-       <div className="bg-red-50/50 dark:bg-red-900/10 rounded-3xl p-4 sm:p-6 border border-red-100 dark:border-red-900/30">
-          <h2 className="text-lg font-bold text-red-600 dark:text-red-400 flex items-center gap-2 mb-2">
-              <AlertCircle size={20} /> Danger Zone
+       <div className="bg-red-50/50 dark:bg-red-900/10 rounded-2xl sm:rounded-3xl p-3 sm:p-6 border border-red-100 dark:border-red-900/30">
+          <h2 className="text-base sm:text-lg font-bold text-red-600 dark:text-red-400 flex items-center gap-2 mb-2">
+              <AlertCircle size={18} className="sm:w-5 sm:h-5" /> Danger Zone
           </h2>
           
           {!showResetConfirm ? (

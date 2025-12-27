@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Timer, RefreshCw, ChevronLeft, Zap, CheckCircle, XCircle } from 'lucide-react';
 import { dictionaryData } from '../../data/english/dictionary';
@@ -155,7 +156,7 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex flex-col items-center justify-center min-h-[500px] p-8 text-center bg-gradient-to-b from-indigo-50/50 to-white dark:from-slate-900/50 dark:to-slate-950 rounded-[3rem] relative"
+                        className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] p-6 sm:p-8 text-center bg-gradient-to-b from-indigo-50/50 to-white dark:from-slate-900/50 dark:to-slate-950 rounded-[2rem] sm:rounded-[3rem] relative"
                     >
                         <button 
                           onClick={onBack}
@@ -167,10 +168,10 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                           Back
                         </button>
 
-                        <div className="w-24 h-24 bg-primary/10 rounded-[2rem] flex items-center justify-center text-primary mb-8 animate-bounce">
-                            <Zap size={48} fill="currentColor" />
+                        <div className="w-16 h-16 sm:w-24 sm:h-24 bg-primary/10 rounded-2xl sm:rounded-[2rem] flex items-center justify-center text-primary mb-6 sm:mb-8 animate-bounce">
+                            <Zap size={32} className="sm:w-12 sm:h-12" fill="currentColor" />
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4 tracking-tighter">Vocab Match</h2>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 sm:mb-4 tracking-tighter">Vocab Match</h2>
                         <p className="max-w-md text-slate-500 font-medium mb-12">
                             Level up your vocabulary! Match words in 50+ stages.
                             <span className="block mt-2 text-primary font-bold">Score 70% or higher to unlock the next stage!</span>
@@ -217,7 +218,7 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 h-[500px] overflow-y-auto no-scrollbar p-1">
+                        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 h-[60vh] sm:h-[500px] overflow-y-auto no-scrollbar p-1">
                             {Array.from({ length: totalStages }).map((_, i) => {
                                 const stageNum = i + 1;
                                 const isLocked = stageNum > unlockedStages;
@@ -262,7 +263,7 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="flex flex-col items-center justify-center min-h-[500px] p-8 text-center bg-gradient-to-b from-emerald-50/50 to-white dark:from-slate-900/50 dark:to-slate-950 rounded-[3rem]"
+                        className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] p-6 sm:p-8 text-center bg-gradient-to-b from-emerald-50/50 to-white dark:from-slate-900/50 dark:to-slate-950 rounded-[2rem] sm:rounded-[3rem]"
                     >
                         <div className="w-24 h-24 bg-emerald-500 rounded-[2rem] flex items-center justify-center text-white mb-8 shadow-2xl shadow-emerald-500/40">
                             <Trophy size={48} />
@@ -304,7 +305,7 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="flex flex-col items-center justify-center min-h-[500px] p-8 text-center bg-gradient-to-b from-rose-50/50 to-white dark:from-slate-900/50 dark:to-slate-950 rounded-[3rem]"
+                        className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] p-6 sm:p-8 text-center bg-gradient-to-b from-rose-50/50 to-white dark:from-slate-900/50 dark:to-slate-950 rounded-[2rem] sm:rounded-[3rem]"
                     >
                         <div className="w-24 h-24 bg-rose-100 dark:bg-rose-900/30 rounded-[2rem] flex items-center justify-center text-rose-500 mb-8">
                             <XCircle size={48} fill="currentColor" className="text-rose-500" />
@@ -348,19 +349,19 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                             >
                                 <ChevronLeft size={20} /> Quit
                             </button>
-                            <div className="flex items-center gap-4">
-                                <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                            <div className="flex items-center gap-2 sm:gap-4">
+                                <div className="hidden sm:block px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
                                     Stage {selectedStage}
                                 </div>
-                                <div className="flex items-center gap-6">
-                                    <div className="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/20 px-4 py-2 rounded-full text-indigo-600 font-black">
-                                        <CheckCircle size={20} /> {score}/{WORDS_PER_STAGE}
+                                <div className="flex items-center gap-2 sm:gap-6">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 bg-indigo-50 dark:bg-indigo-900/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-indigo-600 font-black text-[10px] sm:text-base">
+                                        <CheckCircle size={14} className="sm:w-5 sm:h-5" /> {score}/{WORDS_PER_STAGE}
                                     </div>
-                                    <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-full text-slate-600 dark:text-slate-300 font-black">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-slate-600 dark:text-slate-300 font-black text-[10px] sm:text-base">
                                        {questionsAnswered + 1 > WORDS_PER_STAGE ? WORDS_PER_STAGE : questionsAnswered + 1}/{WORDS_PER_STAGE}
                                     </div>
-                                    <div className="flex items-center gap-2 bg-orange-50 dark:bg-orange-900/20 px-4 py-2 rounded-full text-orange-600 font-black">
-                                        <Timer size={20} className={timeLeft <= 5 ? "animate-pulse text-rose-500" : ""} /> {timeLeft}s
+                                    <div className="flex items-center gap-1.5 sm:gap-2 bg-orange-50 dark:bg-orange-900/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-orange-600 font-black text-[10px] sm:text-base">
+                                        <Timer size={14} className={clsx("sm:w-5 sm:h-5", timeLeft <= 5 ? "animate-pulse text-rose-500" : "")} /> {timeLeft}s
                                     </div>
                                 </div>
                             </div>
@@ -374,7 +375,7 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                             />
                         </div>
 
-                        <div className="glass-card rounded-[3rem] p-10 sm:p-16 border border-slate-100 dark:border-slate-800 shadow-xl relative overflow-hidden">
+                        <div className="glass-card rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 md:p-16 border border-slate-100 dark:border-slate-800 shadow-xl relative overflow-hidden">
                             <AnimatePresence>
                                 {feedback === 'correct' && (
                                     <motion.div 
@@ -403,25 +404,25 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
                             </AnimatePresence>
 
                             <div className="text-center space-y-4 mb-12">
-                                <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] font-bold">What is the meaning of</span>
-                                <h1 className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight">{currentQuestion?.word}</h1>
+                                <span className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold">What is the meaning of</span>
+                                <h1 className="text-3xl sm:text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">{currentQuestion?.word}</h1>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4">
                                 {currentQuestion?.options.map((option, i) => (
                                     <button
                                         key={i}
                                         onClick={() => handleAnswer(option)}
                                         disabled={!!feedback}
                                         className={clsx(
-                                            "p-6 rounded-[2rem] text-left text-sm font-semibold transition-all duration-300 border-2 active:scale-[0.98]",
+                                            "p-3 sm:p-6 rounded-xl sm:rounded-[2rem] text-left text-[10px] sm:text-sm font-semibold transition-all duration-300 border-2 active:scale-[0.98]",
                                             !feedback && "bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-primary hover:bg-white dark:hover:bg-slate-800",
                                             feedback === 'correct' && option === currentQuestion.definition && "bg-emerald-500 text-white border-emerald-500",
                                             feedback === 'wrong' && option === currentQuestion.definition && "bg-emerald-500 text-white border-emerald-500",
                                             feedback === 'wrong' && option !== currentQuestion.definition && "bg-rose-500/10 text-rose-500 border-rose-500/20 opacity-50"
                                         )}
                                     >
-                                        <span className="block text-[10px] font-black uppercase tracking-widest opacity-50 mb-2">Option {i + 1}</span>
+                                        <span className="block text-[8px] sm:text-[10px] font-black uppercase tracking-widest opacity-50 mb-1 sm:mb-2">Option {i + 1}</span>
                                         {option}
                                     </button>
                                 ))}
@@ -433,49 +434,54 @@ export const VocabMatchGame: React.FC<{ onBack: () => void }> = ({ onBack }) => 
     };
 
     return (
-        <div className="min-h-[600px] relative">
+        <div className="relative">
             {renderContent()}
 
-            <AnimatePresence>
-                {showQuitModal && (
-                    <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md"
-                    >
+            {createPortal(
+                <AnimatePresence>
+                    {showQuitModal && (
                         <motion.div 
-                            initial={{ scale: 0.9, y: 20 }}
-                            animate={{ scale: 1, y: 0 }}
-                            exit={{ scale: 0.9, y: 20 }}
-                            className="bg-white dark:bg-slate-900 rounded-[3rem] p-10 max-w-md w-full text-center shadow-2xl border border-slate-100 dark:border-slate-800"
+                            key="quit-modal-overlay"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-[9999] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md"
                         >
-                            <div className="w-20 h-20 bg-rose-100 dark:bg-rose-900/30 rounded-[2rem] flex items-center justify-center text-rose-500 mx-auto mb-6">
-                                <AlertTriangleIcon size={40} />
-                            </div>
-                            <h3 className="text-3xl font-black text-slate-800 dark:text-white mb-2">Abandon Match?</h3>
-                            <p className="text-slate-500 font-bold mb-8">Progress in this stage will be lost. Are you sure you want to quit?</p>
-                            <div className="flex flex-col gap-3">
-                                <button 
-                                    onClick={() => {
-                                        setShowQuitModal(false);
-                                        setScreen('stages');
-                                    }}
-                                    className="px-8 py-4 bg-rose-500 text-white rounded-full font-black shadow-lg hover:scale-105 transition-all"
-                                >
-                                    Yes, Quit Game
-                                </button>
-                                <button 
-                                    onClick={() => setShowQuitModal(false)}
-                                    className="px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full font-black hover:scale-105 transition-all"
-                                >
-                                    Stay Focused
-                                </button>
-                            </div>
+                            <motion.div 
+                                key="quit-modal-content"
+                                initial={{ scale: 0.9, y: 20 }}
+                                animate={{ scale: 1, y: 0 }}
+                                exit={{ scale: 0.9, y: 20 }}
+                                className="bg-white dark:bg-slate-900 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 max-w-md w-full text-center shadow-2xl border border-slate-100 dark:border-slate-800"
+                            >
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-rose-100 dark:bg-rose-900/30 rounded-2xl sm:rounded-[2rem] flex items-center justify-center text-rose-500 mx-auto mb-4 sm:mb-6">
+                                    <AlertTriangleIcon size={32} className="sm:w-10 sm:h-10" />
+                                </div>
+                                <h3 className="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white mb-2">Abandon Match?</h3>
+                                <p className="text-slate-500 font-bold mb-6 sm:mb-8 text-sm sm:text-base">Progress in this stage will be lost. Are you sure you want to quit?</p>
+                                <div className="flex flex-col gap-3">
+                                    <button 
+                                        onClick={() => {
+                                            setShowQuitModal(false);
+                                            setScreen('stages');
+                                        }}
+                                        className="px-8 py-3 sm:py-4 bg-rose-500 text-white rounded-full font-black shadow-lg hover:scale-105 transition-all text-sm sm:text-base"
+                                    >
+                                        Yes, Quit Game
+                                    </button>
+                                    <button 
+                                        onClick={() => setShowQuitModal(false)}
+                                        className="px-8 py-3 sm:py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full font-black hover:scale-105 transition-all text-sm sm:text-base"
+                                    >
+                                        Stay Focused
+                                    </button>
+                                </div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </div>
     );
 };
@@ -495,8 +501,8 @@ const ArrowRightIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
     </svg>
 );
 
-const AlertTriangleIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+const AlertTriangleIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
         <line x1="12" y1="9" x2="12" y2="13"></line>
         <line x1="12" y1="17" x2="12.01" y2="17"></line>

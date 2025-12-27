@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSubjectStore } from '../../store/useSubjectStore';
 import { SubjectCard } from '../imat/SubjectCard';
 import { TopicManager } from '../imat/TopicManager';
-import { GraduationCap, ArrowLeft, TrendingUp, FileText, BookOpen, ChevronRight, Library as LibraryIcon } from 'lucide-react';
+import { GraduationCap, ArrowLeft, TrendingUp, FileText, BookOpen, ChevronRight, Library as LibraryIcon, AlertTriangle } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import { PastPapersModal } from '../imat/PastPapersModal';
 import { mdcatPastPapers } from '../../data/pastPapers';
@@ -19,6 +20,7 @@ export const MdcatDashboard: React.FC = () => {
     const [completedPapers, setCompletedPapers] = useState(0);
     const [selectedPaper, setSelectedPaper] = useState<PastPaper | null>(null);
     const [view, setView] = useState<'dashboard' | 'library'>('dashboard');
+    const [showWarning, setShowWarning] = useState(true);
 
     const [resumePaper, setResumePaper] = useState<PastPaper | null>(null);
 
@@ -26,6 +28,9 @@ export const MdcatDashboard: React.FC = () => {
 
     useEffect(() => {
         loadSubjects();
+        // Warning timeout
+        const timer = setTimeout(() => setShowWarning(false), 5000);
+        return () => clearTimeout(timer);
     }, [loadSubjects]);
 
     useEffect(() => {
@@ -97,6 +102,29 @@ export const MdcatDashboard: React.FC = () => {
 
     return (
         <>
+            <AnimatePresence>
+                {showWarning && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -50, x: '-50%' }}
+                        animate={{ opacity: 1, y: 0, x: '-50%' }}
+                        exit={{ opacity: 0, y: -50, x: '-50%' }}
+                        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+                    >
+                         <div className="bg-amber-500/10 backdrop-blur-xl border border-amber-500/20 shadow-2xl rounded-2xl p-4 flex items-center gap-4 min-w-[320px] max-w-md mx-4">
+                            <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20">
+                                <AlertTriangle className="text-white w-6 h-6 animate-pulse" />
+                            </div>
+                            <div>
+                                <h3 className="text-yellow-950 dark:text-amber-200 font-bold text-sm">MDCAT Content Coming Soon</h3>
+                                <p className="text-yellow-900/80 dark:text-amber-200/60 text-xs mt-0.5 font-medium">
+                                    The data in this section is currently placeholder material.
+                                </p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <div className="page-transition space-y-8 pb-20">
                 {/* Header */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 md:gap-6">

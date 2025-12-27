@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { motion } from 'framer-motion';
 import { X, CheckCircle, ArrowRight } from 'lucide-react';
 import type { PastPaper } from '../../data/pastPapers';
 import { QuizResult } from './QuizResult';
@@ -116,46 +118,58 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
-    if (showResult) {
-        return <QuizResult paper={paper} answers={answers} onClose={onClose} onRetry={() => {
-            setIsSubmitted(false);
-            setShowResult(false);
-            setAnswers({});
-            setCurrentQuestionIndex(0);
-            setTimeLeft(paper.durationMinutes * 60);
-            localStorage.removeItem(`quiz_progress_${paper.id}`);
-        }} />;
-    }
 
-    return (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white dark:bg-slate-800 w-full max-w-4xl h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+
+    useEffect(() => {
+        document.body.classList.add('quiz-active');
+        return () => {
+            document.body.classList.remove('quiz-active');
+        };
+    }, []);
+
+    const quizContent = showResult ? (
+        <QuizResult 
+            paper={paper} 
+            answers={answers} 
+            onClose={onClose} 
+            onRetry={() => {
+                setIsSubmitted(false);
+                setShowResult(false);
+                setAnswers({});
+                setCurrentQuestionIndex(0);
+                setTimeLeft(paper.durationMinutes * 60);
+                localStorage.removeItem(`quiz_progress_${paper.id}`);
+            }} 
+        />
+    ) : (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+            <div className="bg-white dark:bg-slate-800 w-full max-w-4xl h-[100dvh] sm:h-[90vh] rounded-none sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">
                 {/* Header */}
-                <div className="p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between shrink-0">
-                    <div>
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{paper.title}</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Question {currentQuestionIndex + 1} of {questions.length}
+                <div className="p-3 sm:p-6 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between shrink-0">
+                    <div className="min-w-0 flex-1">
+                        <h2 className="text-sm sm:text-xl font-bold text-gray-900 dark:text-white truncate">{paper.title}</h2>
+                        <p className="text-[10px] sm:text-sm text-gray-500 dark:text-gray-400">
+                            Q{currentQuestionIndex + 1}/{questions.length}
                         </p>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <div className="text-xl font-mono font-bold text-primary bg-primary/10 px-3 py-1 rounded-lg">
+                    <div className="flex items-center gap-1.5 sm:gap-4 ml-1">
+                        <div className="text-base sm:text-xl font-mono font-bold text-primary bg-primary/10 px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-lg">
                             {formatTime(timeLeft)}
                         </div>
                         <button
                             onClick={handleSubmit}
-                            className="px-4 py-2 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-colors flex items-center gap-2 text-sm"
+                            className="px-2.5 sm:px-4 py-1.5 sm:py-2 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-colors flex items-center gap-1 sm:gap-2 text-[10px] sm:text-sm"
                         >
-                            <CheckCircle size={16} /> Finish
+                            <CheckCircle size={12} className="sm:w-4 sm:h-4" /> Finish
                         </button>
-                        <div className="w-px h-8 bg-gray-200 dark:bg-slate-700 mx-2" />
+                        <div className="w-px h-6 sm:h-8 bg-gray-200 dark:bg-slate-700 mx-1" />
                         <button 
                             onClick={handlePause}
-                            className="px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex items-center gap-2 text-sm"
+                            className="p-1.5 sm:px-4 sm:py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex items-center gap-2 text-sm"
+                            title="Pause & Exit"
                         >
                             <span className="hidden sm:inline">Pause & Exit</span>
-                            <span className="sm:hidden">Pause</span>
-                            <X size={18} />
+                            <X size={16} className="sm:w-[18px] sm:h-[18px]" />
                         </button>
                     </div>
                 </div>
@@ -169,9 +183,22 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
                 </div>
 
                 {/* Question Area */}
-                <div className="flex-1 overflow-y-auto p-8">
+                <motion.div 
+                    className="flex-1 overflow-y-auto p-3.5 sm:p-8"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.2}
+                    onDragEnd={(_: any, info: any) => {
+                        const swipeThreshold = 50;
+                        if (info.offset.x > swipeThreshold) {
+                            handlePrevious();
+                        } else if (info.offset.x < -swipeThreshold) {
+                            handleNext();
+                        }
+                    }}
+                >
                     <div className="max-w-3xl mx-auto">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 leading-relaxed">
+                        <h3 className="text-base sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-8 leading-relaxed">
                             {currentQuestion.text}
                         </h3>
 
@@ -183,7 +210,7 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
                                         key={index}
                                         onClick={() => handleAnswer(index)}
                                         className={`
-                                            w-full p-6 text-left rounded-2xl border-2 transition-all flex items-center gap-4 group
+                                            w-full p-3 sm:p-6 text-left rounded-xl sm:rounded-2xl border-2 transition-all flex items-center gap-3 sm:gap-4 group
                                             ${isSelected 
                                                 ? 'border-primary bg-primary/5' 
                                                 : 'border-gray-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-primary/50'
@@ -191,7 +218,7 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
                                         `}
                                     >
                                         <div className={`
-                                            w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-colors
+                                            w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center font-bold text-[10px] sm:text-sm shrink-0 transition-colors
                                             ${isSelected 
                                                 ? 'bg-primary border-primary text-white' 
                                                 : 'border-gray-300 dark:border-slate-600 text-gray-500 group-hover:border-primary/50'
@@ -199,7 +226,7 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
                                         `}>
                                             {String.fromCharCode(65 + index)}
                                         </div>
-                                        <span className={`text-lg ${isSelected ? 'text-primary font-medium' : 'text-gray-700 dark:text-gray-200'}`}>
+                                        <span className={`text-[13px] sm:text-lg ${isSelected ? 'text-primary font-medium' : 'text-gray-700 dark:text-gray-200'}`}>
                                             {option}
                                         </span>
                                     </button>
@@ -207,35 +234,39 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
                             })}
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Footer Navigation */}
-                <div className="p-6 border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 flex justify-between items-center shrink-0">
+                <div className="p-3 sm:p-6 border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50 flex justify-between items-center shrink-0 mb-[env(safe-area-inset-bottom)]">
                     <button
                         onClick={handlePrevious}
                         disabled={currentQuestionIndex === 0}
-                        className="px-6 py-3 rounded-xl font-medium text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+                        className="px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl font-bold text-xs sm:text-sm text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
                     >
                         Previous
                     </button>
 
-                    {currentQuestionIndex === questions.length - 1 ? (
-                        <button
-                            onClick={handleSubmit}
-                            className="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 shadow-lg shadow-primary/30 transition-all flex items-center gap-2"
-                        >
-                            Submit Paper <CheckCircle size={20} />
-                        </button>
-                    ) : (
-                        <button
-                            onClick={handleNext}
-                            className="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl font-bold hover:opacity-90 transition-all flex items-center gap-2"
-                        >
-                            Next Question <ArrowRight size={20} />
-                        </button>
-                    )}
+                    <div className="flex gap-2">
+                        {currentQuestionIndex === questions.length - 1 ? (
+                            <button
+                                onClick={handleSubmit}
+                                className="px-5 sm:px-8 py-2 sm:py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 shadow-lg shadow-primary/30 transition-all flex items-center gap-2 text-xs sm:text-sm"
+                            >
+                                Submit <span className="hidden sm:inline">Paper</span> <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleNext}
+                                className="px-5 sm:px-8 py-2 sm:py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl font-bold hover:opacity-90 transition-all flex items-center gap-2 text-xs sm:text-sm"
+                            >
+                                Next <span className="hidden sm:inline">Question</span> <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" />
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
     );
+
+    return createPortal(quizContent, document.body);
 };

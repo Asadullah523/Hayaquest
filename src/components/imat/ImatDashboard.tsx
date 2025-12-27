@@ -136,7 +136,7 @@ export const ImatDashboard: React.FC = () => {
 
     return (
         <>
-            <div className="page-transition space-y-8 pb-20">
+            <div className="page-transition space-y-4 md:space-y-8 pb-20">
                 {/* Header */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 md:gap-6">
                     <div className="space-y-1">
@@ -146,18 +146,18 @@ export const ImatDashboard: React.FC = () => {
                         >
                             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform md:w-4 md:h-4" /> Back to Dashboard
                         </NavLink>
-                        <h1 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white flex items-center gap-2 md:gap-3 tracking-tight">
-                            <span className="bg-primary/10 p-2 rounded-xl md:rounded-2xl text-primary"><GraduationCap size={24} className="md:w-10 md:h-10" /></span>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white flex items-center gap-2 md:gap-3 tracking-tight">
+                            <span className="bg-primary/10 p-1.5 md:p-2 rounded-xl md:rounded-2xl text-primary"><GraduationCap size={20} className="md:w-10 md:h-10" /></span>
                             IMAT Prep
                         </h1>
-                        <p className="text-xs md:text-lg text-slate-500 dark:text-slate-400 max-w-2xl font-medium">
+                        <p className="text-[10px] sm:text-xs md:text-lg text-slate-500 dark:text-slate-400 max-w-2xl font-medium" style={{ fontSize: 'clamp(0.625rem, 2vw, 1rem)' }}>
                             Master subjects and track your progress.
                         </p>
                     </div>
 
                     {/* Overall Progress Widget */}
-                    <div className="glass-card px-4 md:px-6 py-3 md:py-4 rounded-2xl md:rounded-[2rem] flex items-center justify-between md:justify-start gap-4 md:gap-5 min-w-0 md:min-w-[280px]">
-                        <div className="relative w-12 h-12 md:w-20 md:h-20 flex-shrink-0 flex items-center justify-center">
+                    <div className="glass-card px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl md:rounded-[2rem] flex flex-row items-center justify-between md:justify-start gap-3 md:gap-5 min-w-0 md:min-w-[280px]">
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-20 md:h-20 flex-shrink-0 flex items-center justify-center">
                             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 64 64">
                                 <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-slate-100 dark:text-slate-800" />
                                 <circle 
@@ -170,12 +170,12 @@ export const ImatDashboard: React.FC = () => {
                                     strokeLinecap="round"
                                 />
                             </svg>
-                            <span className="absolute inset-0 flex items-center justify-center text-[10px] md:text-base font-black text-slate-900 dark:text-white">{overallStats.percentage}%</span>
+                            <span className="absolute inset-0 flex items-center justify-center text-[9px] sm:text-[10px] md:text-base font-black text-slate-900 dark:text-white">{overallStats.percentage}%</span>
                         </div>
                         <div className="min-w-0">
                             <p className="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mb-0.5 md:mb-1 truncate">Overall Mastery</p>
-                            <div className="flex items-center gap-1.5 md:gap-2 text-primary font-bold text-xs md:text-base">
-                                <TrendingUp size={14} className="flex-shrink-0 md:w-4 md:h-4" />
+                            <div className="flex items-center gap-1.5 md:gap-2 text-primary font-bold text-[10px] sm:text-xs md:text-base">
+                                <TrendingUp size={12} className="flex-shrink-0 md:w-4 md:h-4 text-[10px] sm:text-xs" />
                                 <span className="truncate">{overallStats.completed} / {overallStats.total} Topics</span>
                             </div>
                         </div>
@@ -209,7 +209,7 @@ export const ImatDashboard: React.FC = () => {
 
                 {/* Main Subjects Grid - side-by-side on mobile */}
                 <div>
-                     <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
+                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
                         {imatSubjects.map(subject => (
                             <SubjectCard 
                                 key={subject.id} 
@@ -231,7 +231,7 @@ export const ImatDashboard: React.FC = () => {
                         {/* 1. Library Card */}
                         <div 
                             onClick={() => setView('library')}
-                            className="group relative glass-card p-6 rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[220px]"
+                            className="group relative glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[120px] max-h-[120px] md:min-h-[220px] md:max-h-none"
                         >
                             <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-5 blur-2xl transition-all group-hover:opacity-10 group-hover:scale-110 bg-purple-600" />
                             
@@ -245,8 +245,8 @@ export const ImatDashboard: React.FC = () => {
                             </div>
                             
                             <div className="z-10 relative">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Study Library</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                                <h3 className="text-base md:text-xl font-bold text-gray-900 dark:text-white mb-0.5 md:mb-1">Study Library</h3>
+                                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-2 md:mb-4 line-clamp-1 md:line-clamp-2" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}>
                                     Textbooks, notes, and curated materials.
                                 </p>
                             </div>
@@ -259,7 +259,7 @@ export const ImatDashboard: React.FC = () => {
                         {/* 2. Exam Simulator Card (Official) */}
                         <div 
                             onClick={() => setShowOfficialModal(true)}
-                            className="group relative glass-card p-6 rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[220px]"
+                            className="group relative glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[120px] max-h-[120px] md:min-h-[220px] md:max-h-none"
                         >
                             <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-5 blur-2xl transition-all group-hover:opacity-10 group-hover:scale-110 bg-blue-600" />
                             
@@ -273,8 +273,8 @@ export const ImatDashboard: React.FC = () => {
                             </div>
                             
                             <div className="z-10 relative">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Official Past Papers</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                                <h3 className="text-base md:text-xl font-bold text-gray-900 dark:text-white mb-0.5 md:mb-1">Official Past Papers</h3>
+                                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-2 md:mb-4 line-clamp-1 md:line-clamp-2" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}>
                                     Solve real IMAT papers from 2011 to 2024.
                                 </p>
                                 <div className="flex items-center gap-2 mb-4">
@@ -296,7 +296,7 @@ export const ImatDashboard: React.FC = () => {
                         {/* 3. Subject-wise Practice Card */}
                         <div 
                             onClick={() => setShowPracticeModal(true)}
-                            className="group relative glass-card p-6 rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[220px]"
+                            className="group relative glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl cursor-pointer hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col min-h-[120px] max-h-[120px] md:min-h-[220px] md:max-h-none"
                         >
                             <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-5 blur-2xl transition-all group-hover:opacity-10 group-hover:scale-110 bg-green-600" />
                             
@@ -310,8 +310,8 @@ export const ImatDashboard: React.FC = () => {
                             </div>
                             
                             <div className="z-10 relative">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Subject-wise Practice</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                                <h3 className="text-base md:text-xl font-bold text-gray-900 dark:text-white mb-0.5 md:mb-1">Subject-wise Practice</h3>
+                                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-2 md:mb-4 line-clamp-1 md:line-clamp-2" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}>
                                     Master Bio, Chem, Math & Physics with high-yield MCQs.
                                 </p>
                                 <div className="flex items-center gap-2 mb-4">

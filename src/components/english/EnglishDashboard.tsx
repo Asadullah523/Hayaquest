@@ -111,41 +111,41 @@ export const EnglishDashboard: React.FC = () => {
           className="space-y-6 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
+          <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 md:gap-6">
             <div>
               <div className="flex items-center gap-2 mb-1 md:mb-2">
-                  <span className="px-2 md:px-3 py-0.5 md:py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-1">
+                  <span className="px-2 md:px-3 py-0.5 md:py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-[9px] sm:text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-1">
                       <Crown size={10} className="md:w-3 md:h-3" /> Premium Edition
                   </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400">English</span> Quest
               </h1>
-              <p className="text-sm md:text-lg text-slate-500 dark:text-slate-400 mt-1 md:mt-2 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-lg text-slate-500 dark:text-slate-400 mt-1 md:mt-2 max-w-2xl leading-relaxed">
                 Your journey to fluency. Master vocabulary, reading, and grammar.
               </p>
             </div>
             
-            <div className="flex gap-3 md:gap-4">
-                 <div className="bg-white dark:bg-slate-800 p-3 md:p-4 rounded-2xl md:rounded-[1.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 min-w-[100px] md:min-w-[120px] relative overflow-hidden group">
+            <div className="flex gap-2 sm:gap-3 md:gap-4">
+                 <div className="bg-white dark:bg-slate-800 p-2.5 sm:p-3 md:p-4 rounded-2xl md:rounded-[1.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 min-w-[90px] sm:min-w-[100px] md:min-w-[120px] relative overflow-hidden group">
                      <div className="absolute top-0 right-0 w-12 md:h-16 h-12 md:w-16 bg-orange-500/10 rounded-bl-full -mr-2 -mt-2 md:-mr-4 md:-mt-4 group-hover:scale-150 transition-transform duration-500"></div>
                      <div className="relative z-10">
                          <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 md:mb-1 flex items-center gap-1">
                              <TrendingUp size={10} className="text-orange-500 md:w-3 md:h-3" />
                              Streak
                          </p>
-                         <p className="text-xl md:text-3xl font-black text-slate-800 dark:text-white">{dailyStreak} <span className="text-base md:text-xl">🔥</span></p>
+                         <p className="text-lg sm:text-xl md:text-3xl font-black text-slate-800 dark:text-white">{dailyStreak} <span className="text-sm sm:text-base md:text-xl">🔥</span></p>
                      </div>
                  </div>
                  
-                 <div className="bg-white dark:bg-slate-800 p-3 md:p-4 rounded-2xl md:rounded-[1.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 min-w-[100px] md:min-w-[120px] relative overflow-hidden group">
+                 <div className="bg-white dark:bg-slate-800 p-2.5 sm:p-3 md:p-4 rounded-2xl md:rounded-[1.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 min-w-[90px] sm:min-w-[100px] md:min-w-[120px] relative overflow-hidden group">
                      <div className="absolute top-0 right-0 w-12 md:h-16 h-12 md:w-16 bg-indigo-500/10 rounded-bl-full -mr-2 -mt-2 md:-mr-4 md:-mt-4 group-hover:scale-150 transition-transform duration-500"></div>
                      <div className="relative z-10">
                          <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 md:mb-1 flex items-center gap-1">
                              <Sparkles size={10} className="text-indigo-500 md:w-3 md:h-3" />
                              Words
                          </p>
-                         <p className="text-xl md:text-3xl font-black text-slate-800 dark:text-white">{wordsLearned.length}</p>
+                         <p className="text-lg sm:text-xl md:text-3xl font-black text-slate-800 dark:text-white">{wordsLearned.length}</p>
                      </div>
                  </div>
             </div>
@@ -158,28 +158,28 @@ export const EnglishDashboard: React.FC = () => {
               const props = (section as any).isGame ? { onClick: () => setShowGame(true) } : { to: `/english/${section.id}` };
               
               return (
-                <Wrapper
-                  key={section.id}
-                  {...(props as any)}
-                  className="group relative overflow-hidden bg-white dark:bg-slate-800 p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-indigo-500/20 dark:hover:shadow-none transition-all duration-500 md:hover:-translate-y-1 block cursor-pointer"
-                >
-                  {/* Background Gradient Blob */}
-                  <div className={`absolute top-0 right-0 w-32 md:w-64 h-32 md:h-64 bg-gradient-to-br ${section.gradient} opacity-5 rounded-full blur-2xl md:blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:opacity-10 transition-opacity duration-500`} />
-                  
-                  <div className="relative z-10">
-                      <div className={`w-10 h-10 md:w-12 md:h-12 mb-3 md:mb-4 rounded-lg md:rounded-xl bg-gradient-to-br ${section.gradient} flex items-center justify-center shadow-lg shadow-${section.color.split('-')[1]}-500/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
-                        {React.createElement(section.icon, {
-                          size: 20,
-                          className: "text-white"
-                        })}
-                      </div>
-    
-                      <h3 className="text-lg md:text-2xl font-bold text-slate-800 dark:text-white mb-1 md:mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-violet-600 transition-all truncate">
-                        {section.title}
-                      </h3>
-                      <p className="text-[10px] md:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-sm line-clamp-2 md:line-clamp-none">
-                        {section.description}
-                      </p>
+                  <Wrapper
+                   key={section.id}
+                   {...(props as any)}
+                   className="group relative overflow-hidden bg-white dark:bg-slate-800 p-3 sm:p-4 md:p-6 rounded-[1.25rem] sm:rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-indigo-500/20 dark:hover:shadow-none transition-all duration-500 md:hover:-translate-y-1 block cursor-pointer"
+                 >
+                   {/* Background Gradient Blob */}
+                   <div className={`absolute top-0 right-0 w-32 md:w-64 h-32 md:h-64 bg-gradient-to-br ${section.gradient} opacity-5 rounded-full blur-2xl md:blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:opacity-10 transition-opacity duration-500`} />
+                   
+                   <div className="relative z-10">
+                       <div className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-2 sm:mb-3 md:mb-4 rounded-lg md:rounded-xl bg-gradient-to-br ${section.gradient} flex items-center justify-center shadow-lg shadow-${section.color.split('-')[1]}-500/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
+                         {React.createElement(section.icon, {
+                           size: 18,
+                           className: "text-white sm:w-5 sm:h-5"
+                         })}
+                       </div>
+     
+                       <h3 className="text-base sm:text-lg md:text-2xl font-bold text-slate-800 dark:text-white mb-0.5 sm:mb-1 md:mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-violet-600 transition-all truncate">
+                         {section.title}
+                       </h3>
+                       <p className="text-[10px] sm:text-xs md:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-sm line-clamp-2 md:line-clamp-none">
+                         {section.description}
+                       </p>
                       
                       <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 opacity-0 md:group-hover:opacity-100 transition-all duration-500 transform translate-x-4 group-hover:translate-x-0">
                           <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">

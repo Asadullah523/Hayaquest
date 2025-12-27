@@ -191,11 +191,11 @@ export const VocabularyBuilder: React.FC = () => {
                             <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
                         </Link>
                         <div className="min-w-0">
-                            <h1 className="text-2xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-1 md:mb-2 truncate">
+                            <h1 className="text-xl sm:text-2xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-0.5 sm:mb-1 md:mb-2 truncate">
                                 Vocabulary <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 italic">Builder</span>
                             </h1>
-                            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-bold text-[11px] md:text-sm">
-                                <Sparkles size={14} className="text-indigo-400 animate-pulse flex-shrink-0" />
+                            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-bold text-[10px] sm:text-xs md:text-sm">
+                                <Sparkles size={12} className="text-indigo-400 animate-pulse flex-shrink-0 md:w-[14px] md:h-[14px]" />
                                 <span className="truncate">Level up your academic lexicon.</span>
                             </div>
                         </div>
@@ -267,16 +267,16 @@ export const VocabularyBuilder: React.FC = () => {
                                         
                                         {/* FRONT SIDE */}
                                         <div 
-                                            className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-3xl rounded-[2.5rem] md:rounded-[3.5rem] border border-white/40 dark:border-slate-800/50 shadow-2xl backface-hidden flex flex-col items-center justify-center p-6 md:p-12 text-center group z-10"
+                                            className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-3xl rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] border border-white/40 dark:border-slate-800/50 shadow-2xl backface-hidden flex flex-col items-center justify-center p-5 sm:p-6 md:p-12 text-center group z-10"
                                             style={{ backfaceVisibility: 'hidden' }}
                                         >
                                             <div className="absolute top-6 left-6 md:top-12 md:left-12 opacity-20">
                                                 <Brain size={32} className="md:w-12 md:h-12 text-indigo-600 dark:text-indigo-400" />
                                             </div>
 
-                                            <div className="relative mb-6 md:mb-8 w-full flex-1 flex items-center justify-center">
+                                            <div className="relative mb-4 sm:mb-6 md:mb-8 w-full flex-1 flex items-center justify-center">
                                                 <div className="absolute inset-0 bg-indigo-500/20 blur-3xl rounded-full scale-150 transform -translate-y-4" />
-                                                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-none relative z-10 pointer-events-none break-words px-2">
+                                                <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-none relative z-10 pointer-events-none break-words px-2">
                                                     {currentWord.word}
                                                 </h2>
                                             </div>
@@ -301,7 +301,7 @@ export const VocabularyBuilder: React.FC = () => {
 
                                         {/* BACK SIDE */}
                                         <div 
-                                            className="absolute inset-0 bg-slate-950 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-800 shadow-2xl flex flex-col justify-between p-6 md:p-12 overflow-hidden text-left z-20"
+                                            className="absolute inset-0 bg-slate-950 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-800 shadow-2xl flex flex-col justify-between p-5 sm:p-6 md:p-12 overflow-hidden text-left z-20"
                                             style={{ 
                                                 transform: 'rotateY(180deg)',
                                                 backfaceVisibility: 'hidden'
@@ -365,7 +365,7 @@ export const VocabularyBuilder: React.FC = () => {
                                 </div>
                             </button>
 
-                            <button onClick={(e) => handleMarkAsLearned(e)} className="flex-1 max-w-[200px] px-6 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl md:rounded-[2.5rem] font-black uppercase tracking-[0.1em] text-[10px] md:text-xs shadow-2xl hover:scale-105 transition-all flex justify-center items-center">
+                            <button onClick={(e) => handleMarkAsLearned(e)} className="flex-1 max-w-[200px] px-4 py-3 sm:px-6 sm:py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl md:rounded-[2.5rem] font-black uppercase tracking-[0.1em] text-[10px] md:text-xs shadow-2xl hover:scale-105 transition-all flex justify-center items-center">
                                 <span className="flex items-center gap-2 md:gap-3 whitespace-nowrap"><Brain size={16} /> Master Word</span>
                             </button>
 

@@ -127,7 +127,7 @@ export const Stories: React.FC = () => {
                         <ArrowLeft className="text-slate-500 dark:text-slate-400" />
                     </Link>
                 )}
-                <h1 className={`text-xl md:text-3xl font-black tracking-tight ${sepiaMode ? 'text-amber-900' : 'text-slate-800 dark:text-white'} ${selectedStory ? 'hidden md:block' : 'block'}`}>
+                <h1 className={`text-lg md:text-3xl font-black tracking-tight ${sepiaMode ? 'text-amber-900' : 'text-slate-800 dark:text-white'} ${selectedStory ? 'hidden md:block' : 'block'}`}>
                     {selectedStory ? (isZenMode ? '' : selectedStory.title) : 'Story Library'}
                 </h1>
                 {/* Mobile Title for Reader */}
@@ -194,7 +194,7 @@ export const Stories: React.FC = () => {
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`px-4 py-3 rounded-xl font-bold whitespace-nowrap transition-all ${
+                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-xl font-bold whitespace-nowrap transition-all text-xs sm:text-sm ${
                                     selectedCategory === cat
                                         ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
                                         : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
@@ -267,7 +267,7 @@ export const Stories: React.FC = () => {
                                 </div>
                             </div>
                             
-                            <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
+                            <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
                                 {story.title}
                             </h3>
                             <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4">
@@ -301,7 +301,7 @@ export const Stories: React.FC = () => {
                         <span className={`text-xs font-bold uppercase tracking-widest mb-4 block ${sepiaMode ? 'text-amber-700' : 'text-indigo-500'}`}>
                             {selectedStory.category} • {selectedStory.author}
                         </span>
-                        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-6 font-serif">
+                        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 sm:mb-6 font-serif">
                             {selectedStory.title}
                         </h1>
                         <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold ${
@@ -326,8 +326,8 @@ export const Stories: React.FC = () => {
                                 : 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100'
                             }`}
                         >
-                            <HelpCircle size={20} />
-                            {showQuestions ? 'Hide Questions' : 'Test Comprehension'}
+                            <HelpCircle size={18} className="sm:w-5 sm:h-5" />
+                            <span className="text-sm sm:text-base">{showQuestions ? 'Hide Questions' : 'Test Comprehension'}</span>
                         </button>
                         
                         <button

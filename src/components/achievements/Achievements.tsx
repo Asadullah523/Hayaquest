@@ -155,7 +155,7 @@ export const Achievements: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-8 animate-fade-in pb-20 max-w-7xl mx-auto px-4">
+    <div className="space-y-4 sm:space-y-8 animate-fade-in max-w-7xl mx-auto px-4">
       {/* Header with Glass Hero Section - Reduced Size */}
       <div className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-3 sm:p-6 md:p-10 text-center shadow-2xl">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">

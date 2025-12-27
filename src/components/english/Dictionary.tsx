@@ -89,10 +89,10 @@ export const Dictionary: React.FC = () => {
           <ArrowLeft className="text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
         </Link>
         <div>
-           <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 tracking-tight">
+           <h1 className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 tracking-tight">
              Dictionary
            </h1>
-           <p className="text-slate-500 dark:text-slate-400 font-medium">Power up your vocabulary instantly.</p>
+           <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">Power up your vocabulary instantly.</p>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ export const Dictionary: React.FC = () => {
                }}
                onFocus={() => setShowSuggestions(true)}
                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-               className="w-full px-4 py-4 bg-transparent focus:outline-none text-xl font-bold text-slate-800 dark:text-white placeholder-slate-300 dark:placeholder-slate-600"
+               className="w-full px-4 py-3 sm:py-4 bg-transparent focus:outline-none text-lg sm:text-xl font-bold text-slate-800 dark:text-white placeholder-slate-300 dark:placeholder-slate-600"
              />
              {isFetchingSuggestions && (
                <div className="mr-4">
@@ -121,9 +121,9 @@ export const Dictionary: React.FC = () => {
              <button 
                 type="submit"
                 disabled={isLoading}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-[1.5rem] font-bold transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-indigo-600/20"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-[1rem] sm:rounded-[1.5rem] font-bold transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-indigo-600/20 text-sm sm:text-base"
              >
-                {isLoading ? <Loader2 className="animate-spin" size={24} /> : 'Search'}
+                {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Search'}
              </button>
         </div>
         
@@ -155,53 +155,53 @@ export const Dictionary: React.FC = () => {
                  <p className="text-red-500 font-bold text-lg">{error}</p>
              </div>
          ) : currentWord ? (
-             <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
+             <div className="bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
                   {/* Decorative Gradient Background */}
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                  <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
-                  <div className="p-8 md:p-12 relative z-10">
+                  <div className="p-6 sm:p-8 md:p-12 relative z-10">
                       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12">
                          <div>
-                            <div className="flex items-baseline gap-4 mb-2">
-                                <h2 className="text-5xl md:text-6xl font-black text-slate-800 dark:text-white tracking-tighter capitalize">
+                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 mb-3 sm:mb-2">
+                                <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-800 dark:text-white tracking-tighter capitalize leading-tight">
                                     {currentWord.word}
                                 </h2>
-                                <span className="text-2xl text-slate-400 font-serif italic">{currentWord.phonetic}</span>
+                                <span className="text-lg sm:text-2xl text-slate-400 font-serif italic">{currentWord.phonetic}</span>
                             </div>
                             <button 
                               onClick={() => handlePlayAudio(currentWord.audioUrl)}
-                              className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold hover:text-indigo-700 transition-colors mt-2"
+                              className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold hover:text-indigo-700 transition-colors mt-1 sm:mt-2 text-sm sm:text-base"
                             >
-                                <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
-                                   <Volume2 size={20} />
+                                <div className="p-1.5 sm:p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
+                                   <Volume2 size={16} className="sm:w-5 sm:h-5" />
                                 </div>
                                 Listen to pronunciation
                             </button>
                          </div>
 
-                         <div className="flex gap-3">
+                         <div className="flex gap-2 sm:gap-3 mt-4 md:mt-0">
                             <button
                               onClick={() => toggleFavoriteWord(currentWord.id)}
-                              className={`flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-bold transition-all transform hover:scale-105 active:scale-95 ${
+                              className={`flex items-center justify-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl font-bold transition-all transform hover:scale-105 active:scale-95 ${
                                   isFavorite
                                   ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400'
                                   : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-yellow-50'
                               }`}
                             >
-                              {isFavorite ? <Heart className="fill-current" size={20} /> : <Heart size={20} />}
+                              {isFavorite ? <Heart className="fill-current w-4 h-4 sm:w-5 sm:h-5" /> : <Heart className="w-4 h-4 sm:w-5 sm:h-5" />}
                             </button>
 
                             <button
                               onClick={() => markWordAsLearned(currentWord.id)}
                               disabled={wordsLearned.includes(currentWord.id)}
-                              className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all transform hover:scale-105 active:scale-95 ${
+                              className={`flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl font-bold transition-all transform hover:scale-105 active:scale-95 text-sm sm:text-base ${
                                   wordsLearned.includes(currentWord.id)
                                   ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 cursor-default'
                                   : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl'
                               }`}
                             >
-                              <CheckCircle size={20} />
-                              {wordsLearned.includes(currentWord.id) ? 'Mastered' : 'Mark as Mastered'}
+                              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                              {wordsLearned.includes(currentWord.id) ? 'Mastered' : 'Mark Mastered'}
                             </button>
                          </div>
                       </div>

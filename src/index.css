@@ -712,6 +712,18 @@
             text-size-adjust: 100%;
         }
     }
+
+    /* Quiz Active State */
+    body.quiz-active .mobile-nav-bar {
+        display: none !important;
+    }
+    
+    body.quiz-active {
+        overflow: hidden !important;
+        height: 100dvh !important;
+        position: fixed;
+        width: 100%;
+    }
 }
 
 @layer components {
