@@ -68,6 +68,7 @@ function App() {
             await syncService.restore();
           } catch (err) {
             console.error('Initial restore failed:', err);
+            // Non-critical failure, continue
           }
         }
 
@@ -75,9 +76,10 @@ function App() {
         window.addEventListener('focus', handleFocus);
       } catch (error) {
         console.error("Failed to bootstrap application:", error);
+      } finally {
+        // VITAL: Always set ready to true so we don't get stuck on white screen
+        setIsReady(true);
       }
-      
-      setIsReady(true);
     };
 
     bootstrap();
