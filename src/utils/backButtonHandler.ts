@@ -29,10 +29,10 @@ const getParentPath = (path: string) => {
 export const setupBackButtonHandler = (navigate: any, getCurrentPath: () => string) => {
   // Only set up on native platforms
   if (!Capacitor.isNativePlatform()) {
-    return;
+    return () => {};
   }
 
-  CapacitorApp.addListener('backButton', () => {
+  const listener = CapacitorApp.addListener('backButton', () => {
     const currentPath = getCurrentPath();
     const parentPath = getParentPath(currentPath);
     
@@ -57,6 +57,11 @@ export const setupBackButtonHandler = (navigate: any, getCurrentPath: () => stri
     // Reset back press timer when navigating normally
     lastBackPress = 0;
   });
+
+  // Return a cleanup function
+  return () => {
+    listener.then(l => l.remove());
+  };
 };
 
 const showExitToast = () => {
@@ -64,46 +69,46 @@ const showExitToast = () => {
   const existingToast = document.getElementById('exit-gesture-toast');
   if (existingToast) document.body.removeChild(existingToast);
 
-  // Create a minimal, "line-like" indicator
+  // Create the toast container
   const toast = document.createElement('div');
   toast.id = 'exit-gesture-toast';
   toast.innerHTML = `
-    <div style="width: 40px; height: 4px; background: rgba(255,255,255,0.4); border-radius: 2px; margin: 0 auto 8px;"></div>
-    <div>Swipe again to exit</div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 30px; height: 3px; background: rgba(255,255,255,0.6); border-radius: 2px;"></div>
+        <div>Swipe again to exit</div>
+    </div>
   `;
   
   toast.style.cssText = `
     position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20, 20, 20, 0.9);
-    backdrop-filter: blur(8px);
+    bottom: 100px;
+    left: -200px; /* Start off-screen left */
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(10px);
     color: white;
-    padding: 12px 24px;
-    border-radius: 16px;
+    padding: 10px 20px;
+    border-radius: 30px;
     font-size: 13px;
     font-weight: 500;
     z-index: 10000;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     border: 1px solid rgba(255,255,255,0.1);
-    text-align: center;
+    white-space: nowrap;
     pointer-events: none;
-    animation: slideUpFade 0.3s ease-out forwards;
+    animation: floatFromLeft 2s ease-in-out forwards;
   `;
   
-  // Add animation keyframes if not present
+  // Add updated animation keyframes
   if (!document.getElementById('exit-toast-styles')) {
     const style = document.createElement('style');
     style.id = 'exit-toast-styles';
     style.innerHTML = `
-      @keyframes slideUpFade {
-        from { opacity: 0; transform: translate(-50%, 20px); }
-        to { opacity: 1; transform: translate(-50%, 0); }
-      }
-      @keyframes slideDownFade {
-        from { opacity: 1; transform: translate(-50%, 0); }
-        to { opacity: 0; transform: translate(-50%, 20px); }
+      @keyframes floatFromLeft {
+        0% { left: -200px; opacity: 0; }
+        20% { left: 40px; opacity: 1; }
+        50% { left: 50%; transform: translateX(-50%); opacity: 1; }
+        80% { left: 60%; transform: translateX(-50%); opacity: 0; }
+        100% { left: 70%; transform: translateX(-50%); opacity: 0; }
       }
     `;
     document.head.appendChild(style);
@@ -112,9 +117,6 @@ const showExitToast = () => {
   document.body.appendChild(toast);
   
   setTimeout(() => {
-    toast.style.animation = 'slideDownFade 0.3s ease-in forwards';
-    setTimeout(() => {
-      if (toast.parentNode) document.body.removeChild(toast);
-    }, 300);
-  }, 1700);
+    if (toast.parentNode) document.body.removeChild(toast);
+  }, 2000);
 };

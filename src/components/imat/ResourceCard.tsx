@@ -15,10 +15,15 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDelete }
   const handleOpen = async () => {
     if (showConfirm) return; // Prevent opening if in delete mode
     
-    const url = resource.url || resource.localPath;
+    let url = resource.url || resource.localPath;
     if (!url) {
       alert("This resource is not currently linked to a file.");
       return;
+    }
+
+    // Convert relative local paths to absolute URLs for Capacitor
+    if (url.startsWith('/') && !url.includes('://')) {
+      url = window.location.origin + url;
     }
 
     // Use Capacitor Browser API on native platforms (Android/iOS)

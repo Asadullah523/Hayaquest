@@ -9,7 +9,8 @@ export const BackButtonHandler: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => {
     // Setup back button handler with navigation capabilities
     const getCurrentPath = () => location.pathname;
-    setupBackButtonHandler(navigate, getCurrentPath);
+    const cleanup = setupBackButtonHandler(navigate, getCurrentPath);
+    return cleanup;
   }, [navigate, location]);
 
   return <>{children}</>;
