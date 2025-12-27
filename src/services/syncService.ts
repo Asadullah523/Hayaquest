@@ -33,6 +33,15 @@ export const syncService = {
     const user = useUserStore.getState();
     const timer = useTimerStore.getState();
 
+    // Get quiz data from localStorage
+    const quizData: Record<string, string> = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('quiz_completed_') || key.startsWith('quiz_progress_'))) {
+            quizData[key] = localStorage.getItem(key) || '';
+        }
+    }
+
     return {
       subjects,
       topics,
@@ -40,6 +49,7 @@ export const syncService = {
       timetable,
       settings,
       resources,
+      quiz: quizData,
       gamification: {
         xp: gamification.xp,
         level: gamification.level,
@@ -112,12 +122,14 @@ export const syncService = {
         s: remoteData.subjects,
         t: remoteData.topics,
         g: remoteData.gamification,
-        l: remoteData.logs
+        l: remoteData.logs,
+        q: remoteData.quiz
       }) !== JSON.stringify({
         s: localData.subjects,
         t: localData.topics,
         g: localData.gamification,
-        l: localData.logs
+        l: localData.logs,
+        q: localData.quiz
       });
 
       if (!isDifferent) {
@@ -195,6 +207,17 @@ export const syncService = {
           isActive: false,
           timeLeft: remoteData.timer.config?.focusDuration || 25 * 60
         });
+      }
+
+      // Restore quiz data to localStorage
+      if (remoteData.quiz) {
+          Object.entries(remoteData.quiz).forEach(([key, value]) => {
+              if (typeof value === 'string') {
+                  localStorage.setItem(key, value);
+              }
+          });
+          // Dispatch storage event so components can update immediately
+          window.dispatchEvent(new Event('storage'));
       }
 
       // Reload stores that pull from Dexie

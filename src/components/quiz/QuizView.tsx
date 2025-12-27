@@ -95,6 +95,11 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
             localStorage.setItem(`quiz_completed_${paper.id}`, 'true');
         }
         
+        // Trigger backup to cloud
+        import('../../services/syncService').then(({ syncService }) => {
+            syncService.triggerAutoBackup();
+        });
+        
         // Dispatch storage event to update dashboard immediately if possible
         window.dispatchEvent(new Event('storage'));
     };
@@ -108,6 +113,12 @@ export const QuizView: React.FC<QuizViewProps> = ({ paper, onClose }) => {
             savedTime: timeLeft,
             timestamp: Date.now()
         }));
+        
+        // Trigger backup to cloud
+        import('../../services/syncService').then(({ syncService }) => {
+            syncService.triggerAutoBackup();
+        });
+
         window.dispatchEvent(new Event('storage'));
         onClose();
     };

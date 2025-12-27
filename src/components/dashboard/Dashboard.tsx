@@ -65,6 +65,7 @@ export const Dashboard: React.FC = () => {
   const [imatProgress, setImatProgress] = useState(0);
   
   useEffect(() => {
+    // We import this here or use it if already imported to avoid duplication of logic
     const calculateImatProgress = () => {
       if (!imatParent) return 0;
       
@@ -78,49 +79,43 @@ export const Dashboard: React.FC = () => {
       const totalTopics = subjectTopics.length;
       const completedTopics = subjectTopics.filter(t => t.isCompleted).length;
       
-      // Count completed practice papers and questions
-      let completedPracticeQuestions = 0;
-      const subjectPracticePaperIds = [
-        3001, 3002, 3003, 3004, 3005, 3006, // Chemistry (6 sets × 100)
-        4001, 4002, 4003, 4004, 4005, 4006, // Math & Physics (6 sets × 100/86)
-        2101, 2102, 2103, 2104, 2105, 2106, 2107, 2108, 2109, 2110, 2111 // Biology (11 sets)
-      ];
-      
-      subjectPracticePaperIds.forEach(paperId => {
-        if (localStorage.getItem(`quiz_completed_${paperId}`)) {
-          // Get question count from paper definition
-          if (paperId >= 3001 && paperId <= 3005) completedPracticeQuestions += 100; // Chem 1-5
-          else if (paperId === 3006) completedPracticeQuestions += 100; // Chem 6
-          else if (paperId >= 4001 && paperId <= 4005) completedPracticeQuestions += 100; // Math&Physics 1-5
-          else if (paperId === 4006) completedPracticeQuestions += 86; // Math&Physics 6 (86 questions)
-          else if (paperId >= 2101 && paperId <= 2110) completedPracticeQuestions += 100; // Bio 1-10
-          else if (paperId === 2111) completedPracticeQuestions += 88; // Bio 11 (88 questions)
-        }
+      // Dynamic calculation from source of truth
+      import('../../data/pastPapers').then(({ subjectPracticePapers }) => {
+          let completedPracticeQuestions = 0;
+          subjectPracticePapers.forEach(paper => {
+            if (localStorage.getItem(`quiz_completed_${paper.id}`)) {
+              completedPracticeQuestions += paper.questions.length;
+            }
+          });
+          
+          const totalPracticeQuestions = subjectPracticePapers.reduce((acc, paper) => acc + paper.questions.length, 0);
+          
+          // Weighted Calculation (same as ImatDashboard)
+          const TOPIC_WEIGHT = 10;
+          const totalPoints = (totalTopics * TOPIC_WEIGHT) + totalPracticeQuestions;
+          const completedPoints = (completedTopics * TOPIC_WEIGHT) + completedPracticeQuestions;
+          
+          const newProgress = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
+          setImatProgress(newProgress);
       });
-      
-      // Total practice questions available
-      const totalPracticeQuestions = (6 * 100) + (6 * 100 - 14) + (11 * 100 - 12); // Chem + Math&Physics + Bio
-      
-      // Weighted Calculation (same as ImatDashboard)
-      const TOPIC_WEIGHT = 10;
-      const totalPoints = (totalTopics * TOPIC_WEIGHT) + totalPracticeQuestions;
-      const completedPoints = (completedTopics * TOPIC_WEIGHT) + completedPracticeQuestions;
-      
-      return totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
     };
     
-    setImatProgress(calculateImatProgress());
+    calculateImatProgress();
     
-    // Re-check when page becomes visible (e.g., returning from quiz)
+    // Re-check when page becomes visible or storage changes (e.g., quiz completed)
+    const handleSync = () => {
+      calculateImatProgress();
+    };
+    
     const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        setImatProgress(calculateImatProgress());
-      }
+      if (!document.hidden) handleSync();
     };
     
+    window.addEventListener('storage', handleSync);
     document.addEventListener('visibilitychange', handleVisibilityChange);
     
     return () => {
+      window.removeEventListener('storage', handleSync);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [subjects, topics, imatParent]);
