@@ -18,7 +18,12 @@ export async function initializePresetSubjects(): Promise<void> {
   
   // OPTIMIZATION: Check if we've already synced this version
   const currentVersion = localStorage.getItem('syllabus_version');
-  if (currentVersion === SYLLABUS_VERSION) {
+  
+  // Also check if critical data exists (to recover from broken resets)
+  const imatParent = await db.subjects.where('name').equals(IMAT_PARENT_NAME).and(s => !s.parentId).first();
+  const needsReinit = !imatParent;
+
+  if (currentVersion === SYLLABUS_VERSION && !needsReinit) {
     // Already synced, skip the heavy lifting
     console.log('⚡️ Syllabus up to date, skipping deep sync.');
     return;

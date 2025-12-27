@@ -14,7 +14,18 @@ import { useTimerStore } from '../store/useTimerStore';
 export const syncService = {
   // Sync state management
   _isSyncing: false,
+  _isPaused: false,
   _lastLocalUpdate: 0,
+
+  pauseSync() {
+    this._isPaused = true;
+    console.log('Sync service: PAUSED');
+  },
+
+  resumeSync() {
+    this._isPaused = false;
+    console.log('Sync service: RESUMED');
+  },
 
   async getAllLocalData() {
     // Get data from Dexie
@@ -85,7 +96,7 @@ export const syncService = {
   },
 
   async backup() {
-    if (this._isSyncing) return;
+    if (this._isSyncing || this._isPaused) return;
     try {
       this._isSyncing = true;
       const data = await this.getAllLocalData();
@@ -100,7 +111,7 @@ export const syncService = {
   },
 
   async restore() {
-    if (this._isSyncing) return;
+    if (this._isSyncing || this._isPaused) return;
     // Don't restore if we just had a local update (within 5 seconds) 
     // to avoid pulling stale data before backup completes
     if (Date.now() - this._lastLocalUpdate < 5000) {
@@ -310,7 +321,7 @@ export const syncService = {
     // Background interval for both backup and restore
     setInterval(async () => {
       const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated && !this._isSyncing) {
+      if (isAuthenticated && !this._isSyncing && !this._isPaused) {
         console.log('Auto-sync: performing background sync...');
         try {
           // Backup local changes first
@@ -331,7 +342,7 @@ export const syncService = {
     if (this._backupTimeout) clearTimeout(this._backupTimeout);
     this._backupTimeout = setTimeout(() => {
       const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated) {
+      if (isAuthenticated && !this._isPaused) {
         console.log('Triggered auto-backup...');
         this.backup().catch(console.error);
       }

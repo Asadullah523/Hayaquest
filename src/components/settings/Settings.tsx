@@ -44,6 +44,11 @@ export const Settings: React.FC = () => {
 
   const handleReset = async () => {
       setShowResetConfirm(false); // Close confirmation modal immediately
+      
+      // VITAL: Pause sync before wiping anything to prevent race condition where
+      // an empty database is backed up to cloud before the page reloads.
+      syncService.pauseSync();
+      
       setStatus({ type: 'loading', message: 'Resetting your data...', details: [] });
       const details: string[] = [];
       
