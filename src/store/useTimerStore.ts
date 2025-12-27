@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { syncService } from '../services/syncService';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 type TimerMode = 'focus' | 'shortBreak' | 'longBreak';
 
@@ -482,6 +483,33 @@ export const useTimerStore = create<TimerState>()(
           timerReferenceTime: Date.now(),
           timeLeftWhenStarted: get().timeLeft
         });
+
+        // Schedule Native Notification
+        const endTime = new Date(Date.now() + get().timeLeft * 1000);
+        const title = mode === 'focus' ? 'Focus Session Complete! 🎉' : 'Break Time Over! 💪';
+        const body = mode === 'focus' ? 'Great work to keep focus! Time for a break.' : 'Back to work!';
+        
+        LocalNotifications.checkPermissions().then(async (perm) => {
+            if (perm.display !== 'granted') {
+                const newPerm = await LocalNotifications.requestPermissions();
+                if (newPerm.display !== 'granted') return;
+            }
+            
+            // Cancel any existing
+            await LocalNotifications.cancel({ notifications: [{ id: 1001 }] });
+
+            // Schedule new
+            await LocalNotifications.schedule({
+                notifications: [{
+                    id: 1001,
+                    title,
+                    body,
+                    schedule: { at: endTime },
+                    sound: 'beep.wav', // optional, uses default if not found
+                    smallIcon: 'ic_stat_icon_config_sample', // Android specific
+                }]
+            });
+        }).catch(console.error);
       },
       
       pause: () => {
@@ -503,6 +531,7 @@ export const useTimerStore = create<TimerState>()(
         }
         
         stopSound();
+        LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
       },
       
       reset: () => {
@@ -518,6 +547,7 @@ export const useTimerStore = create<TimerState>()(
         if (mode === 'longBreak') duration = config.longBreakDuration;
         
         stopSound();
+        LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
         set({ 
           isActive: false, 
           timeLeft: duration, 
@@ -629,13 +659,16 @@ export const useTimerStore = create<TimerState>()(
             playSound(soundType, config.alarmDuration);
           }
           
-          // Show browser notification
+          // Show browser notification (fallback)
           if ('Notification' in window && Notification.permission === 'granted') {
             new Notification(mode === 'focus' ? 'Focus Session Complete! 🎉' : 'Break Time Over! 💪', {
               body: mode === 'focus' ? 'Great work! Time for a break.' : 'Back to focus mode!',
               icon: '/favicon.ico',
             });
           }
+          
+          // Cancel scheduled notification since we handled it in-app
+          LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
 
           // Auto-start next session if enabled
           if (mode === 'focus' && config.autoStartBreaks) {
@@ -676,6 +709,7 @@ export const useTimerStore = create<TimerState>()(
         if (mode === 'longBreak') duration = config.longBreakDuration;
 
         stopSound();
+        LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
         set({ mode, timeLeft: duration, isActive: false, activeSession: null });
       },
 
