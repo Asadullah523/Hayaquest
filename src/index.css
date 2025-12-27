@@ -233,12 +233,15 @@
         background-color: hsl(var(--glass-bg));
         border-color: hsl(var(--glass-border));
         @apply backdrop-blur-xl shadow-2xl ring-1 ring-slate-900/5 dark:ring-white/10 transition-all duration-500 hover:shadow-primary/10;
+        transform: translate3d(0, 0, 0);
+        /* Force GPU layer */
     }
 
     .glass-panel {
         background-color: hsl(var(--glass-bg));
         border-color: hsl(var(--glass-border));
         @apply backdrop-blur-md transition-all duration-300;
+        transform: translate3d(0, 0, 0);
     }
 
     .dark-theme-stars {
@@ -416,6 +419,7 @@
         transform: rotate(-15deg) translate3d(0, 0, 0);
         animation: aurora-drift linear infinite;
         will-change: transform;
+        backface-visibility: hidden;
     }
 
     .nebula-cloud {
@@ -426,6 +430,7 @@
         animation: nebula-pulse linear infinite;
         will-change: transform, opacity;
         transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
     }
 
     @keyframes fall {
@@ -717,7 +722,7 @@
     body.quiz-active .mobile-nav-bar {
         display: none !important;
     }
-    
+
     body.quiz-active {
         overflow: hidden !important;
         height: 100dvh !important;

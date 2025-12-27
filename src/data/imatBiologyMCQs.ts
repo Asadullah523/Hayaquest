@@ -7799,4 +7799,7692 @@ export const imatBiologyMCQs = [
     "subject": "Biology",
     "id": 2600
   }
+,
+  {
+    "text": "Which structure contains the genetic material in prokaryotic cells?",
+    "options": [
+      "Nucleus",
+      "Mitochondrion",
+      "Golgi apparatus",
+      "Nucleoid",
+      "Ribosome"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2601
+  },
+  {
+    "text": "Which hormone stimulates the synthesis of glycogen in the liver?",
+    "options": [
+      "Glucagon",
+      "Cortisol",
+      "Insulin",
+      "Thyroxine",
+      "Adrenaline"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2602
+  },
+  {
+    "text": "Which process converts ammonia into urea in humans?",
+    "options": [
+      "Krebs cycle",
+      "Urea cycle",
+      "Calvin cycle",
+      "Fermentation",
+      "Glycolysis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2603
+  },
+  {
+    "text": "Which structure is responsible for anchoring chromosomes during mitosis?",
+    "options": [
+      "Telomere",
+      "Nucleolus",
+      "Chromatin",
+      "Centromere",
+      "Histone"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2604
+  },
+  {
+    "text": "Which vitamin is essential for collagen synthesis?",
+    "options": [
+      "Vitamin E",
+      "Vitamin A",
+      "Vitamin D",
+      "Vitamin K",
+      "Vitamin C"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2605
+  },
+  {
+    "text": "Which molecule is the precursor of steroid hormones?",
+    "options": [
+      "Glucose",
+      "Fatty acids",
+      "Glycogen",
+      "Cholesterol",
+      "Amino acids"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2606
+  },
+  {
+    "text": "Which type of blood vessel returns blood to the heart?",
+    "options": [
+      "Arteries",
+      "Veins",
+      "Arterioles",
+      "Capillaries",
+      "Sinusoids"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2607
+  },
+  {
+    "text": "Which hormone stimulates red blood cell production?",
+    "options": [
+      "Aldosterone",
+      "Thyroxine",
+      "Insulin",
+      "Erythropoietin",
+      "Cortisol"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2608
+  },
+  {
+    "text": "Which structure of the neuron receives incoming signals?",
+    "options": [
+      "Axon",
+      "Node of Ranvier",
+      "Myelin sheath",
+      "Axon terminal",
+      "Dendrites"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2609
+  },
+  {
+    "text": "Which molecule carries electrons from glycolysis to the mitochondrion?",
+    "options": [
+      "NADH"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2610
+  },
+  {
+    "text": "Which gland regulates growth and development in childhood?",
+    "options": [
+      "Thyroid gland",
+      "Pineal gland",
+      "Pituitary gland",
+      "Pancreas",
+      "Adrenal gland"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2611
+  },
+  {
+    "text": "Which structure prevents backflow of blood in veins?",
+    "options": [
+      "Valves",
+      "Septa",
+      "Papillary muscles",
+      "Endothelium",
+      "Chordae tendineae"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2612
+  },
+  {
+    "text": "Which process produces acetyl-CoA from pyruvate?",
+    "options": [
+      "Calvin cycle",
+      "Glycogenesis",
+      "Glycolysis",
+      "Fermentation",
+      "Oxidative decarboxylation"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2613
+  },
+  {
+    "text": "Which organ is responsible for detoxifying ammonia?",
+    "options": [
+      "Pancreas",
+      "Lung",
+      "Kidney",
+      "Liver",
+      "Spleen"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2614
+  },
+  {
+    "text": "Which molecule is degraded in lysosomes?",
+    "options": [
+      "ATP",
+      "Glucose",
+      "DNA only",
+      "Lipids only",
+      "Macromolecules"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2615
+  },
+  {
+    "text": "Which hormone promotes follicle development in ovaries?",
+    "options": [
+      "FSH",
+      "LH",
+      "Progesterone",
+      "Estrogen",
+      "Prolactin"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2616
+  },
+  {
+    "text": "Which structure allows rapid nerve impulse conduction?",
+    "options": [
+      "Myelin sheath",
+      "Synapse",
+      "Dendrite"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2617
+  },
+  {
+    "text": "Which process generates genetic variability?",
+    "options": [
+      "Transcription",
+      "DNA replication",
+      "Mitosis",
+      "Translation",
+      "Crossing-over"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2618
+  },
+  {
+    "text": "Which structure connects the pharynx to the stomach?",
+    "options": [
+      "Trachea",
+      "Bronchus",
+      "Esophagus",
+      "Larynx",
+      "Duodenum"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2619
+  },
+  {
+    "text": "Which organ stores bile?",
+    "options": [
+      "Pancreas",
+      "Duodenum",
+      "Stomach",
+      "Liver",
+      "Gallbladder"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2620
+  },
+  {
+    "text": "Which hormone is secreted by alpha cells of the pancreas?",
+    "options": [
+      "Somatostatin",
+      "Glucagon",
+      "Cortisol",
+      "Insulin",
+      "Adrenaline"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2621
+  },
+  {
+    "text": "Which structure is the site of protein synthesis?",
+    "options": [
+      "Ribosome",
+      "Lysosome",
+      "Nucleus",
+      "Golgi apparatus",
+      "Mitochondrion"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2622
+  },
+  {
+    "text": "Which type of epithelium lines the trachea?",
+    "options": [
+      "Pseudostratified ciliated epithelium",
+      "Cuboidal epithelium",
+      "Simple columnar epithelium",
+      "Stratified squamous epithelium",
+      "Simple squamous epithelium"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2623
+  },
+  {
+    "text": "Which hormone stimulates uterine contractions?",
+    "options": [
+      "Progesterone",
+      "Estrogen",
+      "Oxytocin",
+      "FSH",
+      "Prolactin"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2624
+  },
+  {
+    "text": "Which structure produces antibodies?",
+    "options": [
+      "Neutrophils",
+      "Plasma cells",
+      "Erythrocytes",
+      "Eosinophils",
+      "Platelets"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2625
+  },
+  {
+    "text": "Which molecule is the main storage form of glucose in animals?",
+    "options": [
+      "Sucrose",
+      "Glycogen",
+      "Lactose",
+      "Starch",
+      "Cellulose"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2626
+  },
+  {
+    "text": "Which structure connects bone to bone?",
+    "options": [
+      "Ligament",
+      "Fascia",
+      "Cartilage",
+      "Tendon",
+      "Muscle fiber"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2627
+  },
+  {
+    "text": "Which hormone lowers blood calcium levels?",
+    "options": [
+      "Parathyroid hormone",
+      "Aldosterone",
+      "Vitamin D",
+      "Calcitonin",
+      "Cortisol"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2628
+  },
+  {
+    "text": "Which process occurs in the cytoplasm?",
+    "options": [
+      "Krebs cycle",
+      "Electron transport chain",
+      "Glycolysis",
+      "Oxidative phosphorylation",
+      "Calvin cycle"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2629
+  },
+  {
+    "text": "Which structure houses taste receptors?",
+    "options": [
+      "Epiglottis",
+      "Salivary gland",
+      "Taste buds",
+      "Soft palate",
+      "Tonguemuscle"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2630
+  },
+  {
+    "text": "Which blood component is responsible for clotting?",
+    "options": [
+      "Erythrocytes",
+      "Platelets",
+      "Lymphocytes",
+      "Monocytes",
+      "Basophils"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2631
+  },
+  {
+    "text": "Which enzyme breaks down lactose?",
+    "options": [
+      "Amylase",
+      "Sucrase",
+      "Pepsin",
+      "Lactase",
+      "Maltase"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2632
+  },
+  {
+    "text": "Which structure connects the ovary to the uterus?",
+    "options": [
+      "Cervix",
+      "Fallopian tube",
+      "Vagina",
+      "Myometrium",
+      "Endometrium"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2633
+  },
+  {
+    "text": "Which hormone is secreted by the pineal gland?",
+    "options": [
+      "Cortisol",
+      "Thyroxine",
+      "Melatonin",
+      "Insulin",
+      "Aldosterone"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2634
+  },
+  {
+    "text": "Which process produces mRNA?",
+    "options": [
+      "Transcription B) Translation"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2635
+  },
+  {
+    "text": "Which structure contains rods and cones?",
+    "options": [
+      "Cornea",
+      "Iris",
+      "Retina",
+      "Optic nerve",
+      "Lens"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2636
+  },
+  {
+    "text": "Which molecule is the final product of glycolysis?",
+    "options": [
+      "Lactate",
+      "Acetyl-CoA",
+      "C O ‚",
+      "Pyruvate",
+      "Glucose"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2637
+  },
+  {
+    "text": "Which organ regulates blood pressure via hormones?",
+    "options": [
+      "Kidney",
+      "Liver",
+      "Spleen",
+      "Pancreas",
+      "Stomach"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2638
+  },
+  {
+    "text": "Which structure is responsible for sound amplification?",
+    "options": [
+      "Auditory nerve",
+      "Ossicles",
+      "Semicircular canals",
+      "Cochlea",
+      "Eustachian tube"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2639
+  },
+  {
+    "text": "Which hormone stimulates ovulation?",
+    "options": [
+      "Prolactin",
+      "LH",
+      "Progesterone",
+      "Estrogen",
+      "FSH"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2640
+  },
+  {
+    "text": "Which structure allows exchange of substances between blood and tissues?",
+    "options": [
+      "Arteries",
+      "Arterioles",
+      "Veins",
+      "Venules",
+      "Capillaries"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2641
+  },
+  {
+    "text": "Which molecule carries genetic information from DNA?",
+    "options": [
+      "snRNA",
+      "mRNA B) tRNA C) rRNA D) miRNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2642
+  },
+  {
+    "text": "Which organ is primarily responsible for immune defense?",
+    "options": [
+      "Thyroid",
+      "Lymph nodes",
+      "Gallbladder",
+      "Kidney",
+      "Pancreas"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2643
+  },
+  {
+    "text": "Which process generates heat in mammals?",
+    "options": [
+      "Photosynthesis",
+      "Fermentation",
+      "Transcription",
+      "Translation",
+      "Cellular respiration"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2644
+  },
+  {
+    "text": "Which structure encloses the lungs?",
+    "options": [
+      "Pleura",
+      "Myocardium",
+      "Pericardium",
+      "Peritoneum",
+      "Endocardium"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2645
+  },
+  {
+    "text": "Which hormone regulates circadian rhythm?",
+    "options": [
+      "Insulin",
+      "Thyroxine",
+      "Oxytocin",
+      "Melatonin",
+      "Cortisol"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2646
+  },
+  {
+    "text": "Which cell type produces collagen?",
+    "options": [
+      "Osteoclasts",
+      "Fibroblasts",
+      "Erythrocytes",
+      "Neurons",
+      "Chondrocytes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2647
+  },
+  {
+    "text": "Which structure connects the heart to the lungs?",
+    "options": [
+      "Coronary artery",
+      "Vena cava",
+      "Pulmonary artery",
+      "Aorta",
+      "Hepatic vein"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2648
+  },
+  {
+    "text": "Which enzyme breaks down proteins in the small intestine?",
+    "options": [
+      "Trypsin B) Pepsin C) Amylase D) Lipase E) Maltase"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2649
+  },
+  {
+    "text": "Which hormone inhibits FSH secretion?",
+    "options": [
+      "Prolactin",
+      "Progesterone",
+      "Estrogen",
+      "Testosterone",
+      "Inhibin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2650
+  },
+  {
+    "text": "Which structure separates the right and left sides of the heart?",
+    "options": [
+      "Myocardium",
+      "Endocardium",
+      "Valve",
+      "Septum",
+      "Pericardium"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2651
+  },
+  {
+    "text": "Which hormone stimulates gastric acid secretion?",
+    "options": [
+      "Secretin",
+      "Gastrin",
+      "Cholecystokinin",
+      "Insulin",
+      "Glucagon"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2652
+  },
+  {
+    "text": "Which process produces carbon dioxide during cellular respiration?",
+    "options": [
+      "Glycolysis",
+      "Fermentation",
+      "Electron transport chain",
+      "Krebs cycle",
+      "Photolysis"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2653
+  },
+  {
+    "text": "Which structure stores calcium salts in the body?",
+    "options": [
+      "Epithelial tissue",
+      "Bone tissue",
+      "Nervous tissue",
+      "Adipose tissue",
+      "Muscle tissue"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2654
+  },
+  {
+    "text": "Which hormone promotes sodium reabsorption in the kidneys?",
+    "options": [
+      "Thyroxine",
+      "Aldosterone",
+      "Cortisol",
+      "Insulin",
+      "ADH"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2655
+  },
+  {
+    "text": "Which structure of the eye focuses light onto the retina?",
+    "options": [
+      "Iris",
+      "Cornea",
+      "Sclera",
+      "Lens",
+      "Optic nerve"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2656
+  },
+  {
+    "text": "Which blood cells are primarily responsible for phagocytosis?",
+    "options": [
+      "Platelets",
+      "Basophils",
+      "Plasma cells",
+      "Erythrocytes",
+      "Neutrophils"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2657
+  },
+  {
+    "text": "Which molecule forms the phospholipid bilayer of cell membranes?",
+    "options": [
+      "Proteins",
+      "Polysaccharides",
+      "Steroids",
+      "Phospholipids",
+      "Triglycerides"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2658
+  },
+  {
+    "text": "Which hormone stimulates the release of bile from the gallbladder?",
+    "options": [
+      "Secretin",
+      "Insulin",
+      "Gastrin",
+      "Glucagon",
+      "Cholecystokinin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2659
+  },
+  {
+    "text": "Which structure allows voluntary movement?",
+    "options": [
+      "Skeletal muscle",
+      "Nervous tissue",
+      "Connective tissue",
+      "Smooth muscle",
+      "Cardiac muscle"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2660
+  },
+  {
+    "text": "Which process produces genetic recombination?",
+    "options": [
+      "Translation",
+      "Mitosis",
+      "Crossing-over",
+      "DNA replication",
+      "Transcription"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2661
+  },
+  {
+    "text": "Which organ filters lymph?",
+    "options": [
+      "Lymph nodes",
+      "Thymus",
+      "Spleen",
+      "Liver",
+      "Kidney"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2662
+  },
+  {
+    "text": "Which molecule is produced by pancreatic beta cells?",
+    "options": [
+      "Insulin",
+      "Glucagon",
+      "Somatostatin D) Adrenaline E) Cortisol"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2663
+  },
+  {
+    "text": "Which structure connects the stomach to the duodenum?",
+    "options": [
+      "Esophagus",
+      "Cardia",
+      "Fundus",
+      "Body",
+      "Pylorus"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2664
+  },
+  {
+    "text": "Which process generates ATPdirectly during glycolysis?",
+    "options": [
+      "Substrate-level phosphorylation",
+      "Chemiosmosis",
+      "Oxidative phosphorylation",
+      "Carbon fixation",
+      "Photophosphorylation"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2665
+  },
+  {
+    "text": "Which structure of the ear is responsible for balance?",
+    "options": [
+      "Tympanic membrane",
+      "Cochlea",
+      "Semicircular canals",
+      "Auditory nerve",
+      "Ossicles"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2666
+  },
+  {
+    "text": "Which hormone increases metabolic rate?",
+    "options": [
+      "Prolactin",
+      "Insulin",
+      "Oxytocin",
+      "Thyroxine",
+      "Melatonin"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2667
+  },
+  {
+    "text": "Which molecule transports fatty acids in the blood?",
+    "options": [
+      "Albumin",
+      "Myoglobin",
+      "Globulin",
+      "Hemoglobin",
+      "Transferrin"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2668
+  },
+  {
+    "text": "Which cell organelle is responsible for packaging proteins?",
+    "options": [
+      "Ribosome",
+      "Nucleus",
+      "Golgi apparatus",
+      "Lysosome",
+      "Mitochondrion"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2669
+  },
+  {
+    "text": "Which hormone stimulates spermatogenesis?",
+    "options": [
+      "Prolactin",
+      "FSH",
+      "Testosterone",
+      "Estrogen",
+      "LH"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2670
+  },
+  {
+    "text": "Which structure prevents food from entering the respiratory tract?",
+    "options": [
+      "Esophagus",
+      "Epiglottis",
+      "Pharynx",
+      "Glottis",
+      "Larynx"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2671
+  },
+  {
+    "text": "Which process occurs in chloroplasts but not mitochondria?",
+    "options": [
+      "Glycolysis",
+      "Photosynthesis",
+      "ATPsynthesis",
+      "Electron transport",
+      "Krebs cycle"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2672
+  },
+  {
+    "text": "Which hormone regulates basal metabolism?",
+    "options": [
+      "Thyroxine",
+      "Melatonin",
+      "Insulin",
+      "Adrenaline",
+      "Cortisol"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2673
+  },
+  {
+    "text": "Which structure connects the uterus to the vagina?",
+    "options": [
+      "Cervix",
+      "Endometrium",
+      "Myometrium",
+      "Ovary",
+      "Fallopian tube"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2674
+  },
+  {
+    "text": "Which molecule carries oxygen in red blood cells?",
+    "options": [
+      "Transferrin",
+      "Ferritin",
+      "Albumin",
+      "Hemoglobin",
+      "Myoglobin"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2675
+  },
+  {
+    "text": "Which organ produces erythropoietin?",
+    "options": [
+      "Pancreas",
+      "Kidney",
+      "Liver",
+      "Spleen",
+      "Bone marrow"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2676
+  },
+  {
+    "text": "Which type of joint allows flexion and extension?",
+    "options": [
+      "Saddle joint",
+      "Pivot joint",
+      "Ball-and-socket joint",
+      "Gliding joint",
+      "Hinge joint"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2677
+  },
+  {
+    "text": "Which enzyme digests proteins in the small intestine?",
+    "options": [
+      "Maltase",
+      "Trypsin",
+      "Amylase",
+      "Pepsin",
+      "Sucrase"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2678
+  },
+  {
+    "text": "Which hormone decreases blood glucose concentration?",
+    "options": [
+      "Adrenaline",
+      "Growth hormone",
+      "Glucagon",
+      "Cortisol",
+      "Insulin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2679
+  },
+  {
+    "text": "Which structure allows exchange of gases in the lungs?",
+    "options": [
+      "Trachea",
+      "Bronchi",
+      "Bronchioles",
+      "Pleura",
+      "Alveoli"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2680
+  },
+  {
+    "text": "Which molecule is the main energy reserve in adipose tissue?",
+    "options": [
+      "Glucose",
+      "ATP",
+      "Glycogen",
+      "Triglycerides",
+      "Proteins"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2681
+  },
+  {
+    "text": "Which hormone stimulates uterine contractions during labor?",
+    "options": [
+      "FSH",
+      "Estrogen",
+      "Prolactin",
+      "Progesterone",
+      "Oxytocin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2682
+  },
+  {
+    "text": "Which structure filters blood in the kidney?",
+    "options": [
+      "Loop of Henle",
+      "Proximal tubule",
+      "Glomerulus",
+      "Collecting duct",
+      "Distal tubule"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2683
+  },
+  {
+    "text": "Which organ stores iron?",
+    "options": [
+      "Liver",
+      "Pancreas",
+      "Lung",
+      "Kidney",
+      "Heart"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2684
+  },
+  {
+    "text": "Which molecule is produced during anaerobic respiration in humans?",
+    "options": [
+      "NADH",
+      "Acetyl-CoA",
+      "Lactic acid",
+      "Carbon dioxide",
+      "Ethanol"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2685
+  },
+  {
+    "text": "Which structure connects muscle to bone?",
+    "options": [
+      "Ligament",
+      "Tendon",
+      "Periosteum",
+      "Fascia",
+      "Cartilage"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2686
+  },
+  {
+    "text": "Which hormone is secreted by the adrenal medulla?",
+    "options": [
+      "Adrenaline",
+      "Cortisol",
+      "Aldosterone",
+      "Thyroxine",
+      "Insulin"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2687
+  },
+  {
+    "text": "Which process produces ATPusing oxygen?",
+    "options": [
+      "Fermentation",
+      "Glycolysis",
+      "Oxidative phosphorylation",
+      "Calvin cycle E) Photolysis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2688
+  },
+  {
+    "text": "Which structure protects the spinal cord?",
+    "options": [
+      "Sternum",
+      "Skull",
+      "Rib cage",
+      "Pelvis",
+      "Vertebral column"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2689
+  },
+  {
+    "text": "Which molecule carries genetic information to ribosomes?",
+    "options": [
+      "tRNA",
+      "mRNA",
+      "snRNA",
+      "rRNA",
+      "miRNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2690
+  },
+  {
+    "text": "Which hormone inhibits gastric motility?",
+    "options": [
+      "Glucagon",
+      "Cholecystokinin",
+      "Gastrin",
+      "Insulin",
+      "Secretin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2691
+  },
+  {
+    "text": "Which structure stores urine?",
+    "options": [
+      "Renal pelvis",
+      "Urinary bladder",
+      "Urethra",
+      "Ureter",
+      "Kidney"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2692
+  },
+  {
+    "text": "Which process generates variation in offspring?",
+    "options": [
+      "DNA replication",
+      "Independent assortment",
+      "Cytokinesis",
+      "Transcription",
+      "Translation"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2693
+  },
+  {
+    "text": "Which organ is responsible for detoxification?",
+    "options": [
+      "Intestine",
+      "Lung",
+      "Liver",
+      "Spleen",
+      "Kidney"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2694
+  },
+  {
+    "text": "Which hormone stimulates milk production?",
+    "options": [
+      "Estrogen",
+      "Oxytocin",
+      "Progesterone",
+      "LH",
+      "Prolactin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2695
+  },
+  {
+    "text": "Which structure connects the brain hemispheres?",
+    "options": [
+      "Thalamus",
+      "Medulla oblongata",
+      "Hypothalamus",
+      "Pons",
+      "Corpus callosum"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2696
+  },
+  {
+    "text": "Which enzyme digests fats?",
+    "options": [
+      "Amylase",
+      "Pepsin",
+      "Maltase",
+      "Lipase",
+      "Trypsin"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2697
+  },
+  {
+    "text": "Which hormone increases heart rate?",
+    "options": [
+      "Insulin",
+      "Adrenaline",
+      "Progesterone",
+      "Prolactin",
+      "Melatonin"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2698
+  },
+  {
+    "text": "Which structure produces bile?",
+    "options": [
+      "Duodenum",
+      "Liver",
+      "Gallbladder",
+      "Stomach",
+      "Pancreas"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2699
+  },
+  {
+    "text": "Which system coordinates rapid responses in the body?",
+    "options": [
+      "Digestive system",
+      "Respiratory system",
+      "Circulatory system",
+      "Nervous system",
+      "Endocrine system"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2700
+  },
+,
+  {
+    "text": "The energy released during the passage of electrons in the electron transport chain is used to create, on both sides of the inner mitochondrial membrane, a gradient of:",
+    "options": [
+      "Electrons",
+      "ADP",
+      "Protons",
+      "Oxygen",
+      "ATP"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2701
+  },
+  {
+    "text": "Which of the following ions or molecules pass by simple diffusion through the lipid bilayer of the plasma membrane?",
+    "options": [
+      "Peptides",
+      "Sodium Ions",
+      "Oxygen",
+      "Glucose",
+      "Chloride Ions"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2702
+  },
+  {
+    "text": "Antibodies are:",
+    "options": [
+      "proteins of viral origin",
+      "cells of the immune system",
+      "proteins capable of combining with a specific antigen",
+      "proteins of bacterial origin",
+      "genes capable of combining with a specific antigen"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2703
+  },
+  {
+    "text": "An allele is:",
+    "options": [
+      "the alternative form of a gene present at the same locus of homologous chromosomes",
+      "the duplication of a gene within a chromosome",
+      "the alternative form of a gene present on different loci within the same chromosome",
+      "the alternative form of a protein present at the same locus of sister chromatids",
+      "an alternative isoform of a messenger RNA"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2704
+  },
+  {
+    "text": "If a bacterial toxin destroys ribosomes, which cellular activity will be affected first?",
+    "options": [
+      "DNA synthesis",
+      "Energy storage",
+      "Movement",
+      "Active transport",
+      "Protein synthesis"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2705
+  },
+  {
+    "text": "In the lac operon of E. coli, lactose functions as:",
+    "options": [
+      "Operator",
+      "Inducer",
+      "Regulator",
+      "Repressor",
+      "Corepressor"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2706
+  },
+  {
+    "text": "Which of the following is a definition referring to gene cloning?",
+    "options": [
+      "The insertion of an exogenous gene into a vector (typically a plasmid) of a bacterial cell to obtain multiple copies of the gene itself",
+      "The isolation and plating of bacteria which, by replicating, form a clone of genetically identical cells",
+      "A genetic engineering technique that allows obtaining organisms genetically identical to each other",
+      "The amplification of a gene obtained using the PCR technique",
+      "A technique used to obtain genetically modified organisms"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2707
+  },
+  {
+    "text": "What is the role of the ribosome in protein translation?",
+    "options": [
+      "Bind to mRNA",
+      "Stabilize the structure of mRNA",
+      "Form peptide bonds between amino acids",
+      "Transport amino acids to the nucleus",
+      "Catalyze the transcription process"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2708
+  },
+  {
+    "text": "Which of the following is an example of an epigenetic modification?",
+    "options": [
+      "Deletion of a DNA segment",
+      "Duplication of a gene",
+      "Insertion of a new DNA sequence",
+      "Translocationof a chromosome",
+      "Methylation of a DNA base"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2709
+  },
+  {
+    "text": "Okazaki fragments are:",
+    "options": [
+      "small fragments of DNA synthesized by polymerase during the replication of the lagging strand of the double helix",
+      "small fragments of RNA synthesized by polymerase during the replication of the leading strand of the double helix",
+      "small fragments of RNA synthesized by polymerase during the replication of the lagging strand of the double helix",
+      "small fragments of DNA synthesized by polymerase during the replication of the leading strand of the double helix",
+      "enzymes used during DNA replication"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2710
+  },
+  {
+    "text": "Which of the following components is NOT involved in the polymerase chain reaction (PCR)?",
+    "options": [
+      "Oligonucleotides",
+      "RNA polymerase",
+      "DNA polymerase",
+      "Nucleotides",
+      "Taq polymerase"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2711
+  },
+  {
+    "text": "What is the role of RNA primers in DNA duplication?",
+    "options": [
+      "Act as a start for the DNA polymerase enzyme",
+      "Start RNA synthesis in specific target regions",
+      "Denature DNA",
+      "Bind Okazaki fragments together",
+      "Separate DNA strands"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2712
+  },
+  {
+    "text": "Which neurotransmitter is released at the neuromuscular junction to initiate muscle contraction?",
+    "options": [
+      "Serotonin",
+      "GABA (gamma-aminobutyric acid)",
+      "Acetylcholine",
+      "Dopamine",
+      "Epinephrine"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2713
+  },
+  {
+    "text": "Which of the following techniques is used to join DNA fragments from different sources in the creation of recombinant DNA?",
+    "options": [
+      "Use of DNA ligase to form new covalent bonds",
+      "DNA sequencing",
+      "Gel electrophoresis",
+      "DNA cloning",
+      "Polymerase chain reaction (PCR)"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2714
+  },
+  {
+    "text": "The region of a sarcomere where only thin filaments are present is called \"band\":",
+    "options": [
+      "A band",
+      "H zone",
+      "I band",
+      "Z line",
+      "M line"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2715
+  },
+  {
+    "text": "Which answer correctly identifies a blood vessel with a low concentration of carbon dioxide?",
+    "options": [
+      "Renal vein",
+      "Pulmonary vein",
+      "Inferior vena cava",
+      "Superior vena cava",
+      "Pulmonary artery"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2716
+  },
+  {
+    "text": "There are recessive alleles that have such a harmful effect as to be lethal in recessive homozygotes who, consequently, die during embryonic development. What genotypic ratio should be expected among the live births of the cross Rr x Rr?",
+    "options": [
+      "1/4 RR; 1/2 Rr; 1/3 rr",
+      "1/3 RR; 1/3 Rr",
+      "2/3 RR; 1/3 Rr",
+      "1/3 RR; 2/3 Rr",
+      "1/2 RR; 1/2 Rr"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2717
+  },
+  {
+    "text": "Which of the following structures is a gland?",
+    "options": [
+      "Pancreas",
+      "Gallbladder",
+      "Pleura",
+      "Epiglottis",
+      "Colon"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2718
+  },
+  {
+    "text": "Antibodies are:",
+    "options": [
+      "nucleotides",
+      "proteins",
+      "phospholipids",
+      "polysaccharides",
+      "amino acids"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2719
+  },
+  {
+    "text": "Which of the following statements regarding autoimmune diseases is correct?",
+    "options": [
+      "They occur when tolerance induced by a low dose of antigen is established",
+      "They derive from excessive clonal selection",
+      "They consist of an immune response towards exogenous antigens",
+      "They are characterized by the production of autoantibodies",
+      "They arise in the perinatal period of immunological immaturity"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2720
+  },
+  {
+    "text": "The structural and functional unit of living things is:",
+    "options": [
+      "DNA",
+      "the cell",
+      "the molecule",
+      "RNA",
+      "the genome"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2721
+  },
+  {
+    "text": "In CAM plants:",
+    "options": [
+      "carbon fixation and the Calvin cycle occur in the same cell but at different times",
+      "alternative carbon fixation methods are used to survive in very cold climates",
+      "photosynthetic efficiency is very high",
+      "carbon fixation and the Calvin cycle occur in different types of cells",
+      "there is a high rate of photorespiration"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2722
+  },
+  {
+    "text": "Which of the following definitions best describes a point mutation?",
+    "options": [
+      "A mutation that involves the loss or gain of an entire chromosome",
+      "A mutation that affects multiple genes simultaneously",
+      "A mutation that affects a single nucleotide in the DNA sequence",
+      "A mutation that occurs during translation",
+      "A mutation that causes a major chromosomal rearrangement"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2723
+  },
+  {
+    "text": "Which of the following statements on viral replication is true?",
+    "options": [
+      "Viruses can simultaneously replicate DNA and RNA",
+      "Viruses can replicate outside host cells",
+      "Viruses replicate using the machinery of the host cell",
+      "Viruses replicate by binary fission",
+      "Viruses replicate by mitosis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2724
+  },
+  {
+    "text": "Which of the following is the correct order of the phases of a typical PCR cycle?",
+    "options": [
+      "Denaturation, polymerization, annealing",
+      "Annealing, denaturation, polymerization",
+      "Polymerization, denaturation, annealing",
+      "Annealing, polymerization, denaturation",
+      "Denaturation, annealing, polymerization"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2725
+  },
+  {
+    "text": "Which of the following is an example of an active transport process?",
+    "options": [
+      "Osmosis",
+      "Antiport",
+      "Facilitated diffusion",
+      "Simple diffusion",
+      "Exocytosis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2726
+  },
+  {
+    "text": "Enzymes are biological catalysts of what nature?",
+    "options": [
+      "polysaccharide",
+      "steroid",
+      "protein",
+      "lipid",
+      "monosaccharide"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2727
+  },
+  {
+    "text": "Which of the following is NOT a function of the lymphatic system?",
+    "options": [
+      "Defense of the body against diseases",
+      "Transport of fats absorbed by the digestive system",
+      "Production of white blood cells",
+      "Transport of proteins",
+      "Return of excess tissue fluids to the blood"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2728
+  },
+  {
+    "text": "The endocrine system is capable of:",
+    "options": [
+      "modifying the metabolism of cells",
+      "all other answers are correct",
+      "using chemical signals as a communication system",
+      "contributing to the maintenance of the balance of physiological processes",
+      "sending messages to target organs"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2729
+  },
+  {
+    "text": "What is the name of the process by which molecules flow from an area of higher concentration to one of lower concentration?",
+    "options": [
+      "Diffusion",
+      "Transfusion",
+      "Respiration",
+      "Dialysis",
+      "Primary active transport"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2730
+  },
+  {
+    "text": "The capsid of a virus consists of:",
+    "options": [
+      "helical lipids",
+      "protein subunits",
+      "nucleic acids",
+      "polysaccharides",
+      "RNA and lipids"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2731
+  },
+  {
+    "text": "Which functional groups are present in a glucose molecule in its linear form?",
+    "options": [
+      "1 ketone group and 4 hydroxyl groups",
+      "1 aldehyde group and 5 hydroxyl groups",
+      "1 aldehyde group and 6 hydroxyl groups",
+      "1 ketone group and 5 hydroxyl groups",
+      "1 aldehyde group, one ketone group and 4 hydroxyl groups"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2732
+  },
+  {
+    "text": "The sodium-potassium pump transports:",
+    "options": [
+      "two sodium ions out of the cell and three potassium ions into the cell",
+      "only potassium ions into the cell",
+      "three sodium ions into the cell and two potassium ions out of the cell",
+      "three sodium ions out of the cell and two potassium ions into the cell",
+      "two sodium ions into the cell and three potassium ions out of the cell"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2733
+  },
+  {
+    "text": "Lamarck's theory of evolution proposed that species evolved through:",
+    "options": [
+      "natural selection",
+      "sexual reproduction",
+      "genetic mutations",
+      "genetic drift",
+      "inheritance of acquired characteristics"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2734
+  },
+  {
+    "text": "The genetic code is:",
+    "options": [
+      "the same only in monozygotic twins",
+      "ambiguous",
+      "different in prokaryotes and eukaryotes",
+      "degenerate",
+      "the set of genes of an organism"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2735
+  },
+  {
+    "text": "Which is NOT considered a genetically modified organism (GMO), as it is not obtained using genetic engineering techniques?",
+    "options": [
+      "insulin-producing bacterium",
+      "golden rice",
+      "Bt corn",
+      "octoploid strawberry",
+      "glyphosate-resistant soy"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2736
+  },
+  {
+    "text": "Both D-glucose and D-fructose:",
+    "options": [
+      "contain an aldehyde group",
+      "in cyclic form have six-atom rings",
+      "are disaccharides",
+      "contain six carbon atoms",
+      "contain a ketone group"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2737
+  },
+  {
+    "text": "A group of cells that have similar structure and function and that cooperate with each other constitutes:",
+    "options": [
+      "An organ system",
+      "A genome",
+      "A unicellular organism",
+      "An organ",
+      "A tissue"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2738
+  },
+  {
+    "text": "Meiosis in diploid organisms has the function of:",
+    "options": [
+      "Eliminating genetic mutations",
+      "Producing haploid cells",
+      "Duplicating chromosomes",
+      "Producing diploid cells",
+      "Duplicating DNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2739
+  },
+  {
+    "text": "In which phase of meiosis does crossing over occur?",
+    "options": [
+      "Pachytene",
+      "Prophase II",
+      "Diakinesis",
+      "Diplotene",
+      "Zygotene"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2740
+  },
+  {
+    "text": "Chromosomal set (karyotype) refers to:",
+    "options": [
+      "the physical structure of a chromosome",
+      "the arrangement of genes on a chromosome",
+      "the total number of chromosomes in the somatic cells of an organism",
+      "the sequence of nucleotides in a chromosome"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2741
+  },
+  {
+    "text": "Which cell likely contains the most mitochondria?",
+    "options": [
+      "lymphocyte",
+      "red blood cell",
+      "epithelial cell",
+      "bone cell",
+      "cardiac muscle cell"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2742
+  },
+  {
+    "text": "Introns are:",
+    "options": [
+      "stretches of non-coding DNA present between genes in eukaryotes",
+      "stretches of coding DNA present within a eukaryotic gene",
+      "stretches of non-coding DNA present within a eukaryotic gene",
+      "stretches of non-coding DNA present between genes in prokaryotes",
+      "stretches of non-coding DNA present within a prokaryotic gene"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2743
+  },
+  {
+    "text": "Which of the following functions is NOT performed by the plasma membrane?",
+    "options": [
+      "Support for proteins with enzymatic function",
+      "Control of ion and molecule transit",
+      "Support for hormone receptors and molecular markers",
+      "Synthesis of glycoproteins",
+      "Anchoring function for the cytoskeleton"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2744
+  },
+  {
+    "text": "Glucose is often stored in plants in the form of:",
+    "options": [
+      "starch",
+      "proteins",
+      "glycogen",
+      "fructose",
+      "chlorophyll"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2745
+  },
+  {
+    "text": "Hemophilia is a recessive trait linked to the X chromosome. Choose which statement is true.",
+    "options": [
+      "A female can never be affected",
+      "A female can be affected only if she is the daughter of a healthy mother and an affected father",
+      "A female will always be affected if she is the daughter of a carrier mother and a carrier father",
+      "A female can be affected if she is the daughter of a carrier mother and an affected father",
+      "A male will never be affected"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2746
+  },
+  {
+    "text": "Which of the following compounds is NOT a fatty acid?",
+    "options": [
+      "Palmitic acid",
+      "Butyric acid",
+      "Oleic acid",
+      "Glutamic acid",
+      "Stearic acid"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2747
+  },
+  {
+    "text": "How do competitive inhibitors reduce the activity of an enzyme?",
+    "options": [
+      "By raising the activation energy",
+      "By modifying the primary structure of the enzyme",
+      "By binding to the active site of the enzyme",
+      "By modifying the pH",
+      "By inactivating the substrate"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2748
+  },
+  {
+    "text": "Which of the following pathologies is caused by a bacterial toxin?",
+    "options": [
+      "Hepatitis B",
+      "Rabies",
+      "Botulism",
+      "Malaria",
+      "Mononucleosis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2749
+  },
+  {
+    "text": "What is the genetic material of retroviruses like HIV made of?",
+    "options": [
+      "Double-stranded DNA used as a template for mRNA synthesis",
+      "Single-stranded RNA used as mRNA",
+      "Single-stranded RNA used as a template for DNA synthesis",
+      "Single-stranded DNA used as a template for DNA synthesis",
+      "Double-stranded RNA used as a template for mRNA synthesis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2750
+  },
+  {
+    "text": "In glucose metabolism, oxygen:",
+    "options": [
+      "is a reaction product",
+      "oxidizes to form water",
+      "yields electrons to electron carriers",
+      "is reduced during the Krebs cycle",
+      "is reduced during oxidative phosphorylation"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2751
+  },
+  {
+    "text": "The endosymbiotic theory is proposed to explain:",
+    "options": [
+      "the origin of intracellular membranous organelles",
+      "the origin of mitochondria and chloroplasts",
+      "the RNA world hypothesis",
+      "the existence of a single specific precursor of eukaryotes",
+      "that eukaryotic cells can give rise to multicellular organisms"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2752
+  },
+  {
+    "text": "The tiger (Panthera tigris) and the lion (Panthera leo):",
+    "options": [
+      "can mate with each other, generating fertile male offspring",
+      "belong to different orders",
+      "belong to different families",
+      "belong to the same genus",
+      "belong to the same species"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2753
+  },
+  {
+    "text": "The brainstem:",
+    "options": [
+      "plays a fundamental role in memory and learning",
+      "is formed by the cerebellum and telencephalon",
+      "is the evolutionarily most recent part of the nervous system",
+      "controls the pituitary gland",
+      "is formed by the pons, medulla oblongata, and midbrain"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2754
+  },
+  {
+    "text": "Irregular DNA fragmentation is an alteration observable during:",
+    "options": [
+      "necrosis",
+      "cytokinesis",
+      "meiosis",
+      "apoptosis",
+      "mitosis"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2755
+  },
+  {
+    "text": "The zona fasciculata of the adrenal gland:",
+    "options": [
+      "primarily secretes testosterone",
+      "produces glucocorticoids",
+      "is considered a neuroendocrine structure",
+      "secretes mineralocorticoids",
+      "is the outer part of the adrenal gland"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2756
+  },
+  {
+    "text": "Indicate which of the following statements about Coenzyme Q is FALSE:",
+    "options": [
+      "It is also called Vitamin K",
+      "It is a fundamental component of the electron transport chain",
+      "It is found in the inner mitochondrial membranes",
+      "Its concentration tends to decrease with aging",
+      "It is a benzoquinone with a very long isoprenic side chain"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2757
+  },
+  {
+    "text": "The binding between hormone and receptor tyrosine kinase can determine all the events listed below EXCEPT:",
+    "options": [
+      "dimerization of the receptor",
+      "hydrolysis of GTP",
+      "phosphorylation of the receptor",
+      "activation of RAS",
+      "nuclear translocation of the receptor and its binding to DNA"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2758
+  },
+  {
+    "text": "The quaternary structure of a protein:",
+    "options": [
+      "is due to the presence of hydrogen bonds between two parallel segments of the polypeptide chain",
+      "is its specific sequence of amino acids",
+      "results from the association of two or more polypeptide chains",
+      "is a helical form stabilized by hydrogen bonds every 4 amino acids",
+      "is stabilized only by disulfide bridges"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2759
+  },
+  {
+    "text": "In cellular respiration, oxygen:",
+    "options": [
+      "is necessary and is oxidized at the end of the electron transport chain",
+      "is not necessary",
+      "is necessary and is reduced at the end of the electron transport chain",
+      "is necessary and is reduced during the Krebs cycle",
+      "is necessary and is oxidized during the Krebs cycle"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2760
+  },
+  {
+    "text": "Meiosis consists of:",
+    "options": [
+      "two reductional divisions",
+      "an equational division followed by a reductional division",
+      "two divisions with a DNA replication phase in between",
+      "a synthesis phase and a separation phase",
+      "a reductional division followed by an equational division"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2761
+  },
+  {
+    "text": "Cdks are activated by:",
+    "options": [
+      "binding with specific hormones",
+      "binding with cyclins",
+      "methylation",
+      "acetylation",
+      "binding with GTP"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2762
+  },
+  {
+    "text": "Which of the following is NOT a function of the endoplasmic reticulum?",
+    "options": [
+      "Lipid synthesis",
+      "Synthesis of membrane proteins",
+      "Release of calcium ions in muscle cells",
+      "Synthesis of nucleic acids",
+      "Formation of transport vesicles"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2763
+  },
+  {
+    "text": "Photosystems are found:",
+    "options": [
+      "in the outer mitochondrial membrane",
+      "in the mitochondrial matrix",
+      "in the stroma of chloroplasts",
+      "in the thylakoid membrane",
+      "in the inner mitochondrial membrane"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2764
+  },
+  {
+    "text": "The depolarization phase of the action potential occurs when:",
+    "options": [
+      "K+ ions enter the cell through voltage-gated channels",
+      "K+ ions exit the cell through voltage-gated channels",
+      "Na+ ions enter the cell through voltage-gated channels",
+      "Na+ ions enter the cell via the Na+/K+ ATPasepump",
+      "K+ ions enter the cell via the Na+/K+ ATPasepump"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2765
+  },
+  {
+    "text": "The enzyme ATP synthase, responsibleforthe production of ATP during cellular respiration, is found:",
+    "options": [
+      "in the inner mitochondrial membrane",
+      "in the outer mitochondrial membrane",
+      "in the cell wall",
+      "in the mitochondrial matrix",
+      "in the cytoplasm"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2766
+  },
+  {
+    "text": "What type of virus is HIV?",
+    "options": [
+      "DNA virus",
+      "Picornavirus",
+      "Adenovirus",
+      "Herpesvirus",
+      "Retrovirus"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2767
+  },
+  {
+    "text": "What is the term that indicates the movement of water through a semipermeable membrane from an area of higher water concentration to an area of lower water concentration?",
+    "options": [
+      "Exocytosis",
+      "Active transport",
+      "Osmosis",
+      "Diffusion",
+      "Endocytosis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2768
+  },
+  {
+    "text": "Which DNA polymerase is commonly used in PCR?",
+    "options": [
+      "Reverse transcriptase",
+      "DNA ligase",
+      "RNA polymerase",
+      "Taq polymerase",
+      "Helicase"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2769
+  },
+  {
+    "text": "Which process converts light energy into chemical energy in photosynthetic organisms?",
+    "options": [
+      "Calvin cycle",
+      "Glycolysis",
+      "Electron transport chain",
+      "Krebs cycle",
+      "Fermentation"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2770
+  },
+  {
+    "text": "Which of the following is a fundamental advantage of PCR?",
+    "options": [
+      "It allows the amplification of specific DNA sequences",
+      "It can rapidly generate restriction fragments",
+      "None of the other alternatives is correct",
+      "It is capable of sequencing proteins",
+      "It is an inexpensive technique"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2771
+  },
+  {
+    "text": "Which of the following enzymes is commonly used to cut DNA at specific sequences in recombinant DNA technology?",
+    "options": [
+      "DNA helicase",
+      "DNA ligase",
+      "DNA polymerase",
+      "Reverse transcriptase",
+      "Restriction endonucleases"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2772
+  },
+  {
+    "text": "Single nucleotide polymorphisms (SNPs) are:",
+    "options": [
+      "genetic mutations that always cause disease",
+      "genetic variations that occur only in coding regions of genes",
+      "genetic variations involving the insertion or deletion of multiple nucleotides",
+      "genetic variations involving the substitution of a single nucleotide",
+      "genetic variations that occur only in non-coding regions of genes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2773
+  },
+  {
+    "text": "Independent assortment occurs during which phase of meiosis?",
+    "options": [
+      "Anaphase I",
+      "Metaphase I",
+      "Prophase I",
+      "Metaphase II",
+      "Prophase II"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2774
+  },
+  {
+    "text": "Which type of plant has a specialized mechanism for concentrating carbon dioxide that helps reduce water loss?",
+    "options": [
+      "Bryophytes",
+      "Gymnosperms",
+      "C5 plants",
+      "C3 plants",
+      "CAM plants"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2775
+  },
+  {
+    "text": "The \"cemetery\" of erythrocytes is:",
+    "options": [
+      "the spleen",
+      "the thymus",
+      "the liver",
+      "the lymph nodes",
+      "the kidney"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2776
+  },
+  {
+    "text": "The flow of genetic information occurs from:",
+    "options": [
+      "DNA to RNA to proteins",
+      "RNA to proteins to DNA",
+      "DNA to proteins to RNA",
+      "proteins to RNA to DNA",
+      "RNA to DNA to proteins"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2777
+  },
+  {
+    "text": "Gametes are:",
+    "options": [
+      "only female sex cells",
+      "the set of organs of the male reproductive system",
+      "reproductive cells in species that have asexual reproduction",
+      "only male sex cells",
+      "both female and male sex cells"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2778
+  },
+  {
+    "text": "Individuals with blood group O:",
+    "options": [
+      "always have both parents with blood group O",
+      "necessarily have at least one parent with blood group O",
+      "surely have some relative with blood group O",
+      "have inherited an O-type allele from each parent",
+      "can have children exclusively with blood group O"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2779
+  },
+  {
+    "text": "The validity of Mendel's law, called independent assortment, can be experimentally verified only in the case of traits encoded by genes located:",
+    "options": [
+      "on the same chromosomes",
+      "on the same chromatids",
+      "on different chromosomes",
+      "on mitochondria",
+      "on homologous chromosomes"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2780
+  },
+  {
+    "text": "Active transport of nutrients into a bacterial cell:",
+    "options": [
+      "occurs exclusively using a \"symport\" type mechanism",
+      "occurs along the concentration gradient",
+      "requires energy expenditure for transport",
+      "occurs exclusively using a \"uniport\" type mechanism",
+      "always occurs with modification of the substrate"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2781
+  },
+  {
+    "text": "Helicases in DNA duplication:",
+    "options": [
+      "break the hydrogen bonds between nucleotides of the same strand",
+      "break the hydrogen bonds that hold the two strands together",
+      "keep the two DNA strands stretched",
+      "break the phosphodiester bonds between nucleotides of the same strand",
+      "break the covalent bonds that hold the two strands together"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2782
+  },
+  {
+    "text": "Where does the Krebs Cycle occur?",
+    "options": [
+      "In the mitochondria",
+      "In the ribosomes",
+      "In the Golgi apparatus",
+      "In the cytoplasm",
+      "In the endoplasmic reticulum"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2783
+  },
+  {
+    "text": "Which of the following parts of the parietal pleura covers the superior surface of the human diaphragm?",
+    "options": [
+      "Thoracic pleura",
+      "Pneumothorax",
+      "Mediastinal pleura",
+      "Diaphragmatic pleura",
+      "Intercostal nerves"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2784
+  },
+  {
+    "text": "In the cross of a recessive homozygote with a heterozygote, what is the probability of obtaining offspring with the dominant homozygous phenotype?",
+    "options": [
+      "100%",
+      "75%",
+      "25%",
+      "0%",
+      "50%"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2785
+  },
+  {
+    "text": "Which of the following is NOT a characteristic of covering epithelia?",
+    "options": [
+      "Cells are in close contact with each other",
+      "Epithelial sheets have a free apical surface",
+      "They can be composed of a single layer of cells",
+      "The lower face rests on a basement membrane",
+      "They have their own vascularization"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2786
+  },
+  {
+    "text": "Which of the following bones of the skull is a paired bone?",
+    "options": [
+      "Parietal",
+      "Sphenoid",
+      "Ethmoid",
+      "Occipital",
+      "Frontal"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2787
+  },
+  {
+    "text": "Which part of the brain coordinates muscle activity and body balance?",
+    "options": [
+      "Midbrain",
+      "Diencephalon",
+      "Medulla oblongata",
+      "Corpus callosum",
+      "Cerebellum"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2788
+  },
+  {
+    "text": "Which of the following statements regarding a monogenic, autosomal recessive pathology is correct?",
+    "options": [
+      "It is always transmitted to children",
+      "It manifests only in the heterozygous state",
+      "The probability that two healthy carrier parents have an affected child is 50%",
+      "It can be transmitted to both male and female children",
+      "It can be transmitted by the mother only to male children"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2789
+  },
+  {
+    "text": "The mechanism by which a cell takes in liquid substances from the environment, engulfed in small vesicles, is called:",
+    "options": [
+      "facilitated diffusion",
+      "pinocytosis",
+      "osmosis",
+      "endocytosis",
+      "phagocytosis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2790
+  },
+  {
+    "text": "According to Darwin's theory of evolution by natural selection, which of the following elements best explains the mechanism of species evolution?",
+    "options": [
+      "Use and disuse of organs",
+      "Survival of the fittest",
+      "Genetic mutations",
+      "Inheritance of acquired characteristics",
+      "Acquired variations"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2791
+  },
+  {
+    "text": "Which of the following is an example of chromosomal translocation?",
+    "options": [
+      "Philadelphia chromosome",
+      "Down syndrome",
+      "Patau syndrome",
+      "Cri-du-chat syndrome",
+      "Turner syndrome"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2792
+  },
+  {
+    "text": "Mutations in the gene that encodes the repressor can cause:",
+    "options": [
+      "Increase in the expression of the lac operon",
+      "No effect on the lac operon",
+      "Complete repression of the lac operon",
+      "Constitutive expression of the lac operon",
+      "Inactivation of the lac operon genes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2793
+  },
+  {
+    "text": "It is haploid:",
+    "options": [
+      "The sperm cell",
+      "The red blood cell",
+      "The nerve cell",
+      "The zygote",
+      "The epithelial cell"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2794
+  },
+  {
+    "text": "The cytoplasm is:",
+    "options": [
+      "The main component of blood plasma",
+      "A fluid material contained inside cells, in which cellular organelles are immersed",
+      "A network of protein filaments that crosses the entire cell",
+      "A cellular organelle with movement function",
+      "A pigment present in animal cells"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2795
+  },
+  {
+    "text": "Which enzyme is responsible for the DNA cutting phase in the CRISPR-Cas9 system?",
+    "options": [
+      "DNA ligase",
+      "RNA polymerase",
+      "Reverse transcriptase",
+      "DNA polymerase",
+      "Cas9 nuclease"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2796
+  },
+  {
+    "text": "A diploid organism has:",
+    "options": [
+      "One set of chromosomes",
+      "Three sets of chromosomes",
+      "Five sets of chromosomes",
+      "Four sets of chromosomes",
+      "Two sets of chromosomes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2797
+  },
+  {
+    "text": "Which of the following is a characteristic of the diplontic cycle?",
+    "options": [
+      "It causes rapid population growth",
+      "It requires only one parent",
+      "It produces genetically identical offspring",
+      "It occurs through binary fission",
+      "It involves the fusion of gametes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2798
+  },
+  {
+    "text": "Which of the following components is necessary for the functioning of the CRISPR-Cas9 system as a genome editing tool?",
+    "options": [
+      "Telomerase",
+      "RNA polymerase",
+      "Guide RNA (gRNA)",
+      "DNA polymerase",
+      "DNA ligase"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2799
+  },
+  {
+    "text": "Which of the following molecules is responsible for \"reading\" codons during protein translation?",
+    "options": [
+      "DNA",
+      "rRNA",
+      "tRNA",
+      "ATP",
+      "mRNA"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2800
+  },
+,
+  {
+    "text": "Which type of plant can present both C3 and C4 photosynthesis under different environmental conditions? A) CAM plants B) Bryophytes",
+    "options": [
+      "Gymnosperms",
+      "Angiosperms D) C3 plants"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2819
+  },
+  {
+    "text": "Secondary oocytes are: A) haploid B) tetraploid C) triploid",
+    "options": [
+      "diploid",
+      "polyploid"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2848
+  },
+  {
+    "text": "Which of the following cell types does not reproduce? A) The neuron B) The hepatic cell C) The epidermal cell",
+    "options": [
+      "The connective tissue cell",
+      "The embryonic stem cell"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2865
+  },
+  {
+    "text": "The cytoskeletal elements involved in regulating and coordinating cytokinesis in animal and plant cells include: A) microtubules and actin filaments B) intermediate filaments and myosin filaments",
+    "options": [
+      "microfilaments and microtubules",
+      "microtubules and intermediate filaments E) actin filaments and myosin filaments"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2876
+  },
+  {
+    "text": "What is a promoter in the context of gene expression? A) A DNA region that binds RNA polymerase and initiates transcription B) A protein that regulates gene expression C) A region of mRNA that binds to ribosomes",
+    "options": [
+      "A region of mRNA that binds to ribosomes D) An enzyme that processes RNA molecules E) A sequence of amino acids in a protein",
+      "An enzyme that processes RNA molecules E) An amino acid sequence in a protein Question 900 What is a promoter in the context of gene expression? A) A region of DNA that binds to RNA polymerase and initiates transcription ' B) A protein that regulates gene expression"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2900
+  },
+,
+  {
+    "text": "Which of the following statements regarding DNA is FALSE?",
+    "options": [
+      "It is also present in ribosomes",
+      "DNA is present in both eukaryotes and prokaryotes",
+      "DNA is formed by nucleotides",
+      "Some viruses contain DNA",
+      "DNA has a double helix structure"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2801
+  },
+  {
+    "text": "Hemoglobin is a protein found:",
+    "options": [
+      "in all eukaryotic cells",
+      "only in hepatocytes",
+      "in all eukaryotic and prokaryotic cells",
+      "in plasma",
+      "in erythrocytes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2802
+  },
+  {
+    "text": "In the cytoplasm of plant cells there are cavities called:",
+    "options": [
+      "vacuoles",
+      "none of the other answers is correct",
+      "karyoplasms",
+      "nucleosomes",
+      "digestive vacuoles"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2803
+  },
+  {
+    "text": "The intestinal structures responsible for absorption are:",
+    "options": [
+      "lymphatic vessels",
+      "actin filaments",
+      "microtubules",
+      "microvilli",
+      "microfilaments"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2804
+  },
+  {
+    "text": "Plasma is:",
+    "options": [
+      "blood without the red blood cell component",
+      "a synonym for blood",
+      "the liquid part of blood that remains after coagulation",
+      "the liquid part of blood",
+      "the corpuscular part of blood"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2805
+  },
+  {
+    "text": "Mitosis is a mechanism by which:",
+    "options": [
+      "viruses, bacteria and eukaryotic organisms reproduce",
+      "sugars are synthesized",
+      "bacteria reproduce",
+      "a eukaryotic cell produces two genetically equal cells",
+      "both eukaryotic and prokaryotic organisms reproduce"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2806
+  },
+  {
+    "text": "Crossing-over:",
+    "options": [
+      "favors the reassortment of the genetic complement",
+      "occurs in the prophase of meiosis and mitosis",
+      "is not present in insects",
+      "allows sexual reproduction",
+      "none of the other answers is correct"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2807
+  },
+  {
+    "text": "Viruses:",
+    "options": [
+      "are always surrounded by a membrane",
+      "are capable of producing energy",
+      "are obligate intracellular parasites",
+      "are visible under an optical microscope",
+      "are equipped with a nucleus"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2808
+  },
+  {
+    "text": "The lac operon is composed of:",
+    "options": [
+      "An operator and a single structural gene",
+      "A regulatory gene and multiple structural genes",
+      "A promoter, an operator and a regulatory gene",
+      "A promoter, an operator and multiple structural genes",
+      "A promoter and a single structural gene"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2809
+  },
+  {
+    "text": "The cross-bridge cycle in muscle contraction involves:",
+    "options": [
+      "irreversible shortening of the H zone of the sarcomere",
+      "binding of tropomyosin to actin",
+      "ATP-dependentdetachment of myosin from actin",
+      "fusion of myofibrils to form a muscle fiber",
+      "binding of calcium ions to myosin heads"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2810
+  },
+  {
+    "text": "Which of the following is a characteristic of asexual reproduction?",
+    "options": [
+      "Occurs through meiosis",
+      "Produces genetically identical offspring",
+      "Requires two parents",
+      "Genetic recombination occurs",
+      "Involves fusion of gametes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2811
+  },
+  {
+    "text": "Hemophilia is a recessive disease linked to the X chromosome. A carrier woman and a non-hemophiliac male decide to have a child. Which of the following statements are correct? 1. They have a 25% chance of generating a hemophiliac male child 2. They have a 25% chance of generating a carrier female child 3. They have a 25% chance of generating a carrier male child",
+    "options": [
+      "Only 1 and 2",
+      "Only 1 and 3",
+      "Only 2",
+      "Only 1",
+      "Only 3"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2812
+  },
+  {
+    "text": "Which type of plant has specialized leaf anatomy with two distinct types of photosynthetic cells?",
+    "options": [
+      "CAM plants",
+      "Bryophytes",
+      "C3 plants",
+      "C4 plants",
+      "Gymnosperms"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2813
+  },
+  {
+    "text": "A recessive sex-linked gene produces red-green color blindness (color blindness) in humans. A normal woman, whose father was color blind, marries a color blind man. Among the girls born from this marriage, what is the expected percentage of color blind?",
+    "options": [
+      "There will be a generational skip",
+      "All daughters are color blind",
+      "No daughters are color blind",
+      "50% of daughters will be color blind",
+      "1/4 of daughters will have the anomaly"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2814
+  },
+  {
+    "text": "Cloning of an animal can be achieved by transplanting the nucleus of a differentiated cell of an adult individual into an oocyte deprived of its own nucleus. In a small number of cases, the egg thus remodeled can develop giving rise to the birth of normal individuals. These experiments demonstrate that:",
+    "options": [
+      "cellular differentiation is accompanied by irreversible modifications of the genome",
+      "the progress of biotechnology manages to modify the functioning of gene expression mechanisms",
+      "for correct embryonic development it is sufficient that only a small part of the genetic information is active",
+      "the genetic information proper to the species is entirely conserved even in the differentiated cells of an adult",
+      "the egg cell is programmed for embryonic development regardless of the genome and state of the nucleus"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2815
+  },
+  {
+    "text": "Molecular oxygen produced during photosynthesis derives from:",
+    "options": [
+      "light energy",
+      "glucose synthesis",
+      "photolysis of water",
+      "C O f‚ixation",
+      "glucose splitting"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2816
+  },
+  {
+    "text": "Which of the following statements regarding the genetic code is incorrect?",
+    "options": [
+      "It comprises a total of 64 nucleotide triplets",
+      "It comprises three stop triplets",
+      "It is universal, with some exceptions",
+      "It establishes the correspondence between nucleotide triplets and amino acids",
+      "It defines a 1:1 correspondence between nucleotides and amino acids"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2817
+  },
+  {
+    "text": "Human blood contains 160 g of hemoglobin per liter. There are about 5 billion red blood cells per milliliter of blood. Knowing that the molecular weight of hemoglobin is 64,000,andthatineachmoleofacompoundthereare6×1023 molecules,indicatewhatis the average number of hemoglobin molecules per red blood cell:",
+    "options": [
+      "300,000",
+      "64 × 1023",
+      "300",
+      "16,000,000",
+      "300,000,000"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2818
+  },
+  {
+    "text": "Which type of plant can present both C3 and C4 photosynthesis under different environmental conditions?",
+    "options": [
+      "C3 plants",
+      "Bryophytes",
+      "CAM plants",
+      "Gymnosperms",
+      "Angiosperms"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2819
+  },
+  {
+    "text": "Epigenetics refers to:",
+    "options": [
+      "modifications to gene activity without changing the DNA sequence",
+      "the study of gene expression patterns",
+      "inheritance of acquired characteristics",
+      "changes in DNA sequence due to mutations",
+      "the study of genetic disorders"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2820
+  },
+  {
+    "text": "During cytokinesis in plant cells, a structure called:",
+    "options": [
+      "Cell wall",
+      "Nuclear envelope",
+      "Phragmoplast",
+      "Cleavage furrow",
+      "Contractile ring"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2821
+  },
+  {
+    "text": "Which of the following is an example of asexual reproduction?",
+    "options": [
+      "Fertilization in humans",
+      "Spore production in ferns",
+      "Meiosis in plants",
+      "Budding in yeast",
+      "Pollination in flowers"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2822
+  },
+  {
+    "text": "What is the purpose of the denaturation phase in PCR?",
+    "options": [
+      "Polymerize new DNA strands using DNA polymerase",
+      "Amplify the DNA template exponentially",
+      "Bind DNA fragments together",
+      "Analyze primers on the DNA template",
+      "Separate DNA strands"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2823
+  },
+  {
+    "text": "Physiological saline solution is a 0.9% NaCl solution. A red blood cell placed in a 1.2% NaCl solution:",
+    "options": [
+      "Loses water",
+      "Becomes turgid",
+      "Takes in water",
+      "Undergoes hemolysis",
+      "There are no osmotic changes"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2824
+  },
+  {
+    "text": "Which anatomical structure is NOT present in a male human being?",
+    "options": [
+      "Bladder",
+      "None of the other alternatives is correct",
+      "Fallopian tube",
+      "Urethra",
+      "Ureter"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2825
+  },
+  {
+    "text": "Klinefelter syndrome is caused by an anomaly in the number of sex chromosomes and is characterized by a genotype:",
+    "options": [
+      "XXY",
+      "Y0",
+      "XXX",
+      "XYY",
+      "X0"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2826
+  },
+  {
+    "text": "Which statement regarding animals is FALSE?",
+    "options": [
+      "Some animal species can reproduce asexually",
+      "They are ectothermic or homeothermic organisms",
+      "They are made up of eukaryotic cells",
+      "They are exclusively ectothermic organisms",
+      "They are heterotrophic organisms"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2827
+  },
+  {
+    "text": "How many triplets make up the genetic code?",
+    "options": [
+      "64",
+      "A variable number depending on the species considered",
+      "12, due to amino acid redundancy",
+      "36",
+      "20, like the amino acids it encodes"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2828
+  },
+  {
+    "text": "What is the main purpose of recombinant DNA technology?",
+    "options": [
+      "Amplify specific DNA sequences",
+      "Manipulate and combine DNA from different sources",
+      "Sequence entire genomes",
+      "Produce large quantities of proteins",
+      "Detect genetic mutations"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2829
+  },
+  {
+    "text": "What is the role of the codon in protein translation?",
+    "options": [
+      "Catalyzes the translation process",
+      "Binds to the mRNA template",
+      "Transports amino acids to ribosomes",
+      "Specifies the amino acid sequence",
+      "Forms peptide bonds between amino acids"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2830
+  },
+  {
+    "text": "Indicate which of the following structure/function associations is incorrect:",
+    "options": [
+      "Mitochondrion / cellular respiration",
+      "Plasma membrane / transport of molecules",
+      "Chloroplast / photosynthesis",
+      "Golgi complex / translation",
+      "Nucleus / transcription"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2831
+  },
+  {
+    "text": "The monomers that constitute polypeptide chains are:",
+    "options": [
+      "Proteins",
+      "Amino acids",
+      "Monosaccharides",
+      "Nucleic acids",
+      "Nucleotides"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2832
+  },
+  {
+    "text": "Which of the following is not a macromolecule?",
+    "options": [
+      "Hemoglobin",
+      "Sodium chloride",
+      "DNA",
+      "Cellulose",
+      "RNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2833
+  },
+  {
+    "text": "The bronchi:",
+    "options": [
+      "are part of the digestive system",
+      "are part of the urinary system",
+      "allow gas exchange between air and blood",
+      "make up the last airways",
+      "do not exist in the human species, but only in fish"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2834
+  },
+  {
+    "text": "During the adduction movement, a limb:",
+    "options": [
+      "makes oscillatory movements",
+      "approaches the body",
+      "moves away from the body",
+      "performs a 90° torsion",
+      "makes circular movements"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2835
+  },
+  {
+    "text": "What is the final product of translation?",
+    "options": [
+      "Polypeptide chain/protein",
+      "tRNA",
+      "DNA",
+      "mRNA",
+      "rRNA"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2836
+  },
+  {
+    "text": "The number of chromosomes in a human somatic cell is:",
+    "options": [
+      "12",
+      "46",
+      "64",
+      "23",
+      "32"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2837
+  },
+  {
+    "text": "What is the unit of measurement used in a chromosomal map?",
+    "options": [
+      "Grams (g)",
+      "Centimorgan (cM)",
+      "Kilobases (kb)",
+      "Nucleotides (nt)",
+      "Base pairs (bp)"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2838
+  },
+  {
+    "text": "What is the process through which the primary mRNA transcript is modified before it can be used to produce proteins?",
+    "options": [
+      "Translation",
+      "Replication",
+      "Methylation",
+      "Transcription",
+      "Splicing"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2839
+  },
+  {
+    "text": "Which type of plant is commonly found in tropical grasslands and savannas?",
+    "options": [
+      "C4 plants",
+      "Bryophytes",
+      "C3 plants",
+      "Gymnosperms",
+      "C5 plants"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2840
+  },
+  {
+    "text": "Polyploidy refers to the condition in which an organism has:",
+    "options": [
+      "Two sets of chromosomes",
+      "One set of chromosomes",
+      "Three sets of chromosomes",
+      "Four sets of chromosomes",
+      "More than two sets of chromosomes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2841
+  },
+  {
+    "text": "Youcan choose between ingesting 1 gram of sucrose or 1 gram of glucose. From where will you get more energy?",
+    "options": [
+      "it is essential to know the molecular weights of the compounds to make the calculation",
+      "equal energy in both cases",
+      "from 1 gram of glucose",
+      "it is a calculation that cannot be made",
+      "from 1 gram of sucrose"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2842
+  },
+  {
+    "text": "Indicate which of the following statements is wrong. Meiosis is a process that:",
+    "options": [
+      "randomly distributes paternal and maternal chromosomes in gametes",
+      "is characteristic of organisms that reproduce sexually",
+      "introduces new genes into the genome of an individual",
+      "takes place only in germ cells",
+      "halves the number of chromosomes in gametes"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2843
+  },
+  {
+    "text": "It can be stated that two individuals belong to the same species when:",
+    "options": [
+      "they are phenotypically similar",
+      "they have the same number of chromosomes",
+      "they occupy the same geographical area",
+      "they are capable of reproducing and giving rise to viable offspring",
+      "they are capable of reproducing and giving rise to fertile offspring"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2844
+  },
+  {
+    "text": "The HIV virus:",
+    "options": [
+      "possesses a DNA genome",
+      "is capable of synthesizing an RNA strand using its own DNA as a template",
+      "does not possess RNA",
+      "is capable of making the infected cell synthesize a DNA strand using its own RNA as a template",
+      "is capable of retrotranslating proteins into RNA"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2845
+  },
+  {
+    "text": "Mitochondria are present:",
+    "options": [
+      "in all eukaryotic cells, with few exceptions",
+      "in all aerobic cells, both eukaryotic and prokaryotic",
+      "always in all cells",
+      "in animal eukaryotic cells but not in plant cells",
+      "in all eukaryotic cells and in some aerobic bacteria"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2846
+  },
+  {
+    "text": "In C4 plants, where does carbon dioxide fixation occur?",
+    "options": [
+      "Phloem cells",
+      "Xylem vessels",
+      "Bundle sheath cells",
+      "Stomata",
+      "Mesophyll cells"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2847
+  },
+  {
+    "text": "Secondary oocytes are:",
+    "options": [
+      "diploid",
+      "triploid",
+      "haploid",
+      "tetraploid",
+      "polyploid"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2848
+  },
+  {
+    "text": "Which enzyme is responsible for the initial phase of carbon fixation in C4 plants?",
+    "options": [
+      "Oxaloacetate decarboxylase",
+      "Malate dehydrogenase",
+      "Ribulose-1,5-bisphosphate carboxylase/oxygenase (Rubisco)",
+      "Phosphoenolpyruvate carboxylase (PEP carboxylase)",
+      "Pyruvate kinase"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2849
+  },
+  {
+    "text": "The sliding filament theory of muscle contraction proposes that:",
+    "options": [
+      "cross-bridge formation between actin and myosin is interrupted during contraction",
+      "actin and myosin filaments slide over each other, causing muscle contraction",
+      "the sarcomere shortens due to increased diameter of the muscle fiber",
+      "calcium ions bind to actin, initiating muscle contraction",
+      "actin and myosin filaments increase in length during contraction"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2850
+  },
+  {
+    "text": "The frequency of a polymorphism within a population is determined by:",
+    "options": [
+      "environmental factors",
+      "the age of individuals within the population",
+      "genetic factors and evolutionary processes",
+      "the sex of individuals within the population",
+      "random events"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2851
+  },
+  {
+    "text": "Which of the following elements is involved in post-transcriptional gene regulation?",
+    "options": [
+      "Enhancers",
+      "Promoters",
+      "Transcriptionfactors",
+      "Spliceosomes",
+      "Ribosomes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2852
+  },
+  {
+    "text": "In prokaryotes, functionally related genes are sometimes positioned adjacent to each other in the genome and can be under the control of the same regulatory mechanism. What are they called?",
+    "options": [
+      "Activators",
+      "Repressors",
+      "Operons",
+      "Promoters",
+      "Operators"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2853
+  },
+  {
+    "text": "Epigenetic modifications can be:",
+    "options": [
+      "reversible",
+      "permanent",
+      "inherited only through the maternal line",
+      "species-specific",
+      "random"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2854
+  },
+  {
+    "text": "Which of the following chromosomal mutations involves the presence of an abnormal number of chromosomes?",
+    "options": [
+      "Inversion",
+      "Aneuploidy",
+      "Translocation",
+      "Deletion",
+      "Duplication"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2855
+  },
+  {
+    "text": "How does asexual reproduction occur in Plasmodium malariae?",
+    "options": [
+      "Budding",
+      "Schizogony",
+      "Binary fission",
+      "Meiosis",
+      "Parthenogenesis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2856
+  },
+  {
+    "text": "During meiosis, the reduction in chromosome number occurs in which phase?",
+    "options": [
+      "Prophase I",
+      "Metaphase I",
+      "TelophaseI",
+      "Anaphase II",
+      "Anaphase I"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2857
+  },
+  {
+    "text": "Genetic information is deposited:",
+    "options": [
+      "in dialysis",
+      "in lysosomes",
+      "in chromosomes",
+      "in peroxisomes",
+      "in all the elements indicated in the other alternatives"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2858
+  },
+  {
+    "text": "In what way do viruses differ from living organisms?",
+    "options": [
+      "Viruses cannot reproduce",
+      "Viruses do not have a cellular structure",
+      "Viruses have metabolic processes",
+      "Viruses lack genetic material",
+      "Viruses cannot evolve"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2859
+  },
+  {
+    "text": "Epigenetic changes can be influenced by:",
+    "options": [
+      "Environmental factors",
+      "Genetic mutations",
+      "Random chance",
+      "Replication errors",
+      "Chromosomal abnormalities"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2860
+  },
+  {
+    "text": "Are mitochondria present in bacteria?",
+    "options": [
+      "Yes, only in saprophytic bacteria",
+      "Yes,but only in bacteria with very large genomes",
+      "Yes, always",
+      "No B)Yes,butonlyinaerobicbacteria"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2861
+  },
+  {
+    "text": "Immunoglobulins are:",
+    "options": [
+      "lymphocytes",
+      "platelets",
+      "vitamins",
+      "antigens",
+      "antibodies"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2862
+  },
+  {
+    "text": "Which of the following statements regarding cellular RNA is false?",
+    "options": [
+      "It is always single-stranded",
+      "It is a molecule with many autonomous functions in the cell",
+      "It can have dimensions ranging from a few dozen to many thousands of nucleotides",
+      "It can associate with proteins forming complex structures",
+      "It serves exclusively as an intermediary between DNA and proteins"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2863
+  },
+  {
+    "text": "With what probability are children of blood group B born from a woman of group 0 and a man of group AB?",
+    "options": [
+      "0%",
+      "50%",
+      "100%",
+      "75%",
+      "25%"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2864
+  },
+  {
+    "text": "Which of the following cell types does not reproduce?",
+    "options": [
+      "The hepatic cell",
+      "The neuron",
+      "The connective tissue cell",
+      "The embryonic stem cell",
+      "The epidermal cell"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2865
+  },
+  {
+    "text": "Gene A and gene B show complete dominance over their respective alleles a and b. The cross AaBb x aabb will produce:",
+    "options": [
+      "two phenotypes and four genotypes",
+      "only one phenotype and two genotypes",
+      "two phenotypes and two genotypes",
+      "four phenotypes and four genotypes",
+      "four phenotypes and two genotypes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2866
+  },
+  {
+    "text": "Which of the following statements regarding cellular DNA is false?",
+    "options": [
+      "It contains the genetic program of the cell",
+      "It has a very high molecular weight",
+      "It is found exclusively in the nucleus of eukaryotic cells",
+      "It is associated with proteins",
+      "It is always a double-stranded molecule"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2867
+  },
+  {
+    "text": "The genetic code guides the conversion of nucleotide sequences (messenger RNAs) into amino acid sequences (proteins). Among the various properties of the code, one is the so-called \"redundancy\", that is:",
+    "options": [
+      "each of the 20 amino acids is specified by 3 codons, while 4 codons function as stop signals",
+      "only 20 of the 64 codons are used, the others have no meaning",
+      "each amino acid can correspond to more than one nucleotide triplet (codon)",
+      "each codon can correspond to more than one amino acid",
+      "there are many codons that have no meaning"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2868
+  },
+  {
+    "text": "What is the most abundant substance in cells?",
+    "options": [
+      "Proteins",
+      "DNA",
+      "RNA molecules",
+      "Mineral salts",
+      "Water"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2869
+  },
+  {
+    "text": "Genes are:",
+    "options": [
+      "segregating chromosomes",
+      "sections of DNA that can code for specific proteins",
+      "amino acid sequences that contain sexually transmissible information",
+      "constituents of mRNA involved in transcription",
+      "cellular organelles responsible for protein synthesis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2870
+  },
+  {
+    "text": "Which of the following is NOT a factor that influences the rate of diffusion through a membrane?",
+    "options": [
+      "Temperature",
+      "Membrane permeability",
+      "Concentration gradient",
+      "Surface area of the membrane",
+      "Membrane thickness"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2871
+  },
+  {
+    "text": "Which is NOT a function of the cell membrane in eukaryotes?",
+    "options": [
+      "Generate energy",
+      "Facilitate the movement of ions and molecules",
+      "Regulate water balance",
+      "Protect the cell from external threats",
+      "Provide structural support"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2872
+  },
+  {
+    "text": "Which type of plant is more efficient in hot and dry environments due to reduced photorespiration?",
+    "options": [
+      "Bryophytes",
+      "Gymnosperms",
+      "C3 plants",
+      "C4 plants",
+      "Angiosperms"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2873
+  },
+  {
+    "text": "What is a transcription factor?",
+    "options": [
+      "An enzyme that synthesizes RNA",
+      "A protein that regulates gene expression by binding to DNA",
+      "A protein that catalyzes the formation of phosphodiester bonds in DNA",
+      "A molecule that transports amino acids to ribosomes during translation",
+      "A region of mRNA that binds to ribosomes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2874
+  },
+  {
+    "text": "Which term describes the condition of having three copies of each chromosome?",
+    "options": [
+      "Tetraploidy",
+      "Monoploidy",
+      "Aneuploidy",
+      "Diploidy",
+      "Polyploidy"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2875
+  },
+  {
+    "text": "The cytoskeletal elements involved in regulating and coordinating cytokinesis in animal and plant cells include:",
+    "options": [
+      "microfilaments and microtubules",
+      "intermediate filaments and myosin filaments",
+      "microtubules and actin filaments",
+      "actin filaments and myosin filaments",
+      "microtubules and intermediate filaments"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2876
+  },
+  {
+    "text": "What is the function of the CRISPR-Cas9 system in bacteria?",
+    "options": [
+      "Provide immunity against viral infections",
+      "Repair damaged DNA",
+      "Regulate gene expression",
+      "Initiate transcription",
+      "Facilitate DNA replication"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2877
+  },
+  {
+    "text": "Polymorphism refers to:",
+    "options": [
+      "the presence of multiple mutations in a gene",
+      "the presence of genetic mutations that always lead to disease",
+      "the presence of genetic variations within a population",
+      "the complete absence of genetic mutations",
+      "the presence of genetic mutations only in non-coding regions"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2878
+  },
+  {
+    "text": "Which of the following is a characteristic of meiosis but not of mitosis?",
+    "options": [
+      "Separation of sister chromatids",
+      "Formation of the spindle apparatus",
+      "Formation of the synaptonemal complex",
+      "Cytokinesis",
+      "DNA replication"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2879
+  },
+  {
+    "text": "Alternative splicing refers to the process by which:",
+    "options": [
+      "exons are always removed from the pre-mRNA molecule",
+      "the pre-mRNA molecule is exported from the nucleus without being processed",
+      "different exons join in different combinations or introns are retained in the mature mRNA molecule",
+      "the splicing machinery is inhibited, leading to mRNA degradation",
+      "introns are never removed in the mature mRNA molecule"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2880
+  },
+  {
+    "text": "In DNA, cytosine always pairs with ......... and adenine always pairs with .........",
+    "options": [
+      "thymine; guanine",
+      "uracil; thymine",
+      "adenine; cytosine",
+      "guanine; cytosine",
+      "guanine; thymine"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2881
+  },
+  {
+    "text": "How many genes are present in a chromosome?",
+    "options": [
+      "About ten",
+      "23",
+      "46",
+      "2",
+      "A large number"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2882
+  },
+  {
+    "text": "Regarding the human mitochondrial genome, it is NOT correct to state that:",
+    "options": [
+      "it codes for tRNA, rRNA and polypeptides",
+      "it has a low mutation rate",
+      "it is inherited maternally",
+      "its transcription is polycistronic",
+      "it possesses 37 genes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2883
+  },
+  {
+    "text": "In a metaphase plate, there are 92 sister chromatids, how many pairs of homologous chromosomes are there?",
+    "options": [
+      "38",
+      "23",
+      "92",
+      "31",
+      "46"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2884
+  },
+  {
+    "text": "The human cell normally has 46 chromosomes. How many chromosomes will each of the two daughter cells have after cell division by mitosis?",
+    "options": [
+      "46",
+      "92",
+      "44",
+      "23",
+      "22"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2885
+  },
+  {
+    "text": "Which of the following is a key characteristic of meiosis I that contributes to genetic diversity?",
+    "options": [
+      "Spindle fiber formation",
+      "Synapsis",
+      "Chromosome condensation",
+      "Cytokinesis",
+      "DNA replication"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2886
+  },
+  {
+    "text": "What is the purpose of the annealing phase in PCR?",
+    "options": [
+      "Separate DNA strands",
+      "Polymerize new DNA strands using DNA polymerase",
+      "Bind DNA fragments together",
+      "Create RNA primers",
+      "Pair the primers on the DNA template"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2887
+  },
+  {
+    "text": "Which of the following structures is present in all viruses?",
+    "options": [
+      "Envelope",
+      "Flagellum",
+      "Nucleus",
+      "Capsid",
+      "Tail fibers"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2888
+  },
+  {
+    "text": "Which of the following is the correct order of events during protein translation?",
+    "options": [
+      "Termination,elongation, initiation",
+      "Elongation, initiation, termination",
+      "Initiation, termination, elongation",
+      "Initiation, elongation, termination",
+      "Elongation, termination, initiation"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2889
+  },
+  {
+    "text": "The basic contractile unit of skeletal muscle is called:",
+    "options": [
+      "actin filament",
+      "myosin filament",
+      "myofibril",
+      "muscle fiber",
+      "sarcomere"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2890
+  },
+  {
+    "text": "The peptidyl transferase reaction is mediated by:",
+    "options": [
+      "small ribosomal subunit",
+      "large ribosomal subunit",
+      "tRNA",
+      "ATP",
+      "mRNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2891
+  },
+  {
+    "text": "Which type of chromosomal mutation involves the loss of a segment of a chromosome?",
+    "options": [
+      "Polyploidy",
+      "Duplication",
+      "Inversion",
+      "Aneuploidy",
+      "Deletion"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2892
+  },
+  {
+    "text": "Histone epigenetic modifications refer to:",
+    "options": [
+      "alterations in the amino acid structure of histone proteins",
+      "the addition or removal of chemical groups to histone proteins",
+      "changes in the number of histone proteins in a cell",
+      "the substitution of histone proteins with other proteins",
+      "changes in the nucleotide sequence of DNA wrapped by histone proteins"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2893
+  },
+  {
+    "text": "A chromosomal map is a representation:",
+    "options": [
+      "of the position of genes on a chromosome",
+      "of the arrangement of nucleotides on a chromosome",
+      "of the replication pattern of a chromosome",
+      "of the amino acid sequence in a chromosome",
+      "of the physical structure of a chromosome"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2894
+  },
+  {
+    "text": "Which type of point mutation involves shifting the reading frame downstream of the mutation?",
+    "options": [
+      "Missense mutation",
+      "Silent mutation",
+      "Chromosomal mutation",
+      "Frameshift mutation",
+      "Nonsense mutation"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2895
+  },
+  {
+    "text": "What is the function of glycoproteins present on the viral envelope?",
+    "options": [
+      "Assembly of new viral particles",
+      "Attachment to host cells",
+      "Replication of viral genome",
+      "Protection of viral nucleic acid",
+      "Regulation of viral gene expression"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2896
+  },
+  {
+    "text": "The spliceosome is a complex composed of:",
+    "options": [
+      "DNA polymerase",
+      "RNA polymerase",
+      "Small nuclear ribonucleoproteins (snRNP)",
+      "ribosomal proteins",
+      "tRNA molecules"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2897
+  },
+  {
+    "text": "Which of these statements regarding the pancreas is correct?",
+    "options": [
+      "It induces lowering of blood glucose through insulin release",
+      "It induces lowering of blood glucose through glucagon release",
+      "It secretes only somatostatin",
+      "It induces elevation of blood glucose through insulin release",
+      "It secretes only glucagon"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2898
+  },
+  {
+    "text": "Which of the following molecules provides energy for protein translation?",
+    "options": [
+      "piRNA",
+      "GTP",
+      "tRNA",
+      "DNA",
+      "mRNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2899
+  },
+  {
+    "text": "What is a promoter in the context of gene expression?",
+    "options": [
+      "A region of DNA that binds to RNA polymerase and initiates transcription '",
+      "A region of mRNA that binds to ribosomes",
+      "A protein that regulates gene expression",
+      "An enzyme that processes RNA molecules",
+      "An amino acid sequence in a protein Question 900 What is a promoter in the context of gene expression?",
+      "An enzyme that processes RNA molecules",
+      "A protein that regulates gene expression",
+      "A DNA region that binds RNA polymerase and initiates transcription",
+      "A sequence of amino acids in a protein",
+      "A region of mRNA that binds to ribosomes"
+    ],
+    "correctAnswer": 7,
+    "subject": "Biology",
+    "id": 2900
+  },
+,
+  {
+    "text": "What is the most abundant type of molecule in the cytoplasm?",
+    "options": [
+      "Proteins",
+      "DNA",
+      "Water",
+      "Sugars",
+      "RNA"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3001
+  },
+  {
+    "text": "Enzymes are:",
+    "options": [
+      "Nucleic acids",
+      "Carbohydrates",
+      "Proteins",
+      "Amino acids",
+      "Lipids"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3002
+  },
+  {
+    "text": "Microfilaments are a structural element of:",
+    "options": [
+      "chromosomes",
+      "cell membranes",
+      "the mitotic spindle",
+      "mitochondria",
+      "the cytoskeleton"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3003
+  },
+  {
+    "text": "The process that leads to the halving of the number of chromosomes is called:",
+    "options": [
+      "Fertilization",
+      "Fission",
+      "Mitosis",
+      "Meiosis",
+      "Metaphase"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3004
+  },
+  {
+    "text": "Genetic mutations are:",
+    "options": [
+      "variations in the base sequence of DNA",
+      "variations in the amino acid sequence of proteins",
+      "variations in the rate of cell division",
+      "variations in the base sequence of RNA",
+      "variations in cellular morphology"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3005
+  },
+  {
+    "text": "Cell theory states that:",
+    "options": [
+      "all cells are delimited by a membrane",
+      "cells are small in size",
+      "all living beings are made up of one or more cells",
+      "cells can be classified as prokaryotic or eukaryotic",
+      "cells are highly organized structures"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3006
+  },
+  {
+    "text": "Which of the following is the fundamental mechanism underlying evolution according to Darwin?",
+    "options": [
+      "Artificial selection",
+      "Asexual reproduction",
+      "Acquisition of new traits in response to environmental changes",
+      "Natural selection",
+      "Creation of different species"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3007
+  },
+  {
+    "text": "If a gene is found on a certain chromosome, where will its allele be located?",
+    "options": [
+      "On a non-homologous chromosome in the same position",
+      "In another position on the homologous chromosome",
+      "In the same position on the homologous chromosome",
+      "In an adjacent position on the same chromosome",
+      "On any chromosome in any position"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3008
+  },
+  {
+    "text": "A species can be defined as a set of individuals that:",
+    "options": [
+      "are able to reproduce and produce viable offspring",
+      "are phenotypically similar",
+      "are able to reproduce and produce fertile offspring",
+      "have the same number of chromosomes",
+      "occupy the same geographical area"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3009
+  },
+  {
+    "text": "In nerve cells, gap junctions:",
+    "options": [
+      "are also called tight junctions",
+      "allow the transmission of nerve signals from one neuron to another both in chemical synapses and in electrical synapses",
+      "mainly allow the direct passage of proteins between two connected cells",
+      "are also located in the nodes of Ranvier",
+      "are the constituent elements of electrical synapses"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3010
+  },
+  {
+    "text": "A gene can be defined as:",
+    "options": [
+      "a DNA sequence that determines a pathology",
+      "a DNA sequence that codes for a polypeptide chain",
+      "a section of chromosome that can be inherited in a Mendelian manner",
+      "a DNA sequence that determines the synthesis of an enzyme",
+      "a section of chromosome that produces a trait in the phenotype"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3011
+  },
+  {
+    "text": "From a woman with blood group A and a man with blood group B, a child with group O is born. What were the genotypes of the parents?",
+    "options": [
+      "AA and B0",
+      "AA and BB",
+      "A0 and B0",
+      "A0 and BB",
+      "It is not possible that it is their child"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3012
+  },
+  {
+    "text": "Our cells derive energy mainly through:",
+    "options": [
+      "storage of triglycerides",
+      "oxidation of lipids and reduction of carbohydrates",
+      "oxidation of carbohydrates and lipids",
+      "synthesis of carbohydrates",
+      "oxidation of carbohydrates and reduction of lipids"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3013
+  },
+  {
+    "text": "Which of the following biological events takes place on ribosomes?",
+    "options": [
+      "The nucleotide sequence of a gene on DNA is transcribed into a messenger RNA molecule",
+      "A transfer RNA is paired with a specific amino acid",
+      "A segment of DNA that codes for a protein is duplicated",
+      "The RNA molecule is reverse transcribed",
+      "The nucleotide sequence of a messenger RNA is translated into a specific amino acid sequence"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3014
+  },
+  {
+    "text": "What does it mean that an organism is diploid?",
+    "options": [
+      "Its cells contain two nuclei",
+      "It is a eukaryotic organism",
+      "Its cells contain two copies of each chromosome",
+      "It is composed of only two cells",
+      "Its chromosomes are even in number"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3015
+  },
+  {
+    "text": "All viruses:",
+    "options": [
+      "can only infect eukaryotic cells",
+      "are equipped with the enzyme reverse transcriptase",
+      "have DNA",
+      "are incapable of replicating autonomously",
+      "are easily attacked by antibiotics"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3016
+  },
+  {
+    "text": "A protein involved in the contraction of muscle tissue is:",
+    "options": [
+      "p53",
+      "cytosine",
+      "actin",
+      "osteine",
+      "spectrin"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3017
+  },
+  {
+    "text": "Cellular respiration takes place in:",
+    "options": [
+      "lysosomes",
+      "ribosomes",
+      "lungs",
+      "endosomes",
+      "mitochondria"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3018
+  },
+  {
+    "text": "For the diagnosis of which of these diseases is karyotype analysis important?",
+    "options": [
+      "Cystic fibrosis",
+      "Mediterranean anemia",
+      "Color blindness",
+      "Down syndrome",
+      "Hemophilia"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3019
+  },
+  {
+    "text": "Which of the following entities is a prokaryotic cell?",
+    "options": [
+      "Mitochondrion",
+      "Streptococcus",
+      "Fibroblast",
+      "Coronavirus",
+      "Plasmodium"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3020
+  },
+  {
+    "text": "A double-stranded DNA fragment contains 6000 nucleotides, of which 25% are thymines. The number of adenines is:",
+    "options": [
+      "750",
+      "300",
+      "1500",
+      "3000",
+      "150"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3021
+  },
+  {
+    "text": "The sugar most represented in human nutrition is:",
+    "options": [
+      "starch",
+      "fructose",
+      "lactose",
+      "sucrose",
+      "glucose"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3022
+  },
+  {
+    "text": "What is the female gamete called?",
+    "options": [
+      "Zygote",
+      "Uterus",
+      "Ovary",
+      "Sperm",
+      "Egg cell"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3023
+  },
+  {
+    "text": "Adenine always pairs with:",
+    "options": [
+      "cytosine",
+      "uracil",
+      "guanine",
+      "theobromine",
+      "thymine"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3024
+  },
+  {
+    "text": "Which of the following is an example of a prokaryotic cell?",
+    "options": [
+      "The zygote",
+      "The mitochondrion",
+      "The cholera bacterium",
+      "The SARS-CoV-2 virus",
+      "The human muscle cell"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3025
+  },
+  {
+    "text": "A male individual receives the genetic complement linked to the X chromosome:",
+    "options": [
+      "from the mother",
+      "it cannot be predicted",
+      "from the father",
+      "from both parents",
+      "from neither parent because he has no X chromosome"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3026
+  },
+  {
+    "text": "Regarding the spinal cord, it is true that:",
+    "options": [
+      "the white matter forms the \"central butterfly\" and is surrounded by gray matter",
+      "the white matter is made up of the cell bodies of spinal sensory neurons",
+      "the axons of spinal sensory neurons insert into the dorsal horns",
+      "the white matter is made up of the cell bodies of motor neurons",
+      "the axons of spinal sensory neurons emerge from the ventral horns"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3027
+  },
+  {
+    "text": "Which of the following statements regarding viruses is false?",
+    "options": [
+      "They always contain both DNA and RNA",
+      "They are obligate intracellular parasites",
+      "They reproduce using the molecular mechanisms of the host cell",
+      "They can have single- and double-stranded RNA genomes",
+      "They can have single- and double-stranded DNA genomes"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3028
+  },
+  {
+    "text": "New genes can appear in a population through:",
+    "options": [
+      "meiotic errors",
+      "natural selection",
+      "chromosome breaks",
+      "crossing-over",
+      "mutation"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3029
+  },
+  {
+    "text": "What are homologous chromosomes?",
+    "options": [
+      "Morphologically identical chromosomes",
+      "X and Y chromosomes",
+      "Chromosomes of the same size",
+      "Chromosomes that contain the same genes",
+      "Chromosomes with the centromere in the same position"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3030
+  },
+  {
+    "text": "In cats, the gene for orange fur color is located on the X chromosome and is recessive to its allele that determines black fur color. Therefore, black/orange bicolor cats will be:",
+    "options": [
+      "half male and half female",
+      "always male",
+      "always female",
+      "males and females in variable proportions",
+      "predominantly male with a minority of females"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3031
+  },
+  {
+    "text": "Muscle cells resort to lactic fermentation when:",
+    "options": [
+      "the tissue ages",
+      "they do not have enough proteins available",
+      "they lose mitochondria following differentiation",
+      "they perform very intense contractile activity",
+      "they have been at rest for a long time"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3032
+  },
+  {
+    "text": "With what probability are children with blood group A born from a woman with group O and a man with group AB?",
+    "options": [
+      "100%",
+      "75%",
+      "25%",
+      "0",
+      "50%"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3033
+  },
+  {
+    "text": "Which of the following cells are NOT able to divide?",
+    "options": [
+      "Epithelial cells",
+      "Neurons",
+      "Lymphocytes",
+      "Tumor cells",
+      "Stem cells"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3034
+  },
+  {
+    "text": "Which of the following biological entities can have an RNA genome?",
+    "options": [
+      "Parasitic bacteria",
+      "chloroplasts",
+      "mitochondria",
+      "Viruses",
+      "Anaerobic protozoa"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3035
+  },
+  {
+    "text": "What is the final destination of the oxygen we breathe?",
+    "options": [
+      "Mitochondria",
+      "Myoglobin",
+      "Cytoplasm",
+      "Peroxisomes",
+      "Hemoglobin"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3036
+  },
+  {
+    "text": "Which of the following statements regarding meiosis is WRONG?",
+    "options": [
+      "In the prophase of meiosis, homologous chromosomes exchange parts",
+      "In the second meiotic division, the chromatids of each chromosome separate",
+      "In the second meiotic division, homologous chromosomes separate",
+      "Homologous chromosomes pair in the prophase of meiosis",
+      "In the first meiotic division, homologous chromosomes separate"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3037
+  },
+  {
+    "text": "How many chromosomes does a human diploid cell contain?",
+    "options": [
+      "44",
+      "48",
+      "23",
+      "46",
+      "36"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3038
+  },
+  {
+    "text": "Hereditary information is stored in:",
+    "options": [
+      "the succession of nitrogenous bases of RNA",
+      "the succession of nitrogenous bases of DNA",
+      "the synapses of the central nervous system",
+      "the cytoplasm of cells",
+      "the succession of amino acids of proteins"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3039
+  },
+  {
+    "text": "What proportion of children born from the cross AaBb x aabb (independent genes) shows the recessive phenotype for both traits?",
+    "options": [
+      "1/16",
+      "1/2",
+      "1/4",
+      "3/4",
+      "9/16"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3040
+  },
+  {
+    "text": "Which of the following statements regarding genomes is true?",
+    "options": [
+      "Mammalian genomes are the largest of all",
+      "Viruses always have RNA genomes",
+      "Cells of any type always have DNA genomes",
+      "Some cell organelles have RNA genomes",
+      "Prokaryotes can have RNA genomes"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3041
+  },
+  {
+    "text": "Natural selection implies the so-called \"survival of the fittest.\" But who are the \"fittest\"?",
+    "options": [
+      "Individuals who have the greatest reproductive success",
+      "The most intelligent individuals",
+      "The strongest and most aggressive individuals",
+      "Individuals capable of sociality",
+      "The healthiest individuals"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3042
+  },
+  {
+    "text": "Choose from the following the best definition of \"gene\":",
+    "options": [
+      "A section of DNA that determines a trait in the phenotype",
+      "A section of DNA that codes for a polypeptide chain",
+      "A site on a chromosome that can be marked with specific dyes",
+      "A well-defined trait that is transmitted to offspring",
+      "A messenger RNA molecule that specifies a protein"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3043
+  },
+  {
+    "text": "Thalassemia, or Mediterranean anemia, is a genetic disease particularly widespread in certain areas of Italy where malaria was endemic in the past. For what reason?",
+    "options": [
+      "There is no specific reason, it is genetic drift",
+      "Thalassemia is a predisposing condition for malaria",
+      "Thalassemic individuals die before they can contract malaria",
+      "Thalassemic individuals are more resistant to malarial infection",
+      "Individuals heterozygous for thalassemia are more resistant to malarial infection"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3044
+  },
+  {
+    "text": "Which of the following biological processes is the only one capable of creating new genes?",
+    "options": [
+      "Chemical modification of DNA bases",
+      "Mutation",
+      "Random recombination of chromosomes at meiosis",
+      "Sexual reproduction",
+      "Crossing-over of chromosomes at meiosis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3045
+  },
+  {
+    "text": "Applying the principle of independent assortment, an individual with genotype AaBb produces gametes:",
+    "options": [
+      "AB, Ab, aB, ab, but the first and last in greater proportions",
+      "AA, aa, BB, bb",
+      "AB, Ab, aB, ab all in equal proportions",
+      "AB, ab",
+      "A, a, B, b"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3046
+  },
+  {
+    "text": "For the diagnosis of which of the following diseases is karyotype analysis required?",
+    "options": [
+      "thalassemia",
+      "Down syndrome",
+      "color blindness",
+      "cystic fibrosis",
+      "hemophilia"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3047
+  },
+  {
+    "text": "A man affected by an X-linked recessive disease and a normal woman may have children:",
+    "options": [
+      "healthy males and carrier females",
+      "50% sick males, 50% healthy and carrier females",
+      "sick males and carrier females",
+      "sick males and healthy females",
+      "healthy males and sick females"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3048
+  },
+  {
+    "text": "What is meant by \"alleles\"?",
+    "options": [
+      "Genes that code for two different products",
+      "Genes that are inherited according to a Mendelian pattern",
+      "Genes that occupy corresponding loci on two homologous chromosomes",
+      "Genes that recombine during meiosis",
+      "Genes that are found in the same position on all chromosomes"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3049
+  },
+  {
+    "text": "The probability of having a male child affected by color blindness (X-linked recessive trait) is greater for:",
+    "options": [
+      "An affected father",
+      "An affected mother",
+      "The same for an affected mother or affected father",
+      "A carrier mother",
+      "A carrier father"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3050
+  },
+  {
+    "text": "A protein, in its active form, has a quaternary structure composed of 4 different polypeptide chains (A,B,C,D), each present in two copies ( A ‚ B ‚ C ‚ DH‚ )ow. many genes are needed to code for the complete protein?",
+    "options": [
+      "Four",
+      "Sixteen",
+      "One",
+      "Two",
+      "Eight"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3051
+  },
+  {
+    "text": "Which of the following is an exclusive and specific characteristic of eukaryotic cells?",
+    "options": [
+      "Plasma membrane composed of phospholipids",
+      "ATPsynthesis under aerobic conditions",
+      "Presence of ribosomes",
+      "DNA genome",
+      "Genes interrupted by non-coding segments (introns)"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3052
+  },
+  {
+    "text": "What is the biological advantage of sexual reproduction?",
+    "options": [
+      "Reduction in genetic variability of a population",
+      "Increase in genetic variability of a population",
+      "Production of a quantity of offspring greater than that produced by asexual reproduction",
+      "Conservation of phenotypic traits",
+      "Production of a quantity of offspring less than that produced by asexual reproduction"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3053
+  },
+  {
+    "text": "From the mitotic division of a human somatic cell, the following originate:",
+    "options": [
+      "Two cells with 23 chromosomes each",
+      "Two cells with 48 chromosomes each",
+      "One cell with 46 chromosomes and one with 23 chromosomes",
+      "Two cells with 46 chromosomes each",
+      "Four cells with 23 chromosomes each"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3054
+  },
+  {
+    "text": "Which of the following nitrogenous bases is not present in RNA?",
+    "options": [
+      "Cytosine",
+      "Guanine",
+      "Adenine",
+      "Uracil",
+      "Thymine"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3055
+  },
+  {
+    "text": "White blood cells are called:",
+    "options": [
+      "Astrocytes",
+      "Platelets",
+      "Chondrocytes",
+      "Erythrocytes",
+      "Leukocytes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3056
+  },
+  {
+    "text": "An organized set of cells having the same structure and similar function constitutes:",
+    "options": [
+      "A cell organelle",
+      "An organ",
+      "A tissue",
+      "A system",
+      "An apparatus"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3057
+  },
+  {
+    "text": "What is the product of transcription?",
+    "options": [
+      "An ATPmolecule",
+      "A deoxyribose molecule",
+      "An RNA molecule",
+      "A gene",
+      "A protein"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3058
+  },
+  {
+    "text": "What is meant by allelic genes?",
+    "options": [
+      "genes that can never exchange in crossing-over",
+      "genes that are always, respectively, dominant and recessive",
+      "genes that are inherited in an alternative manner",
+      "genes that are found on corresponding loci of homologous chromosomes",
+      "genes that are found on the same chromosome"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3059
+  },
+  {
+    "text": "Which of the following cell organelles are present in all cells?",
+    "options": [
+      "ribosomes",
+      "lysosomes",
+      "mitochondria",
+      "chloroplasts",
+      "peroxisomes"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3060
+  },
+  {
+    "text": "Which of the following statements about eukaryotic chromosomes is false?",
+    "options": [
+      "More complex organisms have a greater number of chromosomes",
+      "Each species has a characteristic number of chromosomes",
+      "Each chromosome is made up of DNA and proteins",
+      "Each chromosome has a centrosome for attachment to the mitotic spindle",
+      "Chromosomes condense strongly during mitosis"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3061
+  },
+  {
+    "text": "Duchenne muscular dystrophy is a progressive disease caused by (recessive) mutations in a gene located on the X chromosome. A woman carrier of the mutated gene and a healthy man will have children:",
+    "options": [
+      "50% sick males, 50% healthy, 50% sick females, 50% carriers",
+      "100% sick males and 100% carrier females",
+      "Cannot be predicted, depends on trait penetrance",
+      "50% sick males, 50% healthy, 50% carrier females, 50% healthy",
+      "50% sick males, 50% carriers, 100% healthy females"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3062
+  },
+  {
+    "text": "The value of the dissociation constant (Kd) indicates:",
+    "options": [
+      "the solubility of a substance in water",
+      "the affinity of a ligand for its receptor",
+      "the energy state of a cell",
+      "the binding rate",
+      "the number of receptors present in the tissue"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3063
+  },
+  {
+    "text": "Drugs that cross the blood-brain barrier are:",
+    "options": [
+      "very water-soluble",
+      "high molecular weight",
+      "very lipid-soluble",
+      "impossible to produce",
+      "ionized"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3064
+  },
+  {
+    "text": "Helicobacter pylori can cause:",
+    "options": [
+      "hypertension",
+      "gallstones",
+      "gastritis",
+      "Crohn's disease",
+      "pancreatitis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3065
+  },
+  {
+    "text": "In chlorophyll photosynthesis, water:",
+    "options": [
+      "is a product of the dark phase",
+      "is a product of the light phase",
+      "is a reactant of the dark phase, during which it is transformed into oxygen",
+      "is a reactant of the light phase, during which it is transformed into oxygen",
+      "is a reactant of the light phase, during which it is transformed into carbon dioxide"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3066
+  },
+  {
+    "text": "The passage of cells from the G2 phase to the M phase is regulated by:",
+    "options": [
+      "cyclin D and Cdk4",
+      "cyclin B and Cdk1",
+      "cyclin E and Cdk2",
+      "cyclin A and Cdk 2",
+      "cyclin A and Cdk4"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3067
+  },
+  {
+    "text": "Which of the following is NOT an advantage of the intravenous route of administration?",
+    "options": [
+      "Immediate effect in emergencies",
+      "Accuracy of dosage",
+      "Modulable effect magnitude",
+      "Possibility of administering irritating substances",
+      "High patient compliance"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3068
+  },
+  {
+    "text": "Which of the following substances is NOT found in salivary secretions?",
+    "options": [
+      "Potassium",
+      "Haptocorrin",
+      "Lysozyme",
+      "Surfactant",
+      "Lactoferrin"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3069
+  },
+  {
+    "text": "During lactic fermentation:",
+    "options": [
+      "carbon dioxide is produced",
+      "NAD+ is reduced",
+      "NADH is oxidized",
+      "ATPand pyruvic acid are produced C)ATPisproducedandNADisreduced"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3070
+  },
+  {
+    "text": "The nucleus is in continuity with:",
+    "options": [
+      "the peroxisome",
+      "the smooth endoplasmic reticulum membrane",
+      "the cytoplasmic membrane",
+      "the Golgi complex",
+      "the rough endoplasmic reticulum membrane"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3071
+  },
+  {
+    "text": "The scapula:",
+    "options": [
+      "articulates with the clavicle and the radius",
+      "articulates with the head of the humerus and the sternum",
+      "articulates with the manubrium of the sternum and the first rib",
+      "articulates with the manubrium of the sternum and the clavicle",
+      "articulates with the head of the humerus and the clavicle"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3072
+  },
+  {
+    "text": "During the first reaction of the Krebs cycle:",
+    "options": [
+      "N A D Hgi‚ves electrons to the electron transport chain",
+      "a glucose molecule is divided into two pyruvate molecules C)twoATPmoleculesareproducedthankstoATPsynthase",
+      "pyruvate is reduced to lactate",
+      "the acetyl group of acetyl-CoA is joined to oxaloacetate"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3073
+  },
+  {
+    "text": "The p53 protein induces the production of which pro-apoptotic factor?",
+    "options": [
+      "Bcl-2",
+      "BID",
+      "BAX",
+      "FADD",
+      "BAD"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3074
+  },
+  {
+    "text": "Indicate which of the following organelles is the most undifferentiated:",
+    "options": [
+      "chromoplast",
+      "amyloplast",
+      "leucoplast",
+      "proplastid",
+      "chloroplast"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3075
+  },
+  {
+    "text": "From a chemical point of view, glucose is an:",
+    "options": [
+      "aldopentose",
+      "aldohexose",
+      "disaccharide",
+      "polysaccharide",
+      "ketohexose"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3076
+  },
+  {
+    "text": "Which microorganism can cause pseudo-burned skin syndrome?",
+    "options": [
+      "Neisseria meningitidis",
+      "Clostridium difficile",
+      "Campylobacter",
+      "Acinetobacter baumannii",
+      "Staphylococcus aureus"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3077
+  },
+  {
+    "text": "Which of the following statements about centrioles is NOT correct?",
+    "options": [
+      "Short microtubules arranged in a radial pattern branch out from them, forming the aster",
+      "They are formed by 3 triplets of microtubules",
+      "The structured region of cytoplasm that surrounds them is the centrosome",
+      "They have a hollow cylindrical structure",
+      "They are involved in the assembly of the mitotic spindle"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3078
+  },
+  {
+    "text": "How is the acidic pH maintained inside lysosomes?",
+    "options": [
+      "Thanks to specific cells that produce HCl",
+      "Thanks to the ATP-dependent N a z / Kpuzmp",
+      "Thanks to a GTP-dependent proton pump",
+      "Thanks to a buffer system",
+      "Thanks to an ATP-dependentproton pump"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3079
+  },
+  {
+    "text": "Which of the following statements regarding DNA polymerase is FALSE?",
+    "options": [
+      "It has \"proofreading\" activity",
+      "It is able to initiate the synthesis of a strand",
+      "On the lagging strand it produces Okazaki fragments",
+      "It synthesizes a DNA fragment using a complementary DNA strand as a template",
+      "It can proceed only in the 5 '!’ 3di'rection"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3080
+  },
+  {
+    "text": "During photosynthesis, ATPproduction:",
+    "options": [
+      "occurs in the dark phase through photophosphorylation",
+      "occurs in the dark phase through oxidative phosphorylation",
+      "occurs in the light phase through oxidative phosphorylation",
+      "does not occur",
+      "occurs in the light phase through photophosphorylation"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3081
+  },
+  {
+    "text": "The microfilaments of the cytoskeleton are made up of:",
+    "options": [
+      "actin",
+      "centrosomes",
+      "myosin",
+      "tubulin",
+      "keratin"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3082
+  },
+  {
+    "text": "By crossing a Drosophila with gray body and long wings (heterozygous for both genes considered) and one with black body and poorly developed wings (homozygous recessive for both genes considered), Morgan observed that the results obtained were different from those predicted by Mendel's laws and in particular the parental phenotypes were much more frequent than the recombinant phenotypes. From these observations it can be deduced that:",
+    "options": [
+      "the two genes considered are located on the same chromosome",
+      "it is not possible to apply Mendel's laws to insects",
+      "the two genes considered show incomplete dominance",
+      "the two genes considered have more than two alleles each",
+      "the two genes considered are codominant"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3083
+  },
+  {
+    "text": "According to the Mediterranean diet food pyramid, cold cuts should be consumed:",
+    "options": [
+      "daily",
+      "at most once a week",
+      "twice a week",
+      "at every meal",
+      "at least three times a week"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3084
+  },
+  {
+    "text": "What are the dimensions of a mitochondrion?",
+    "options": [
+      "Between 0.5 and 3 1⁄4 mapproximately",
+      "Between 80 and 100 1⁄4 mapproximately",
+      "Between 35 and 45 1⁄4 mapproximately",
+      "Between 5 and 15 1⁄4 mapproximately",
+      "Between 60 and 70 1⁄4 mapproximately"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3085
+  },
+  {
+    "text": "How many \"turns\" of the Calvin cycle are necessary to synthesize one glucose molecule?",
+    "options": [
+      "12",
+      "it is not possible to synthesize glucose through the Calvin cycle",
+      "3",
+      "6",
+      "1"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3086
+  },
+  {
+    "text": "The lysogenic cycle of bacteriophages involves:",
+    "options": [
+      "production of viral particles inside the host cell",
+      "synthesis of viral proteins",
+      "release of viral particles that can infect nearby cells",
+      "integration of viral nucleic acid into the host cell genome",
+      "lysis of the host cell"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3087
+  },
+  {
+    "text": "In Griffith's famous experiment, by simultaneously injecting heat-killed virulent bacteria and live non-virulent bacteria into a mouse, live virulent bacteria were found in the mouse's blood. How can this fact be explained?",
+    "options": [
+      "A transformation process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "This is an error, it is not possible under the conditions indicated to find live virulent bacteria",
+      "A specialized transduction process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "A generalized transduction process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "A conjugation process had occurred, through which a bacterium can acquire DNA from the surrounding environment"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3088
+  },
+  {
+    "text": "Indicate which of the alternatives is a tumor suppressor:",
+    "options": [
+      "myc",
+      "src",
+      "pRB",
+      "erb-B",
+      "ras"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3089
+  },
+  {
+    "text": "The main cells responsible for allergic reactions are:",
+    "options": [
+      "T lymphocytes",
+      "platelets",
+      "red blood cells",
+      "B lymphocytes",
+      "mast cells"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3090
+  },
+  {
+    "text": "Which of the following enzymes can be present inside the capsid of a virus?",
+    "options": [
+      "Plasmid",
+      "Reverse transcriptase",
+      "Transposase",
+      "DNA polymerase",
+      "RNA polymerase"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3091
+  },
+  {
+    "text": "Which of the following statements about nuclear pores is NOT correct?",
+    "options": [
+      "They cross the nuclear membrane",
+      "They allow passive transport of ions and small molecules",
+      "They contain more than 30 types of nucleoporins",
+      "They have a diameter of about 120nm",
+      "The central channel is formed by 6 subunits"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3092
+  },
+  {
+    "text": "Which of the following functions is NOT typical of endothelial cells?",
+    "options": [
+      "They are responsible for voluntary and involuntary body movements",
+      "They synthesize collagen and proteoglycans",
+      "They act as a barrier with variable permeability",
+      "They secrete molecules that promote blood coagulation",
+      "They secrete vasoactive factors that control blood flow"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3093
+  },
+  {
+    "text": "Which of the following foods can be consumed by a person with celiac disease?",
+    "options": [
+      "Rye",
+      "Wheat",
+      "Barley",
+      "Rice",
+      "Spelt"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3094
+  },
+  {
+    "text": "A couple has already had 3 male children, while another has had 3 female children. What is the probability that the next child is male?",
+    "options": [
+      "1/4 for the first couple and 1/2 for the second",
+      "1/16 for the first couple and 1/2 for the second",
+      "1/2 for the first couple and 1/8 for the second",
+      "1/16 for both couples",
+      "1/2 for both couples"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3095
+  },
+  {
+    "text": "Following a decreased functional demand in a tissue, there will be:",
+    "options": [
+      "necrosis",
+      "hypertrophy",
+      "hypotrophy",
+      "hyperplasia",
+      "metaplasia"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3096
+  },
+  {
+    "text": "The amount of a substance capable of killing, in a single administration, half of the sample population of experimental animals is indicated as:",
+    "options": [
+      "LD90",
+      "LD50",
+      "minimum effective dose",
+      "therapeutic index",
+      "bioavailability"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3097
+  },
+  {
+    "text": "Indicate the correct order of the growth phases of a bacterial population:",
+    "options": [
+      "Stationary phase, death phase, exponential phase, lag phase",
+      "Death phase, stationary phase, exponential phase, lag phase",
+      "Lag phase, stationary phase, exponential phase, death phase",
+      "Exponential phase, lag phase, stationary phase, death phase",
+      "Lag phase, exponential phase, stationary phase, death phase"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3098
+  },
+  {
+    "text": "DNA methylation:",
+    "options": [
+      "consists of the addition of a phosphate group",
+      "is a post-translational modification",
+      "consists of the removal of a methyl group",
+      "reactivates a previously silenced gene",
+      "blocks expression of the gene concerned"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3099
+  },
+  {
+    "text": "Glycosylation with mannose-6-phosphate (M6P) allows proteins to be recognized and directed:",
+    "options": [
+      "to the lysosome",
+      "to the nucleus",
+      "to the plasma membrane",
+      "to the SER",
+      "to the RER"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3100
+  },
+,
+  {
+    "text": "What is the most abundant type of molecule in the cytoplasm?",
+    "options": [
+      "RNA",
+      "Sugars",
+      "Proteins",
+      "Water",
+      "DNA"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2901
+  },
+  {
+    "text": "Enzymes are:",
+    "options": [
+      "Lipids",
+      "Amino acids",
+      "Nucleic acids",
+      "Carbohydrates",
+      "Proteins"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2902
+  },
+  {
+    "text": "Microfilaments are a structural element of:",
+    "options": [
+      "the mitotic spindle",
+      "the cytoskeleton",
+      "mitochondria",
+      "chromosomes",
+      "cell membranes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2903
+  },
+  {
+    "text": "The process that leads to the halving of the number of chromosomes is called:",
+    "options": [
+      "Fertilization",
+      "Meiosis",
+      "Mitosis",
+      "Fission",
+      "Metaphase"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2904
+  },
+  {
+    "text": "Genetic mutations are:",
+    "options": [
+      "variations in the rate of cell division",
+      "variations in the base sequence of RNA",
+      "variations in the base sequence of DNA",
+      "variations in the amino acid sequence of proteins",
+      "variations in cellular morphology"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2905
+  },
+  {
+    "text": "Cell theory states that:",
+    "options": [
+      "cells are highly organized structures",
+      "all living beings are made up of one or more cells",
+      "cells can be classified as prokaryotic or eukaryotic",
+      "cells are small in size",
+      "all cells are delimited by a membrane"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2906
+  },
+  {
+    "text": "Which of the following is the fundamental mechanism underlying evolution according to Darwin?",
+    "options": [
+      "Artificial selection",
+      "Natural selection",
+      "Asexual reproduction",
+      "Creation of different species",
+      "Acquisition of new traits in response to environmental changes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2907
+  },
+  {
+    "text": "If a gene is found on a certain chromosome, where will its allele be located?",
+    "options": [
+      "On a non-homologous chromosome in the same position",
+      "In another position on the homologous chromosome",
+      "On any chromosome in any position",
+      "In the same position on the homologous chromosome",
+      "In an adjacent position on the same chromosome"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2908
+  },
+  {
+    "text": "A species can be defined as a set of individuals that:",
+    "options": [
+      "are phenotypically similar",
+      "have the same number of chromosomes",
+      "are able to reproduce and produce viable offspring",
+      "are able to reproduce and produce fertile offspring",
+      "occupy the same geographical area"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2909
+  },
+  {
+    "text": "In nerve cells, gap junctions:",
+    "options": [
+      "are also located in the nodes of Ranvier",
+      "are also called tight junctions",
+      "are the constituent elements of electrical synapses",
+      "mainly allow the direct passage of proteins between two connected cells",
+      "allow the transmission of nerve signals from one neuron to another both in chemical synapses and in electrical synapses"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2910
+  },
+  {
+    "text": "A gene can be defined as:",
+    "options": [
+      "a DNA sequence that determines a pathology",
+      "a section of chromosome that produces a trait in the phenotype",
+      "a section of chromosome that can be inherited in a Mendelian manner",
+      "a DNA sequence that determines the synthesis of an enzyme",
+      "a DNA sequence that codes for a polypeptide chain"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2911
+  },
+  {
+    "text": "From a woman with blood group A and a man with blood group B, a child with group O is born. What were the genotypes of the parents?",
+    "options": [
+      "A0 and BB",
+      "A0 and B0",
+      "AA and B0",
+      "It is not possible that it is their child",
+      "AA and BB"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2912
+  },
+  {
+    "text": "Our cells derive energy mainly through:",
+    "options": [
+      "oxidation of lipids and reduction of carbohydrates",
+      "synthesis of carbohydrates",
+      "storage of triglycerides",
+      "oxidation of carbohydrates and reduction of lipids",
+      "oxidation of carbohydrates and lipids"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2913
+  },
+  {
+    "text": "Which of the following biological events takes place on ribosomes?",
+    "options": [
+      "A segment of DNA that codes for a protein is duplicated",
+      "A transfer RNA is paired with a specific amino acid",
+      "The RNA molecule is reverse transcribed",
+      "The nucleotide sequence of a gene on DNA is transcribed into a messenger RNA molecule",
+      "The nucleotide sequence of a messenger RNA is translated into a specific amino acid sequence"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2914
+  },
+  {
+    "text": "What does it mean that an organism is diploid?",
+    "options": [
+      "It is composed of only two cells",
+      "Its chromosomes are even in number",
+      "Its cells contain two nuclei",
+      "It is a eukaryotic organism",
+      "Its cells contain two copies of each chromosome"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2915
+  },
+  {
+    "text": "All viruses:",
+    "options": [
+      "are incapable of replicating autonomously",
+      "can only infect eukaryotic cells",
+      "are equipped with the enzyme reverse transcriptase",
+      "are easily attacked by antibiotics",
+      "have DNA"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2916
+  },
+  {
+    "text": "A protein involved in the contraction of muscle tissue is:",
+    "options": [
+      "p53",
+      "osteine",
+      "actin",
+      "spectrin",
+      "cytosine"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2917
+  },
+  {
+    "text": "Cellular respiration takes place in:",
+    "options": [
+      "mitochondria",
+      "ribosomes",
+      "lungs",
+      "lysosomes",
+      "endosomes"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2918
+  },
+  {
+    "text": "For the diagnosis of which of these diseases is karyotype analysis important?",
+    "options": [
+      "Hemophilia",
+      "Mediterranean anemia",
+      "Down syndrome",
+      "Color blindness",
+      "Cystic fibrosis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2919
+  },
+  {
+    "text": "Which of the following entities is a prokaryotic cell?",
+    "options": [
+      "Fibroblast",
+      "Plasmodium",
+      "Mitochondrion",
+      "Streptococcus",
+      "Coronavirus"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2920
+  },
+  {
+    "text": "A double-stranded DNA fragment contains 6000 nucleotides, of which 25% are thymines. The number of adenines is:",
+    "options": [
+      "300",
+      "3000",
+      "1500",
+      "150",
+      "750"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2921
+  },
+  {
+    "text": "The sugar most represented in human nutrition is:",
+    "options": [
+      "sucrose",
+      "fructose",
+      "starch",
+      "lactose",
+      "glucose"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2922
+  },
+  {
+    "text": "What is the female gamete called?",
+    "options": [
+      "Ovary",
+      "Zygote",
+      "Uterus",
+      "Sperm",
+      "Egg cell"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2923
+  },
+  {
+    "text": "Adenine always pairs with:",
+    "options": [
+      "uracil",
+      "thymine",
+      "theobromine",
+      "guanine",
+      "cytosine"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2924
+  },
+  {
+    "text": "Which of the following is an example of a prokaryotic cell?",
+    "options": [
+      "The SARS-CoV-2 virus",
+      "The zygote",
+      "The mitochondrion",
+      "The human muscle cell",
+      "The cholera bacterium"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2925
+  },
+  {
+    "text": "A male individual receives the genetic complement linked to the X chromosome:",
+    "options": [
+      "from the mother",
+      "it cannot be predicted",
+      "from neither parent because he has no X chromosome",
+      "from both parents",
+      "from the father"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2926
+  },
+  {
+    "text": "Regarding the spinal cord, it is true that:",
+    "options": [
+      "the axons of spinal sensory neurons emerge from the ventral horns",
+      "the white matter is made up of the cell bodies of spinal sensory neurons",
+      "the axons of spinal sensory neurons insert into the dorsal horns",
+      "the white matter is made up of the cell bodies of motor neurons",
+      "the white matter forms the \"central butterfly\" and is surrounded by gray matter"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2927
+  },
+  {
+    "text": "Which of the following statements regarding viruses is false?",
+    "options": [
+      "They always contain both DNA and RNA",
+      "They can have single- and double-stranded RNA genomes",
+      "They reproduce using the molecular mechanisms of the host cell",
+      "They can have single- and double-stranded DNA genomes",
+      "They are obligate intracellular parasites"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2928
+  },
+  {
+    "text": "New genes can appear in a population through:",
+    "options": [
+      "crossing-over",
+      "mutation",
+      "chromosome breaks",
+      "natural selection",
+      "meiotic errors"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2929
+  },
+  {
+    "text": "What are homologous chromosomes?",
+    "options": [
+      "Morphologically identical chromosomes",
+      "Chromosomes that contain the same genes",
+      "X and Y chromosomes",
+      "Chromosomes of the same size",
+      "Chromosomes with the centromere in the same position"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2930
+  },
+  {
+    "text": "In cats, the gene for orange fur color is located on the X chromosome and is recessive to its allele that determines black fur color. Therefore, black/orange bicolor cats will be:",
+    "options": [
+      "males and females in variable proportions",
+      "always female",
+      "always male",
+      "predominantly male with a minority of females",
+      "half male and half female"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2931
+  },
+  {
+    "text": "Muscle cells resort to lactic fermentation when:",
+    "options": [
+      "they do not have enough proteins available",
+      "they have been at rest for a long time",
+      "they perform very intense contractile activity",
+      "the tissue ages",
+      "they lose mitochondria following differentiation"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2932
+  },
+  {
+    "text": "With what probability are children with blood group A born from a woman with group O and a man with group AB?",
+    "options": [
+      "25%",
+      "100%",
+      "75%",
+      "0",
+      "50%"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2933
+  },
+  {
+    "text": "Which of the following cells are NOT able to divide?",
+    "options": [
+      "Tumor cells",
+      "Lymphocytes",
+      "Stem cells",
+      "Neurons",
+      "Epithelial cells"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2934
+  },
+  {
+    "text": "Which of the following biological entities can have an RNA genome?",
+    "options": [
+      "Viruses",
+      "mitochondria",
+      "Anaerobic protozoa",
+      "chloroplasts",
+      "Parasitic bacteria"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2935
+  },
+  {
+    "text": "What is the final destination of the oxygen we breathe?",
+    "options": [
+      "Peroxisomes",
+      "Cytoplasm",
+      "Hemoglobin",
+      "Myoglobin",
+      "Mitochondria"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2936
+  },
+  {
+    "text": "Which of the following statements regarding meiosis is WRONG?",
+    "options": [
+      "In the second meiotic division, the chromatids of each chromosome separate",
+      "In the prophase of meiosis, homologous chromosomes exchange parts",
+      "Homologous chromosomes pair in the prophase of meiosis",
+      "In the second meiotic division, homologous chromosomes separate",
+      "In the first meiotic division, homologous chromosomes separate"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2937
+  },
+  {
+    "text": "How many chromosomes does a human diploid cell contain?",
+    "options": [
+      "23",
+      "44",
+      "36",
+      "48",
+      "46"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2938
+  },
+  {
+    "text": "Hereditary information is stored in:",
+    "options": [
+      "the succession of nitrogenous bases of DNA",
+      "the synapses of the central nervous system",
+      "the cytoplasm of cells",
+      "the succession of nitrogenous bases of RNA",
+      "the succession of amino acids of proteins"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2939
+  },
+  {
+    "text": "What proportion of children born from the cross AaBb x aabb (independent genes) shows the recessive phenotype for both traits?",
+    "options": [
+      "1/16",
+      "1/2",
+      "9/16",
+      "1/4",
+      "3/4"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2940
+  },
+  {
+    "text": "Which of the following statements regarding genomes is true?",
+    "options": [
+      "Some cell organelles have RNA genomes",
+      "Mammalian genomes are the largest of all",
+      "Cells of any type always have DNA genomes",
+      "Viruses always have RNA genomes",
+      "Prokaryotes can have RNA genomes"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2941
+  },
+  {
+    "text": "Natural selection implies the so-called \"survival of the fittest.\" But who are the \"fittest\"?",
+    "options": [
+      "Individuals who have the greatest reproductive success",
+      "Individuals capable of sociality",
+      "The healthiest individuals",
+      "The most intelligent individuals",
+      "The strongest and most aggressive individuals"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2942
+  },
+  {
+    "text": "Choose from the following the best definition of \"gene\":",
+    "options": [
+      "A messenger RNA molecule that specifies a protein",
+      "A section of DNA that determines a trait in the phenotype",
+      "A well-defined trait that is transmitted to offspring",
+      "A section of DNA that codes for a polypeptide chain",
+      "A site on a chromosome that can be marked with specific dyes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2943
+  },
+  {
+    "text": "Thalassemia, or Mediterranean anemia, is a genetic disease particularly widespread in certain areas of Italy where malaria was endemic in the past. For what reason?",
+    "options": [
+      "Thalassemic individuals die before they can contract malaria",
+      "Individuals heterozygous for thalassemia are more resistant to malarial infection",
+      "There is no specific reason, it is genetic drift",
+      "Thalassemia is a predisposing condition for malaria",
+      "Thalassemic individuals are more resistant to malarial infection"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2944
+  },
+  {
+    "text": "Which of the following biological processes is the only one capable of creating new genes?",
+    "options": [
+      "Random recombination of chromosomes at meiosis",
+      "Sexual reproduction",
+      "Chemical modification of DNA bases",
+      "Mutation",
+      "Crossing-over of chromosomes at meiosis"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2945
+  },
+  {
+    "text": "Applying the principle of independent assortment, an individual with genotype AaBb produces gametes:",
+    "options": [
+      "AB, Ab, aB, ab all in equal proportions",
+      "AB, ab",
+      "AA, aa, BB, bb",
+      "A, a, B, b",
+      "AB, Ab, aB, ab, but the first and last in greater proportions"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2946
+  },
+  {
+    "text": "For the diagnosis of which of the following diseases is karyotype analysis required?",
+    "options": [
+      "hemophilia",
+      "thalassemia",
+      "color blindness",
+      "cystic fibrosis",
+      "Down syndrome"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2947
+  },
+  {
+    "text": "A man affected by an X-linked recessive disease and a normal woman may have children:",
+    "options": [
+      "healthy males and sick females",
+      "sick males and carrier females",
+      "50% sick males, 50% healthy and carrier females",
+      "healthy males and carrier females",
+      "sick males and healthy females"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2948
+  },
+  {
+    "text": "What is meant by \"alleles\"?",
+    "options": [
+      "Genes that code for two different products",
+      "Genes that are found in the same position on all chromosomes",
+      "Genes that are inherited according to a Mendelian pattern",
+      "Genes that recombine during meiosis",
+      "Genes that occupy corresponding loci of homologous chromosomes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2949
+  },
+  {
+    "text": "The probability of having a male child affected by color blindness (X-linked recessive trait) is greater for:",
+    "options": [
+      "A carrier mother",
+      "An affected father",
+      "The same for an affected mother or affected father",
+      "An affected mother",
+      "A carrier father"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2950
+  },
+  {
+    "text": "A protein, in its active form, has a quaternary structure composed of 4 different polypeptide chains (A,B,C,",
+    "options": [
+      "One",
+      "Four",
+      "Eight",
+      "Two",
+      "Sixteen",
+      ", each present in two copies. How many genes are needed to code for the complete protein?"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2951
+  },
+  {
+    "text": "Which of the following is an exclusive and specific characteristic of eukaryotic cells?",
+    "options": [
+      "ATP synthesis under aerobic conditions",
+      "Genes interrupted by non-coding segments (introns)",
+      "DNA genome",
+      "Plasma membrane composed of phospholipids",
+      "Presence of ribosomes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2952
+  },
+  {
+    "text": "What is the biological advantage of sexual reproduction?",
+    "options": [
+      "Conservation of phenotypic traits",
+      "Production of a quantity of offspring less than that produced by asexual reproduction",
+      "Reduction in genetic variability of a population",
+      "Production of a quantity of offspring greater than that produced by asexual reproduction",
+      "Increase in genetic variability of a population"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2953
+  },
+  {
+    "text": "From the mitotic division of a human somatic cell, the following originate:",
+    "options": [
+      "Two cells with 23 chromosomes each",
+      "One cell with 46 chromosomes and one with 23 chromosomes",
+      "Four cells with 23 chromosomes each",
+      "Two cells with 46 chromosomes each",
+      "Two cells with 48 chromosomes each"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2954
+  },
+  {
+    "text": "Which of the following nitrogenous bases is not present in RNA?",
+    "options": [
+      "Cytosine",
+      "Adenine",
+      "Guanine",
+      "Uracil",
+      "Thymine"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2955
+  },
+  {
+    "text": "White blood cells are called:",
+    "options": [
+      "Chondrocytes",
+      "Astrocytes",
+      "Leukocytes",
+      "Erythrocytes",
+      "Platelets"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2956
+  },
+  {
+    "text": "An organized set of cells having the same structure and similar function constitutes:",
+    "options": [
+      "A system",
+      "An apparatus",
+      "A cell organelle",
+      "A tissue",
+      "An organ"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2957
+  },
+  {
+    "text": "What is the product of transcription?",
+    "options": [
+      "A protein",
+      "An ATP molecule",
+      "An RNA molecule",
+      "A gene",
+      "A deoxyribose molecule"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2958
+  },
+  {
+    "text": "What is meant by allelic genes?",
+    "options": [
+      "genes that are always, respectively, dominant and recessive",
+      "genes that are inherited in an alternative manner",
+      "genes that can never exchange in crossing-over",
+      "genes that are found on the same chromosome",
+      "genes that are found on corresponding loci of homologous chromosomes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2959
+  },
+  {
+    "text": "Which of the following cell organelles are present in all cells?",
+    "options": [
+      "chloroplasts",
+      "lysosomes",
+      "peroxisomes",
+      "mitochondria",
+      "ribosomes"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2960
+  },
+  {
+    "text": "Which of the following statements about eukaryotic chromosomes is false?",
+    "options": [
+      "Chromosomes condense strongly during mitosis",
+      "Each chromosome is made up of DNA and proteins",
+      "Each chromosome has a centrosome for attachment to the mitotic spindle",
+      "More complex organisms have a greater number of chromosomes",
+      "Each species has a characteristic number of chromosomes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2961
+  },
+  {
+    "text": "Duchenne muscular dystrophy is a progressive disease caused by (recessive) mutations in a gene located on the X chromosome. A woman carrier of the mutated gene and a healthy man will have children:",
+    "options": [
+      "100% sick males and 100% carrier females",
+      "50% sick males, 50% healthy, 50% sick females, 50% carriers",
+      "50% sick males, 50% carriers, 100% healthy females",
+      "Cannot be predicted, depends on trait penetrance",
+      "50% sick males, 50% healthy, 50% carrier females, 50% healthy"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2962
+  },
+  {
+    "text": "The value of the dissociation constant ($K_d$) indicates:",
+    "options": [
+      "the solubility of a substance in water",
+      "the affinity of a ligand for its receptor",
+      "the binding rate",
+      "the number of receptors present in the tissue",
+      "the energy state of a cell"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2963
+  },
+  {
+    "text": "Drugs that cross the blood-brain barrier are:",
+    "options": [
+      "high molecular weight",
+      "impossible to produce",
+      "very water-soluble",
+      "ionized",
+      "very lipid-soluble"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2964
+  },
+  {
+    "text": "Helicobacter pylori can cause:",
+    "options": [
+      "Crohn's disease",
+      "gastritis",
+      "hypertension",
+      "pancreatitis",
+      "gallstones"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2965
+  },
+  {
+    "text": "In chlorophyll photosynthesis, water:",
+    "options": [
+      "is a product of the dark phase",
+      "is a reactant of the dark phase, during which it is transformed into oxygen",
+      "is a product of the light phase",
+      "is a reactant of the light phase, during which it is transformed into carbon dioxide",
+      "is a reactant of the light phase, during which it is transformed into oxygen"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2966
+  },
+  {
+    "text": "The passage of cells from the G2 phase to the M phase is regulated by:",
+    "options": [
+      "cyclin A and Cdk4",
+      "cyclin D and Cdk4",
+      "cyclin E and Cdk2",
+      "cyclin B and Cdk1",
+      "cyclin A and Cdk 2"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2967
+  },
+  {
+    "text": "Which of the following is NOT an advantage of the intravenous route of administration?",
+    "options": [
+      "High patient compliance",
+      "Possibility of administering irritating substances",
+      "Modulable effect magnitude",
+      "Immediate effect in emergencies",
+      "Accuracy of dosage"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2968
+  },
+  {
+    "text": "Which of the following substances is NOT found in salivary secretions?",
+    "options": [
+      "Lysozyme",
+      "Potassium",
+      "Lactoferrin",
+      "Surfactant",
+      "Haptocorrin"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2969
+  },
+  {
+    "text": "During lactic fermentation:",
+    "options": [
+      "carbon dioxide is produced",
+      "$NAD^+$ is reduced",
+      "NADH is oxidized",
+      "ATP and pyruvic acid are produced",
+      "ATP is produced and NAD is reduced"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2970
+  },
+  {
+    "text": "The nucleus is in continuity with:",
+    "options": [
+      "the smooth endoplasmic reticulum membrane",
+      "the rough endoplasmic reticulum membrane",
+      "the peroxisome",
+      "the Golgi complex",
+      "the cytoplasmic membrane"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2971
+  },
+  {
+    "text": "The scapula:",
+    "options": [
+      "articulates with the manubrium of the sternum and the first rib",
+      "articulates with the head of the humerus and the sternum",
+      "articulates with the manubrium of the sternum and the clavicle",
+      "articulates with the clavicle and the radius",
+      "articulates with the head of the humerus and the clavicle"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2972
+  },
+  {
+    "text": "During the first reaction of the Krebs cycle:",
+    "options": [
+      "the acetyl group of acetyl-CoA is joined to oxaloacetate",
+      "two ATP molecules are produced thanks to ATP synthase",
+      "a glucose molecule is divided into two pyruvate molecules",
+      "NADH gives electrons to the electron transport chain",
+      "pyruvate is reduced to lactate"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2973
+  },
+  {
+    "text": "The p53 protein induces the production of which pro-apoptotic factor?",
+    "options": [
+      "BAX",
+      "Bcl-2",
+      "FADD",
+      "BAD",
+      "BID"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2974
+  },
+  {
+    "text": "Indicate which of the following organelles is the most undifferentiated:",
+    "options": [
+      "chromoplast",
+      "proplastid",
+      "leucoplast",
+      "amyloplast",
+      "chloroplast"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2975
+  },
+  {
+    "text": "From a chemical point of view, glucose is an:",
+    "options": [
+      "disaccharide",
+      "aldopentose",
+      "polysaccharide",
+      "ketohexose",
+      "aldohexose"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2976
+  },
+  {
+    "text": "Which microorganism can cause pseudo-burned skin syndrome?",
+    "options": [
+      "Clostridium difficile",
+      "Staphylococcus aureus",
+      "Neisseria meningitidis",
+      "Campylobacter",
+      "Acinetobacter baumannii"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2977
+  },
+  {
+    "text": "Which of the following statements about centrioles is NOT correct?",
+    "options": [
+      "They are involved in the assembly of the mitotic spindle",
+      "They have a hollow cylindrical structure",
+      "The structured region of cytoplasm that surrounds them is the centrosome",
+      "They are formed by 3 triplets of microtubules",
+      "Short microtubules arranged in a radial pattern branch out from them, forming the aster"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2978
+  },
+  {
+    "text": "How is the acidic pH maintained inside lysosomes?",
+    "options": [
+      "Thanks to a buffer system",
+      "Thanks to the ATP-dependent $Na^+ / K^+$ pump",
+      "Thanks to a GTP-dependent proton pump",
+      "Thanks to specific cells that produce HCl",
+      "Thanks to an ATP-dependent proton pump"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 2979
+  },
+  {
+    "text": "Which of the following statements regarding DNA polymerase is FALSE?",
+    "options": [
+      "On the lagging strand it produces Okazaki fragments",
+      "It can proceed only in the 5' to 3' direction",
+      "It synthesizes a DNA fragment using a complementary DNA strand as a template",
+      "It is able to initiate the synthesis of a strand",
+      "It has \"proofreading\" activity"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2980
+  },
+  {
+    "text": "During photosynthesis, ATP production:",
+    "options": [
+      "occurs in the dark phase through oxidative phosphorylation",
+      "does not occur",
+      "occurs in the light phase through photophosphorylation",
+      "occurs in the dark phase through photophosphorylation",
+      "occurs in the light phase through oxidative phosphorylation"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2981
+  },
+  {
+    "text": "The microfilaments of the cytoskeleton are made up of:",
+    "options": [
+      "tubulin",
+      "actin",
+      "keratin",
+      "myosin",
+      "centrosomes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2982
+  },
+  {
+    "text": "By crossing a Drosophila with gray body and long wings (heterozygous for both genes considered) and one with black body and poorly developed wings (homozygous recessive for both genes considered), Morgan observed that the results obtained were different from those predicted by Mendel's laws and in particular the parental phenotypes were much more frequent than the recombinant phenotypes. From these observations it can be deduced that:",
+    "options": [
+      "it is not possible to apply Mendel's laws to insects",
+      "the two genes considered show incomplete dominance",
+      "the two genes considered are codominant",
+      "the two genes considered are located on the same chromosome",
+      "the two genes considered have more than two alleles each"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2983
+  },
+  {
+    "text": "According to the Mediterranean diet food pyramid, cold cuts should be consumed:",
+    "options": [
+      "twice a week",
+      "at most once a week",
+      "at least three times a week",
+      "at every meal",
+      "daily"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2984
+  },
+  {
+    "text": "What are the dimensions of a mitochondrion?",
+    "options": [
+      "Between 35 and 45 micrometers approximately",
+      "Between 60 and 70 micrometers approximately",
+      "Between 0.5 and 3 micrometers approximately",
+      "Between 5 and 15 micrometers approximately",
+      "Between 80 and 100 micrometers approximately"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2985
+  },
+  {
+    "text": "How many \"turns\" of the Calvin cycle are necessary to synthesize one glucose molecule?",
+    "options": [
+      "it is not possible to synthesize glucose through the Calvin cycle",
+      "3",
+      "1",
+      "6",
+      "12"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2986
+  },
+  {
+    "text": "The lysogenic cycle of bacteriophages involves:",
+    "options": [
+      "integration of viral nucleic acid into the host cell genome",
+      "lysis of the host cell",
+      "production of viral particles inside the host cell",
+      "synthesis of viral proteins",
+      "release of viral particles that can infect nearby cells"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2987
+  },
+  {
+    "text": "In Griffith's famous experiment, by simultaneously injecting heat-killed virulent bacteria and live non-virulent bacteria into a mouse, live virulent bacteria were found in the mouse's blood. How can this fact be explained?",
+    "options": [
+      "A transformation process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "A specialized transduction process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "A generalized transduction process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "A conjugation process had occurred, through which a bacterium can acquire DNA from the surrounding environment",
+      "This is an error, it is not possible under the conditions indicated to find live virulent bacteria"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2988
+  },
+  {
+    "text": "Indicate which of the alternatives is a tumor suppressor:",
+    "options": [
+      "src",
+      "pRB",
+      "myc",
+      "ras",
+      "erb-B"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2989
+  },
+  {
+    "text": "The main cells responsible for allergic reactions are:",
+    "options": [
+      "platelets",
+      "mast cells",
+      "T lymphocytes",
+      "red blood cells",
+      "B lymphocytes"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2990
+  },
+  {
+    "text": "Which of the following enzymes can be present inside the capsid of a virus?",
+    "options": [
+      "DNA polymerase",
+      "Plasmid",
+      "Reverse transcriptase",
+      "Transposase",
+      "RNA polymerase"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2991
+  },
+  {
+    "text": "Which of the following statements about nuclear pores is NOT correct?",
+    "options": [
+      "They have a diameter of about 120nm",
+      "They allow passive transport of ions and small molecules",
+      "The central channel is formed by 6 subunits",
+      "They cross the nuclear membrane",
+      "They contain more than 30 types of nucleoporins"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 2992
+  },
+  {
+    "text": "Which of the following functions is NOT typical of endothelial cells?",
+    "options": [
+      "They act as a barrier with variable permeability",
+      "They are responsible for voluntary and involuntary body movements",
+      "They synthesize collagen and proteoglycans",
+      "They secrete molecules that promote blood coagulation",
+      "They secrete vasoactive factors that control blood flow"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2993
+  },
+  {
+    "text": "Which of the following foods can be consumed by a person with celiac disease?",
+    "options": [
+      "Wheat",
+      "Rice",
+      "Barley",
+      "Spelt",
+      "Rye"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2994
+  },
+  {
+    "text": "A couple has already had 3 male children, while another has had 3 female children. What is the probability that the next child is male?",
+    "options": [
+      "1/16 for both couples",
+      "1/16 for the first couple and 1/2 for the second",
+      "1/4 for the first couple and 1/2 for the second",
+      "1/2 for both couples",
+      "1/2 for the first couple and 1/8 for the second"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2995
+  },
+  {
+    "text": "Following a decreased functional demand in a tissue, there will be:",
+    "options": [
+      "hyperplasia",
+      "necrosis",
+      "hypertrophy",
+      "hypotrophy",
+      "metaplasia"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2996
+  },
+  {
+    "text": "The amount of a substance capable of killing, in a single administration, half of the sample population of experimental animals is indicated as:",
+    "options": [
+      "LD50",
+      "minimum effective dose",
+      "therapeutic index",
+      "LD90",
+      "bioavailability"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 2997
+  },
+  {
+    "text": "Indicate the correct order of the growth phases of a bacterial population:",
+    "options": [
+      "Stationary phase, death phase, exponential phase, lag phase",
+      "Death phase, stationary phase, exponential phase, lag phase",
+      "Lag phase, stationary phase, exponential phase, death phase",
+      "Lag phase, exponential phase, stationary phase, death phase",
+      "Exponential phase, lag phase, stationary phase, death phase"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 2998
+  },
+  {
+    "text": "DNA methylation:",
+    "options": [
+      "is a post-translational modification",
+      "blocks expression of the gene concerned",
+      "consists of the removal of a methyl group",
+      "consists of the addition of a phosphate group",
+      "reactivates a previously silenced gene"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 2999
+  },
+  {
+    "text": "Glycosylation with mannose-6-phosphate (M6P) allows proteins to be recognized and directed:",
+    "options": [
+      "to the lysosome",
+      "to the SER",
+      "to the RER",
+      "to the plasma membrane",
+      "to the nucleus"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3000
+  },
+,
+  {
+    "text": "Which of the following statements regarding Hematoxylin-Eosin staining is correct?",
+    "options": [
+      "Nuclei have a color ranging from pink to red",
+      "Fluids have a color ranging from pink to red",
+      "Cytoplasm, intercellular substances and muscle fibers have a color ranging from dark blue to dark purple",
+      "Fluids (blood, lymph, etc.) stain weakly, appearing as white spaces",
+      "Fats and lipids stain dark purple"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3001
+  },
+  {
+    "text": "During photosynthesis, water molecules:",
+    "options": [
+      "oxidize, because they gain electrons and hydrogen ions",
+      "do not intervene in the reaction",
+      "oxidize, because they lose electrons and hydrogen ions",
+      "reduce, because they gain electrons and hydrogen ions",
+      "reduce, because they lose electrons and hydrogen ions"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3002
+  },
+  {
+    "text": "Which of the following amino acids has a thiol group?",
+    "options": [
+      "Cysteine",
+      "Serine",
+      "Leucine",
+      "Alanine",
+      "Glycine"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3003
+  },
+  {
+    "text": "Which of the following lipids is an important precursor of steroid hormones?",
+    "options": [
+      "Triglycerides",
+      "Phospholipids",
+      "Fatty acids",
+      "Glycolipids",
+      "Cholesterol"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3004
+  },
+  {
+    "text": "What is the main function of transcription?",
+    "options": [
+      "None of the other alternatives is correct",
+      "DNA synthesis",
+      "RNA synthesis",
+      "DNA replication",
+      "Protein synthesis"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3005
+  },
+  {
+    "text": "Which enzyme is responsible for RNA synthesis during transcription?",
+    "options": [
+      "Primase",
+      "RNA polymerase",
+      "Helicase",
+      "DNA polymerase",
+      "Ligase"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3006
+  },
+  {
+    "text": "What is the role of the promoter region in transcription?",
+    "options": [
+      "Stabilizes RNA molecules",
+      "None of the other alternatives is correct",
+      "Codes for a protein",
+      "Initiates transcription",
+      "Terminates transcription"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3007
+  },
+  {
+    "text": "What is the purpose of transcription factors in transcription?",
+    "options": [
+      "They help DNA replication",
+      "They regulate gene expression",
+      "They stabilize RNA molecules",
+      "None of the other alternatives is correct",
+      "They initiate translation"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3008
+  },
+  {
+    "text": "During protein translation, which molecule serves as a template for protein synthesis?",
+    "options": [
+      "DNA",
+      "ATP",
+      "rRNA",
+      "mRNA",
+      "tRNA"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3009
+  },
+  {
+    "text": "Which of the following statements is TRUE regarding pre-mRNA molecules?",
+    "options": [
+      "They are synthesized in the cytoplasm",
+      "They are the final product of RNA transcription",
+      "None of the other alternatives is correct",
+      "They are immediately translated into proteins",
+      "They contain introns and exons"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3010
+  },
+  {
+    "text": "Which of the following is NOT a type of RNA produced during transcription?",
+    "options": [
+      "",
+      "Small interfering RNA (siRN",
+      "",
+      "Messenger RNA (mRN",
+      "",
+      "Ribosomal RNA (rRN",
+      "Transfer RNA (tRN",
+      "None of the other alternatives is correct",
+      ""
+    ],
+    "correctAnswer": 7,
+    "subject": "Biology",
+    "id": 3011
+  },
+  {
+    "text": "Which weak interactions are fundamental for protein folding and stabilization?",
+    "options": [
+      "Disulfide bonds",
+      "Ionic bonds",
+      "Glycosidic bonds",
+      "Hydrophobic interactions",
+      "Peptide bonds"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3012
+  },
+  {
+    "text": "Weak interactions between water molecules contribute to many biological processes. Which interactions are responsible for the high surface tension of water?",
+    "options": [
+      "Van der Waals interactions",
+      "London dispersion forces",
+      "Covalent bonds",
+      "Ionic bonds",
+      "Hydrogen bonds"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3013
+  },
+  {
+    "text": "Weak interactions play a role in maintaining the three-dimensional structure of nucleic acids. Which interactions stabilize the cloverleaf structure of the tRNA molecule?",
+    "options": [
+      "Disulfide bonds",
+      "Van der Waals interactions",
+      "Hydrophobic interactions",
+      "Peptide bonds",
+      "Hydrogen bonds"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3014
+  },
+  {
+    "text": "Weak interactions are important for the assembly and stability of cell membranes. Which interactions contribute to the formation of the lipid bilayer?",
+    "options": [
+      "Hydrophobic interactions",
+      "Covalent bonds",
+      "Van der Waals interactions",
+      "Peptide bonds",
+      "Ionic bonds"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3015
+  },
+  {
+    "text": "Weak interactions are important for the stability of secondary protein structures. Which interactions contribute to the formation of alpha-helices and beta-sheets?",
+    "options": [
+      "Covalent bonds",
+      "London dispersion forces",
+      "Hydrogen bonds",
+      "Disulfide bonds",
+      "Ionic bonds"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3016
+  },
+  {
+    "text": "Weak interactions are involved in the recognition and binding of hormone-receptor complexes. Which interactions contribute to the binding of steroid hormones with their receptors?",
+    "options": [
+      "Covalent bonds",
+      "Hydrophobic interactions",
+      "Disulfide bonds",
+      "Dipole-dipole interactions",
+      "Peptide bonds"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3017
+  },
+  {
+    "text": "Where does the Krebs cycle take place?",
+    "options": [
+      "Inner mitochondrial membrane",
+      "Ribosome",
+      "Mitochondrial matrix",
+      "Nucleus",
+      "Cytoplasm"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3018
+  },
+  {
+    "text": "Where does glycolysis take place?",
+    "options": [
+      "Inner mitochondrial membrane",
+      "Cytoplasm",
+      "Lysosomes",
+      "Smooth endoplasmic reticulum",
+      "Mitochondrial matrix"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3019
+  },
+  {
+    "text": "What is the function of tRNA?",
+    "options": [
+      "Transporting amino acids to the ribosome",
+      "Forming the structure of the ribosome",
+      "Synthesizing mRNA",
+      "Regulating the cell cycle",
+      "Copying DNA during replication"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3020
+  },
+  {
+    "text": "Which of the following describes the secondary structure of a protein?",
+    "options": [
+      "The interaction between multiple polypeptide chains",
+      "Alpha-helices and beta-pleated sheets",
+      "The sequence of amino acids",
+      "The bond between the protein and a lipid",
+      "The overall three-dimensional shape"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3021
+  },
+  {
+    "text": "Which nitrogenous base is found in RNA but not in DNA?",
+    "options": [
+      "Thymine",
+      "Cytosine",
+      "Adenine",
+      "Guanine",
+      "Uracil"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3022
+  },
+  {
+    "text": "During which phase of mitosis do sister chromatids separate?",
+    "options": [
+      "Prophase",
+      "Anaphase",
+      "Metaphase",
+      "Interphase",
+      "Telofase"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3023
+  },
+  {
+    "text": "What is the main function of lysosomes?",
+    "options": [
+      "Intracellular digestion",
+      "Lipid synthesis",
+      "Protein synthesis",
+      "ATP production",
+      "DNA replication"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3024
+  },
+  {
+    "text": "Which of the following is a characteristic of prokaryotic cells?",
+    "options": [
+      "Large 80S ribosomes",
+      "Presence of a complex Golgi apparatus",
+      "Presence of a nuclear envelope",
+      "Presence of mitochondria",
+      "Absence of a nuclear membrane"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3025
+  },
+  {
+    "text": "What is meant by \"phenotype\"?",
+    "options": [
+      "The genetic makeup of an organism",
+      "The rate of mutation in a population",
+      "The position of a gene on a chromosome",
+      "The observable characteristics of an organism",
+      "The sequence of nucleotides in a gene"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3026
+  },
+  {
+    "text": "Crossing-over occurs during:",
+    "options": [
+      "Prophase I of meiosis",
+      "Telophase of mitosis",
+      "Prophase of mitosis",
+      "Metaphase II of meiosis",
+      "Anaphase I of meiosis"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3027
+  },
+  {
+    "text": "A mutation that involves the replacement of a single nucleotide is called:",
+    "options": [
+      "Point mutation",
+      "Deletion",
+      "Inversion",
+      "Translocation",
+      "Insertion"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3028
+  },
+  {
+    "text": "Which enzyme is responsible for synthesizing the new DNA strand during replication?",
+    "options": [
+      "Primase",
+      "RNA polymerase",
+      "DNA polymerase",
+      "Helicase",
+      "Ligase"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3029
+  },
+  {
+    "text": "The theory of evolution by natural selection was proposed by:",
+    "options": [
+      "Louis Pasteur",
+      "Watson and Crick",
+      "Gregor Mendel",
+      "Jean-Baptiste Lamarck",
+      "Charles Darwin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3030
+  },
+  {
+    "text": "Which hormone regulates blood glucose levels?",
+    "options": [
+      "Adrenaline",
+      "Estrogen",
+      "Thyroxine",
+      "Testosterone",
+      "Insulin"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3031
+  },
+  {
+    "text": "What is a plasmid?",
+    "options": [
+      "A part of the mitochondrial membrane",
+      "A virus that infects bacteria",
+      "A small circular DNA molecule in bacteria",
+      "A protein involved in DNA folding",
+      "A type of plant cell"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3032
+  },
+  {
+    "text": "In humans, the sex of an individual is determined by:",
+    "options": [
+      "The presence of the Y chromosome",
+      "Environmental temperature",
+      "The location of the embryo in the uterus",
+      "The age of the parents",
+      "The diet of the mother"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3033
+  },
+  {
+    "text": "The process of transcribing DNA into RNA takes place in the:",
+    "options": [
+      "Golgi apparatus",
+      "Ribosome",
+      "Mitochondria",
+      "Nucleus",
+      "Cytoplasm"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3034
+  },
+  {
+    "text": "Lactic fermentation:",
+    "options": [
+      "Oxidizes NADH",
+      "Oxidizes NAD",
+      "Oxidizes FADH2",
+      "Reduces NAD",
+      "Oxidizes pyruvate"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3035
+  },
+  {
+    "text": "A couple is planning to have a child. The man is heterozygous for an autosomal recessive disease, while the woman is homozygous for the same mutated gene. What is the probability that the child (male) will be affected by this disease?",
+    "options": [
+      "0%",
+      "100%",
+      "50%",
+      "25%",
+      "75%"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3036
+  },
+  {
+    "text": "In a dihybrid cross between two heterozygous individuals (AaBb x AaBb), what is the phenotypic ratio of the offspring?",
+    "options": [
+      "1:1:1:1",
+      "1:2:1",
+      "1:1",
+      "9:3:3:1",
+      "3:1"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3037
+  },
+  {
+    "text": "A woman with blood type A (genotype A0) and a man with blood type B (genotype B0) have a child. What is the probability that the child has blood type O?",
+    "options": [
+      "50%",
+      "25%",
+      "0%",
+      "75%",
+      "100%"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3038
+  },
+  {
+    "text": "Color blindness is a recessive sex-linked disease. If a healthy carrier female mates with a color-blind male, what will be the percentage of color-blind individuals in their offspring?",
+    "options": [
+      "All healthy",
+      "All color-blind",
+      "None of the other alternatives are correct",
+      "All heterozygous color-blind",
+      "Half color-blind and half healthy"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3039
+  },
+  {
+    "text": "In a population, a certain genetic trait shows incomplete dominance. If individuals with genotype AA have red flowers, individuals with genotype Aa have pink flowers, and individuals with genotype aa have white flowers, what is the expected phenotypic ratio of an Aa x Aa cross?",
+    "options": [
+      "9:3:3:1",
+      "1:1",
+      "1:2:1 (1 Red : 2 Pink : 1 White)",
+      "All Pink",
+      "3:1"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3040
+  },
+  {
+    "text": "Which of the following is NOT a component of a nucleotide?",
+    "options": [
+      "Nitrogenous base",
+      "Five-carbon sugar",
+      "Amino acid",
+      "Pentose",
+      "Phosphate group"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3041
+  },
+  {
+    "text": "The bonds that hold the two strands of DNA together are:",
+    "options": [
+      "Ionic bonds",
+      "Phosphodiester bonds",
+      "Peptide bonds",
+      "Covalent bonds",
+      "Hydrogen bonds"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3042
+  },
+  {
+    "text": "During cellular respiration, oxygen acts as the:",
+    "options": [
+      "Source of carbon",
+      "Initial electron donor",
+      "Catalyst for glycolysis",
+      "Solvent for the citric acid cycle",
+      "Final electron acceptor"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3043
+  },
+  {
+    "text": "What is the function of the Golgi apparatus?",
+    "options": [
+      "Synthesizing lipids",
+      "Breaking down waste products",
+      "Storing genetic information",
+      "Producing ATP",
+      "Modifying, sorting, and packaging proteins"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3044
+  },
+  {
+    "text": "Active transport across a cell membrane requires:",
+    "options": [
+      "Energy (ATP) and transport proteins",
+      "Only lipid-soluble molecules",
+      "Simple diffusion",
+      "Only water molecules",
+      "Only a concentration gradient"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3045
+  },
+  {
+    "text": "In Mendelian genetics, an allele that masks the expression of another allele is said to be:",
+    "options": [
+      "Codominant",
+      "Recessive",
+      "Pleiotropic",
+      "Epistatic",
+      "Dominant"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3046
+  },
+  {
+    "text": "The phase of the cell cycle where DNA is replicated is:",
+    "options": [
+      "G2 phase",
+      "M phase",
+      "G1 phase",
+      "G0 phase",
+      "S phase"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3047
+  },
+  {
+    "text": "A virus consists primarily of:",
+    "options": [
+      "A nucleus and cytoplasm",
+      "Mitochondria and a plasma membrane",
+      "and a protein coat (capsid)",
+      "Genetic material (DNA or RN",
+      "Enzymes for metabolism",
+      "Ribosomes and a cell wall"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3048
+  },
+  {
+    "text": "Which of the following is a result of meiosis?",
+    "options": [
+      "Two diploid daughter cells",
+      "Four haploid daughter cells",
+      "One large egg cell and two sperm cells",
+      "Four diploid daughter cells",
+      "Two haploid daughter cells"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3049
+  },
+  {
+    "text": "The enzyme that joins DNA fragments together is:",
+    "options": [
+      "Helicase",
+      "DNA polymerase",
+      "DNA ligase",
+      "RNA polymerase",
+      "Restriction enzyme"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3050
+  },
+  {
+    "text": "Which of the following is a polysaccharide?",
+    "options": [
+      "Fructose",
+      "Sucrose",
+      "Cellulose",
+      "Lactose",
+      "Glucose"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3051
+  },
+  {
+    "text": "The site of protein synthesis in the cell is the:",
+    "options": [
+      "Centriole",
+      "Smooth ER",
+      "Lysosome",
+      "Nucleolus",
+      "Ribosome"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3052
+  },
+  {
+    "text": "Natural selection acts directly on the:",
+    "options": [
+      "Recessive alleles",
+      "Genotype",
+      "DNA sequence",
+      "Phenotype",
+      "Individual genes"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3053
+  },
+  {
+    "text": "What is the function of the stomata in plants?",
+    "options": [
+      "Support for the stem",
+      "Gas exchange",
+      "Nutrient transport",
+      "Water absorption from soil",
+      "Protection from insects"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3054
+  },
+  {
+    "text": "Which organelle is responsible for photosynthesis?",
+    "options": [
+      "Vacuole",
+      "Mitochondrion",
+      "Ribosome",
+      "Nucleus",
+      "Chloroplast"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3055
+  },
+  {
+    "text": "Hemophilia is more common in males because:",
+    "options": [
+      "Males have two X chromosomes",
+      "It is caused by hormones",
+      "It is a dominant trait located on the Y chromosome",
+      "Females cannot inherit the disease",
+      "It is a recessive trait located on the X chromosome"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3056
+  },
+  {
+    "text": "The process of \"splicing\" in eukaryotes refers to:",
+    "options": [
+      "Adding a 5' cap to mRNA",
+      "Removing introns and joining exons in mRNA",
+      "Breaking down proteins",
+      "Translating mRNA into protein",
+      "Replicating DNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3057
+  },
+  {
+    "text": "Antibiotics are used to treat infections caused by:",
+    "options": [
+      "Prions",
+      "Environmental toxins",
+      "Viruses",
+      "Bacteria",
+      "Genetic mutations"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3058
+  },
+  {
+    "text": "What is the primary product of the light reactions of photosynthesis?",
+    "options": [
+      "Glucose",
+      "ATP and NADPH",
+      "Carbon dioxide",
+      "Pyruvate",
+      "Water"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3059
+  },
+  {
+    "text": "The smallest unit of life is the:",
+    "options": [
+      "Organism",
+      "Atom",
+      "Molecule",
+      "Organ",
+      "Cell"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3060
+  },
+  {
+    "text": "Which of the following is an example of a vestigial structure?",
+    "options": [
+      "Fish gill",
+      "Plant leaf",
+      "Human heart",
+      "Bird wing",
+      "Human appendix"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3061
+  },
+  {
+    "text": "Transcription factors are:",
+    "options": [
+      "Components of the ribosome",
+      "Proteins that regulate the transcription of genes",
+      "Enzymes that break down mRNA",
+      "Types of RNA",
+      "Sequences of DNA"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3062
+  },
+  {
+    "text": "What is the role of the promoter?",
+    "options": [
+      "It is the binding site for RNA polymerase",
+      "It codes for a specific amino acid",
+      "It stabilizes the DNA double helix",
+      "It signals the end of translation",
+      "It is where DNA replication begins"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3063
+  },
+  {
+    "text": "In an ecosystem, decomposers:",
+    "options": [
+      "Produce oxygen through photosynthesis",
+      "Convert solar energy into chemical energy",
+      "Consume live prey",
+      "Are at the top of the food chain",
+      "Break down dead organic matter"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3064
+  },
+  {
+    "text": "The universal genetic code is shared by:",
+    "options": [
+      "Only eukaryotes",
+      "Only multicellular organisms",
+      "Only animals",
+      "Almost all living organisms",
+      "Only humans and primates"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3065
+  },
+  {
+    "text": "A homozygous individual:",
+    "options": [
+      "Is always recessive",
+      "Is always dominant",
+      "Has two identical alleles for a gene",
+      "Has no alleles for that gene",
+      "Has two different alleles for a gene"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3066
+  },
+  {
+    "text": "What type of bond forms between amino acids?",
+    "options": [
+      "Metallic bond",
+      "Phosphodiester bond",
+      "Glycosidic bond",
+      "Peptide bond",
+      "Ionic bond"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3067
+  },
+  {
+    "text": "What happens during the G1 phase of the cell cycle?",
+    "options": [
+      "DNA replication",
+      "Cell growth and normal metabolic processes",
+      "Separation of chromosomes",
+      "Preparation for mitosis",
+      "Cytokinesis"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3068
+  },
+  {
+    "text": "The genetic variation in a population is increased by:",
+    "options": [
+      "Mutation and sexual reproduction",
+      "Mitosis",
+      "Natural selection",
+      "Cloning",
+      "Asexual reproduction"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3069
+  },
+  {
+    "text": "Which of the following is a steroid hormone?",
+    "options": [
+      "Growth hormone",
+      "Insulin",
+      "Glucagon",
+      "Estrogen",
+      "Adrenaline"
+    ],
+    "correctAnswer": 3,
+    "subject": "Biology",
+    "id": 3070
+  },
+  {
+    "text": "The endosymbiotic theory explains the origin of:",
+    "options": [
+      "The plasma membrane",
+      "The cell wall",
+      "The nucleus",
+      "Ribosomes",
+      "Mitochondria and chloroplasts"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3071
+  },
+  {
+    "text": "Enzymes work by:",
+    "options": [
+      "Changing the final product of a reaction",
+      "Increasing the temperature of a reaction",
+      "Lowering the activation energy of a reaction",
+      "Being consumed in the reaction",
+      "Raising the free energy of the reactants"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3072
+  },
+  {
+    "text": "An example of codominance is:",
+    "options": [
+      "AB blood type in humans",
+      "Hemophilia",
+      "Blue eyes",
+      "Pink flowers from red and white parents",
+      "Short stature in pea plants"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3073
+  },
+  {
+    "text": "What is a consequence of the Mary Lyon hypothesis?",
+    "options": [
+      "Random inactivation of one of the X chromosomes in all female cells",
+      "Inactivation of Y chromosomes in female cells",
+      "Activation of X chromosomes in male cells",
+      "Selective inactivation of X chromosomes in specific tissues",
+      "Inactivation of both X chromosomes in female cells"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3074
+  },
+  {
+    "text": "What is meant by the term \"phagocytosis\"?",
+    "options": [
+      "Formation of a secretory vesicle",
+      "Process by which a cell engulfs droplets of liquid",
+      "T lymphocyte maturation process",
+      "mRNA maturation process",
+      "Process by which a cell engulfs large particles"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3075
+  },
+  {
+    "text": "It is difficult to observe individual chromosomes with a light microscope during prophase because:",
+    "options": [
+      "They leave the nucleus and scatter in other parts of the cell",
+      "The spindle must move them to the metaphase plate before they become visible",
+      "They are coiled into long, thin threads",
+      "The DNA has not been replicated yet",
+      "Sister chromatids do not pair until the start of division"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3076
+  },
+  {
+    "text": "What represents the phenotype of an organism?",
+    "options": [
+      "The evolution of the species",
+      "The genotype of the organism",
+      "The set of characteristics manifested by an organism",
+      "Genetic recombination",
+      "Mendel's first law"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3077
+  },
+  {
+    "text": "What is meant by \"Binary Fission\"?",
+    "options": [
+      "Asexual cell division typical of prokaryotic cells",
+      "Asexual cell division typical of stem cells",
+      "Atypical division of stem cells",
+      "Sexual cell division typical of eukaryotic cells",
+      "Cell division typical of viruses"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3078
+  },
+  {
+    "text": "What is the correct term that defines the flow of solvent between two solutions across a semipermeable membrane?",
+    "options": [
+      "Osmosis",
+      "pH difference",
+      "Solubility",
+      "Molarity",
+      "Molality"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3079
+  },
+  {
+    "text": "If one parent has type A blood and the other has type B blood, and they have a child with type O blood, what are the parents' genotypes?",
+    "options": [
+      "AA and Bi",
+      "ii and AB",
+      "Ai and BB",
+      "AA and BB",
+      "Ai and Bi"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3080
+  },
+  {
+    "text": "Which part of the brain is responsible for balance and coordination?",
+    "options": [
+      "Medulla oblongata",
+      "Thalamus",
+      "Cerebrum",
+      "Hypothalamus",
+      "Cerebellum"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3081
+  },
+  {
+    "text": "Which of the following is an example of a monosaccharide?",
+    "options": [
+      "Sucrose",
+      "Cellulose",
+      "Glycogen",
+      "Starch",
+      "Glucose"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3082
+  },
+  {
+    "text": "The function of the rough endoplasmic reticulum is:",
+    "options": [
+      "Protein synthesis and modification",
+      "ATP production",
+      "Calcium storage",
+      "Lipid synthesis",
+      "Detoxification of drugs"
+    ],
+    "correctAnswer": 0,
+    "subject": "Biology",
+    "id": 3083
+  },
+  {
+    "text": "Which of the following muscles is part of the quadriceps?",
+    "options": [
+      "Gracilis",
+      "Pectineus",
+      "Rectus femoris",
+      "Biceps femoris",
+      "Biceps brachii"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3084
+  },
+  {
+    "text": "What is the primary function of the electron transport chain?",
+    "options": [
+      "Producing carbon dioxide",
+      "Generating ATP",
+      "Converting glucose to pyruvate",
+      "Conversion of pyruvate to lactate",
+      "Producing NADH and FADH2"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3085
+  },
+  {
+    "text": "Which molecule directly transfers electrons to the electron transport chain?",
+    "options": [
+      "Acetyl-CoA",
+      "Pyruvate",
+      "NADH",
+      "ATP",
+      "FADH2"
+    ],
+    "correctAnswer": 2,
+    "subject": "Biology",
+    "id": 3086
+  },
+  {
+    "text": "In the absence of an acrosome, a sperm cell CANNOT:",
+    "options": [
+      "Procure food",
+      "Fuse with the egg cell",
+      "Obtain energy",
+      "Swim",
+      "Penetrate the egg"
+    ],
+    "correctAnswer": 4,
+    "subject": "Biology",
+    "id": 3087
+  },
+  {
+    "text": "Cytokinesis usually, but not always, follows mitosis. If cells undergo mitosis but not cytokinesis, the result would be:",
+    "options": [
+      "Cells with abnormally small nuclei",
+      "A cell with two nuclei",
+      "A cell with a single large nucleus",
+      "Feedback responses that prevent mitosis",
+      "The death of a cell line"
+    ],
+    "correctAnswer": 1,
+    "subject": "Biology",
+    "id": 3088
+  },
 ];

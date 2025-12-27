@@ -39,7 +39,10 @@ export const Stories: React.FC = () => {
       return entry ? entry.meanings[0].definition : 'Definition not found in local dictionary. Try the global dictionary search.';
   };
 
-  const renderContentWithHighlights = (content: string, difficultWords: string[]) => {
+  const storyContent = useMemo(() => {
+    if (!selectedStory) return null;
+    
+    const { content, difficultWords } = selectedStory;
     const escapeRegExp = (string: string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const pattern = new RegExp(`\\b(${difficultWords.map(escapeRegExp).join('|')})\\b`, 'gi');
     
@@ -48,7 +51,7 @@ export const Stories: React.FC = () => {
         return (
             <p 
                 key={pIdx} 
-                className={`mb-6 leading-relaxed font-serif transition-all duration-300 relative
+                className={`mb-6 leading-relaxed font-serif transition-colors duration-300 relative
                     ${textSize === 'sm' ? 'text-base' : textSize === 'base' ? 'text-lg' : textSize === 'lg' ? 'text-xl' : 'text-2xl'}
                     ${sepiaMode ? 'text-amber-900' : 'text-slate-700 dark:text-slate-300'}
                 `}
@@ -84,7 +87,7 @@ export const Stories: React.FC = () => {
             </p>
         );
     });
-  };
+  }, [selectedStory, textSize, sepiaMode]);
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${sepiaMode && selectedStory ? 'bg-[#f4ecd8]' : ''}`} onClick={() => setClickedWord(null)}>
@@ -313,7 +316,7 @@ export const Stories: React.FC = () => {
                     </div>
 
                     <div className="prose dark:prose-invert prose-lg max-w-none mb-12">
-                        {renderContentWithHighlights(selectedStory.content, selectedStory.difficultWords)}
+                        {storyContent}
                     </div>
 
                     {/* Footer Actions */}

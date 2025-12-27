@@ -53,12 +53,15 @@ export const GlobalLoader: React.FC = () => {
 
             <style>{`
                 @keyframes progress-indeterminate {
-                    0% { width: 0%; margin-left: 0%; }
-                    50% { width: 70%; margin-left: 30%; }
-                    100% { width: 0%; margin-left: 100%; }
+                    0% { transform: translateX(-100%) scaleX(0.2); }
+                    50% { transform: translateX(0%) scaleX(0.5); }
+                    100% { transform: translateX(100%) scaleX(0.2); }
                 }
                 .animate-progress-indeterminate {
+                    width: 100%;
+                    transform-origin: center;
                     animation: progress-indeterminate 1.5s ease-in-out infinite;
+                    will-change: transform;
                 }
             `}</style>
         </div>

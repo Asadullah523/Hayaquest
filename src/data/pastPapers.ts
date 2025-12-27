@@ -976,7 +976,7 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Biology",
         description: "100 High-yield Biology MCQs (Questions 1-100). Shuffled options.",
-        questions: imatBiologyMCQs.slice(0, 100),
+        questions: imatBiologyMCQs.slice(0, 100) as Question[],
         durationMinutes: 100,
         totalMarks: 150
     },
@@ -987,7 +987,7 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Biology",
         description: "100 High-yield Biology MCQs (Questions 101-200). Shuffled options.",
-        questions: imatBiologyMCQs.slice(100, 200),
+        questions: imatBiologyMCQs.slice(100, 200) as Question[],
         durationMinutes: 100,
         totalMarks: 150
     },
@@ -998,7 +998,7 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Biology",
         description: "100 High-yield Biology MCQs (Questions 201-300). Shuffled options.",
-        questions: imatBiologyMCQs.slice(200, 300),
+        questions: imatBiologyMCQs.slice(200, 300) as Question[],
         durationMinutes: 100,
         totalMarks: 150
     },
@@ -1009,7 +1009,7 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Biology",
         description: "100 High-yield Biology MCQs (Questions 301-400). Shuffled options.",
-        questions: imatBiologyMCQs.slice(300, 400),
+        questions: imatBiologyMCQs.slice(300, 400) as Question[],
         durationMinutes: 100,
         totalMarks: 150
     },
@@ -1020,7 +1020,7 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Biology",
         description: "100 High-yield Biology MCQs (Questions 401-500). Shuffled options.",
-        questions: imatBiologyMCQs.slice(400, 500),
+        questions: imatBiologyMCQs.slice(400, 500) as Question[],
         durationMinutes: 100,
         totalMarks: 150
     },
@@ -1031,9 +1031,64 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Biology",
         description: "100 High-yield Biology MCQs (Questions 501-600). Shuffled options.",
-        questions: imatBiologyMCQs.slice(500, 600),
+        questions: imatBiologyMCQs.slice(500, 600) as Question[],
         durationMinutes: 100,
         totalMarks: 150
+    },
+    {
+        id: 2107,
+        title: "Biology Practice - Set 7",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 601-700). Shuffled options.",
+        questions: imatBiologyMCQs.slice(600, 700) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2108,
+        title: "Biology Practice - Set 8",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 701-800). Shuffled options.",
+        questions: imatBiologyMCQs.slice(700, 800) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2109,
+        title: "Biology Practice - Set 9",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 801-900). Shuffled options.",
+        questions: imatBiologyMCQs.slice(800, 900) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2110,
+        title: "Biology Practice - Set 10",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "100 High-yield Biology MCQs (Questions 901-1000). Shuffled options.",
+        questions: imatBiologyMCQs.slice(900, 1000) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 2111,
+        title: "Biology Practice - Set 11",
+        year: "Practice",
+        category: "Practice",
+        subject: "Biology",
+        description: "88 High-yield Biology MCQs (Questions 1001-1088). Shuffled options.",
+        questions: imatBiologyMCQs.slice(1000, 1088) as Question[],
+        durationMinutes: 90,
+        totalMarks: 132
     }
 ];
 
