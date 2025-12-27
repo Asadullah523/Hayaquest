@@ -10,9 +10,11 @@ const getBaseUrl = () => {
     if (custom) return `${custom}/api`;
     
     // Default fallback
-    const DEV_API_URL = 'http://192.168.1.8:5001/api'; 
-    const PROD_API_URL = '/api'; 
-    return isNative ? DEV_API_URL : PROD_API_URL;
+    // For Native App: Connect directly to the Vercel Backend
+    const PROD_CLOUD_URL = 'https://hayaquest.vercel.app/api'; 
+    
+    // For Web: Use relative path (handled by Vercel/Vite proxy)
+    return isNative ? PROD_CLOUD_URL : '/api';
 };
 
 const api = axios.create({
