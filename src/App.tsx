@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout/Layout'; // Layout is kept eager for perceived performance
 import { GlobalLoader } from './components/layout/GlobalLoader';
+import { BackButtonHandler } from './components/navigation/BackButtonHandler';
 import { Suspense, lazy, useState, useEffect } from 'react';
 import { initializePresetSubjects } from './utils/initializePresetSubjects';
 import { useSubjectStore } from './store/useSubjectStore';
@@ -95,30 +96,32 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/subjects" element={<SubjectList />} />
-            <Route path="/subjects/:id" element={<SubjectDetail />} />
-            <Route path="/timetable" element={<Timetable />} />
-            <Route path="/imat" element={<ImatDashboard />} />
-            <Route path="/mdcat" element={<MdcatDashboard />} />
-            <Route path="/achievements" element={<Achievements />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/english" element={<EnglishDashboard />} />
-            <Route path="/english/dictionary" element={<Dictionary />} />
-            <Route path="/english/vocabulary" element={<VocabularyBuilder />} />
-            <Route path="/english/stories" element={<Stories />} />
-            <Route path="/english/grammar" element={<Grammar />} />
-            <Route path="/english/writing-checker" element={<WritingChecker />} />
-            <Route path="/english/collection" element={<MyCollection />} />
-            <Route path="/settings" element={<Settings />} />
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Suspense>
+      <BackButtonHandler>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/subjects" element={<SubjectList />} />
+              <Route path="/subjects/:id" element={<SubjectDetail />} />
+              <Route path="/timetable" element={<Timetable />} />
+              <Route path="/imat" element={<ImatDashboard />} />
+              <Route path="/mdcat" element={<MdcatDashboard />} />
+              <Route path="/achievements" element={<Achievements />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/english" element={<EnglishDashboard />} />
+              <Route path="/english/dictionary" element={<Dictionary />} />
+              <Route path="/english/vocabulary" element={<VocabularyBuilder />} />
+              <Route path="/english/stories" element={<Stories />} />
+              <Route path="/english/grammar" element={<Grammar />} />
+              <Route path="/english/writing-checker" element={<WritingChecker />} />
+              <Route path="/english/collection" element={<MyCollection />} />
+              <Route path="/settings" element={<Settings />} />
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </BackButtonHandler>
     </BrowserRouter>
   );
 }
