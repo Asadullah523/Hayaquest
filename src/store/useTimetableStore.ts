@@ -152,6 +152,23 @@ export const useTimetableStore = create<TimetableState>()(
               
               if (!slot || !slot.id) return;
 
+              // Calculate duration
+              const [startH, startM] = slot.startTime.split(':').map(Number);
+              const [endH, endM] = slot.endTime.split(':').map(Number);
+              
+              const startTotalMins = startH * 60 + startM;
+              const endTotalMins = endH * 60 + endM;
+              const durationMins = endTotalMins - startTotalMins;
+
+              // Calculate new endTime based on new toTime
+              const [newStartH, newStartM] = toTime.split(':').map(Number);
+              const newStartTotalMins = newStartH * 60 + newStartM;
+              const newEndTotalMins = newStartTotalMins + durationMins;
+
+              const newEndH = Math.floor(newEndTotalMins / 60) % 24;
+              const newEndM = newEndTotalMins % 60;
+              const newEndTime = `${newEndH.toString().padStart(2, '0')}:${newEndM.toString().padStart(2, '0')}`;
+
               // Check if target is occupied
               const targetSlot = await db.timetable
                  .where({ dayOfWeek: toDay, startTime: toTime })
@@ -165,9 +182,7 @@ export const useTimetableStore = create<TimetableState>()(
               await db.timetable.update(slot.id, {
                   dayOfWeek: toDay as any,
                   startTime: toTime,
-                  // Update endTime logic based on duration if needed, 
-                  // but we assume 1hr slots for MVP grid
-                  // endTime: ... 
+                  endTime: newEndTime
               });
 
               // Reload
