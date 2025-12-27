@@ -12,6 +12,10 @@ import { useUserStore } from '../store/useUserStore';
 import { useTimerStore } from '../store/useTimerStore';
 
 export const syncService = {
+  // Sync state management
+  _isSyncing: false,
+  _lastLocalUpdate: 0,
+
   async getAllLocalData() {
     // Get data from Dexie
     const subjects = await db.subjects.toArray();
@@ -71,33 +75,61 @@ export const syncService = {
   },
 
   async backup() {
+    if (this._isSyncing) return;
     try {
+      this._isSyncing = true;
       const data = await this.getAllLocalData();
       await api.post('/sync/backup', { data });
       console.log('Backup successful');
     } catch (err) {
       console.error('Backup failed', err);
       throw err;
+    } finally {
+      this._isSyncing = false;
     }
   },
 
   async restore() {
+    if (this._isSyncing) return;
+    // Don't restore if we just had a local update (within 5 seconds) 
+    // to avoid pulling stale data before backup completes
+    if (Date.now() - this._lastLocalUpdate < 5000) {
+      console.log('Skipping restore: local update recently triggered');
+      return;
+    }
+
     try {
+      this._isSyncing = true;
       const { data: remoteData } = await api.get('/sync/restore');
       if (!remoteData) return;
 
-      // Restore to Dexie
+      // Smart decision: Check if remote data is different from local data
+      // before performing expensive (and flapping) store updates
+      const localData = await this.getAllLocalData();
+      
+      // We focus on critical fields for comparison to avoid performance issues
+      const isDifferent = JSON.stringify({
+        s: remoteData.subjects,
+        t: remoteData.topics,
+        g: remoteData.gamification,
+        l: remoteData.logs
+      }) !== JSON.stringify({
+        s: localData.subjects,
+        t: localData.topics,
+        g: localData.gamification,
+        l: localData.logs
+      });
+
+      if (!isDifferent) {
+        console.log('Restore skipped: remote data is identical to local');
+        return;
+      }
+
       // Restore to Dexie
       await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
-        // Smart Sync: Upsert new/updated data, remove deleted data
-        // This prevents "flickering" caused by clearing tables
-
         const syncTable = async (table: any, remoteItems: any[]) => {
             if (!remoteItems) return;
-            // 1. Upsert (Update or Insert) all remote items
             await table.bulkPut(remoteItems);
-            
-            // 2. Find and delete local items that are no longer in remote
             const remoteIds = new Set(remoteItems.map((i: any) => i.id).filter((id: any) => id !== undefined));
             const localKeys = await table.toCollection().primaryKeys();
             const toDelete = localKeys.filter((k: any) => !remoteIds.has(k));
@@ -124,9 +156,7 @@ export const syncService = {
       }
 
       if (remoteData.achievements) {
-        useAchievementsStore.setState({
-          unlockedAchievements: remoteData.achievements,
-        });
+        useAchievementsStore.setState({ unlockedAchievements: remoteData.achievements });
       }
 
       if (remoteData.writingChecker) {
@@ -137,9 +167,7 @@ export const syncService = {
       }
 
       if (remoteData.englishProgress) {
-        useEnglishStore.setState({
-          ...remoteData.englishProgress
-        });
+        useEnglishStore.setState({ ...remoteData.englishProgress });
       }
       
       if (remoteData.user) {
@@ -149,7 +177,6 @@ export const syncService = {
           dailyGoalMinutes: remoteData.user.dailyGoalMinutes
         });
         
-        // Also update auth user if exists for consistency
         const auth = useAuthStore.getState();
         if (auth.isAuthenticated) {
           auth.updateUser({
@@ -164,7 +191,6 @@ export const syncService = {
           todayStats: remoteData.timer.todayStats,
           sessionHistory: remoteData.timer.sessionHistory,
           config: remoteData.timer.config,
-          // Reset local active session to avoid stale state
           activeSession: null,
           isActive: false,
           timeLeft: remoteData.timer.config?.focusDuration || 25 * 60
@@ -185,6 +211,8 @@ export const syncService = {
       }
       console.error('Restore failed', err);
       throw err;
+    } finally {
+      this._isSyncing = false;
     }
   },
 
@@ -204,12 +232,12 @@ export const syncService = {
     // Background interval for both backup and restore
     setInterval(async () => {
       const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated) {
+      if (isAuthenticated && !this._isSyncing) {
         console.log('Auto-sync: performing background sync...');
         try {
           // Backup local changes first
           await this.backup();
-          // Then restore any remote changes
+          // Then restore any remote changes (smart check inside)
           await this.restore();
         } catch (err) {
           console.error('Auto-sync failed', err);
@@ -221,6 +249,7 @@ export const syncService = {
   // Helper for immediate debounced backup after updates
   _backupTimeout: null as any,
   triggerAutoBackup() {
+    this._lastLocalUpdate = Date.now();
     if (this._backupTimeout) clearTimeout(this._backupTimeout);
     this._backupTimeout = setTimeout(() => {
       const { isAuthenticated } = useAuthStore.getState();

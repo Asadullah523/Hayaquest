@@ -21,11 +21,16 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDelete }
       return;
     }
 
-    // Convert relative local paths to absolute URLs for Capacitor
-    // This MUST point to the live website so the system browser can resolve it.
+    // Convert relative local paths to absolute URLs
     if (url.startsWith('/') && !url.includes('://')) {
-      const liveOrigin = 'https://hayaquest.vercel.app';
-      url = liveOrigin + url;
+      if (Capacitor.isNativePlatform()) {
+        // On native, use the production origin so the system browser can reach them
+        const liveOrigin = 'https://hayaquest.vercel.app';
+        url = liveOrigin + url;
+      } else {
+        // On web (including local dev), use the current origin
+        url = window.location.origin + url;
+      }
     }
 
     // Use Capacitor Browser API on native platforms (Android/iOS)
@@ -54,6 +59,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDelete }
           case 'Physics': return '#f97316'; // orange-500
           case 'Math': return '#ef4444'; // red-500
           case 'Logic': return '#eab308'; // yellow-500
+          case 'Past Papers': return '#3b82f6'; // blue-500 (same as Chemistry for now)
           default: return '#a855f7'; // purple-500
       }
   };
