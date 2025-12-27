@@ -60,21 +60,70 @@ export const Dashboard: React.FC = () => {
   }, [loadSubjects, loadAllTopics, loadAllLogs, calculateStreak, loadTimetable]);
 
   const imatParent = subjects.find(s => s.name === 'IMAT Prep');
-  
-  const calculateProgress = (parentId?: number) => {
-    const childSubjects = subjects.filter(s => s.parentId === parentId);
-    if (childSubjects.length === 0) return 0;
-    const childIds = childSubjects.map(s => s.id).filter(Boolean);
-    const chapters = subjects.filter(s => s.parentId && childIds.includes(s.parentId));
-    const chapterIds = chapters.map(c => c.id).filter(Boolean);
-    const allRelevantIds = [...childIds, ...chapterIds];
-    const subjectTopics = topics.filter(t => t.subjectId && allRelevantIds.includes(t.subjectId));
-    if (subjectTopics.length === 0) return 0;
-    const completed = subjectTopics.filter(t => t.isCompleted).length;
-    return Math.round((completed / subjectTopics.length) * 100);
-  };
 
-  const imatProgress = calculateProgress(imatParent?.id);
+  // Enhanced IMAT Progress with Practice Papers (Weighted)
+  const [imatProgress, setImatProgress] = useState(0);
+  
+  useEffect(() => {
+    const calculateImatProgress = () => {
+      if (!imatParent) return 0;
+      
+      const childSubjects = subjects.filter(s => s.parentId === imatParent.id);
+      const childIds = childSubjects.map(s => s.id).filter(Boolean);
+      const chapters = subjects.filter(s => s.parentId && childIds.includes(s.parentId));
+      const chapterIds = chapters.map(c => c.id).filter(Boolean);
+      const allRelevantIds = [...childIds, ...chapterIds];
+      const subjectTopics = topics.filter(t => t.subjectId && allRelevantIds.includes(t.subjectId));
+      
+      const totalTopics = subjectTopics.length;
+      const completedTopics = subjectTopics.filter(t => t.isCompleted).length;
+      
+      // Count completed practice papers and questions
+      let completedPracticeQuestions = 0;
+      const subjectPracticePaperIds = [
+        3001, 3002, 3003, 3004, 3005, 3006, // Chemistry (6 sets × 100)
+        4001, 4002, 4003, 4004, 4005, 4006, // Math & Physics (6 sets × 100/86)
+        2101, 2102, 2103, 2104, 2105, 2106, 2107, 2108, 2109, 2110, 2111 // Biology (11 sets)
+      ];
+      
+      subjectPracticePaperIds.forEach(paperId => {
+        if (localStorage.getItem(`quiz_completed_${paperId}`)) {
+          // Get question count from paper definition
+          if (paperId >= 3001 && paperId <= 3005) completedPracticeQuestions += 100; // Chem 1-5
+          else if (paperId === 3006) completedPracticeQuestions += 100; // Chem 6
+          else if (paperId >= 4001 && paperId <= 4005) completedPracticeQuestions += 100; // Math&Physics 1-5
+          else if (paperId === 4006) completedPracticeQuestions += 86; // Math&Physics 6 (86 questions)
+          else if (paperId >= 2101 && paperId <= 2110) completedPracticeQuestions += 100; // Bio 1-10
+          else if (paperId === 2111) completedPracticeQuestions += 88; // Bio 11 (88 questions)
+        }
+      });
+      
+      // Total practice questions available
+      const totalPracticeQuestions = (6 * 100) + (6 * 100 - 14) + (11 * 100 - 12); // Chem + Math&Physics + Bio
+      
+      // Weighted Calculation (same as ImatDashboard)
+      const TOPIC_WEIGHT = 10;
+      const totalPoints = (totalTopics * TOPIC_WEIGHT) + totalPracticeQuestions;
+      const completedPoints = (completedTopics * TOPIC_WEIGHT) + completedPracticeQuestions;
+      
+      return totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
+    };
+    
+    setImatProgress(calculateImatProgress());
+    
+    // Re-check when page becomes visible (e.g., returning from quiz)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setImatProgress(calculateImatProgress());
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [subjects, topics, imatParent]);
   const today = new Date().getDay();
   const todaySlots = slots.filter(s => s.dayOfWeek === today);
   
@@ -100,66 +149,66 @@ export const Dashboard: React.FC = () => {
   };
 
     return (
-      <div className="page-transition space-y-6 sm:space-y-8 md:space-y-10">
+      <div className="page-transition space-y-2 sm:space-y-4 md:space-y-6 lg:space-y-8">
       {showAchievementsModal && <AchievementsModal onClose={() => setShowAchievementsModal(false)} />}
       {showSessionsModal && <SessionsModal onClose={() => setShowSessionsModal(false)} />}
       {showDailyPlanModal && <DailyPlanModal onClose={() => setShowDailyPlanModal(false)} />}
 
       <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 md:gap-8">
-        <div className="flex-1 glass-card rounded-[1.5rem] sm:rounded-2xl md:rounded-[2.5rem] px-4 py-4 sm:px-6 sm:py-6 md:p-8 relative overflow-hidden group">
-           <div className="absolute top-0 right-0 w-56 sm:w-64 md:w-80 h-56 sm:h-64 md:h-80 bg-primary/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
-           <div className="relative z-10 flex flex-col items-start gap-3 sm:gap-6 md:gap-8">
-              <div className="space-y-2 sm:space-y-3 w-full">
-                 <div className="flex items-center gap-1.5 sm:gap-2 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs bg-white/50 dark:bg-slate-900/50 w-fit px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-slate-200 dark:border-slate-700">
+        <div className="flex-1 glass-card rounded-xl sm:rounded-2xl md:rounded-[2.5rem] px-4 py-3.5 sm:px-4 sm:py-3 md:p-8 relative overflow-hidden group">
+           <div className="absolute top-0 right-0 w-48 sm:w-64 md:w-80 h-48 sm:h-64 md:h-80 bg-primary/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
+           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-2 sm:gap-4 md:gap-8">
+              <div className="space-y-1 sm:space-y-2 md:space-y-3 w-full">
+                 <div className="flex items-center gap-1.5 sm:gap-2 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[8px] sm:text-[9px] md:text-[10px] bg-white/50 dark:bg-slate-900/50 w-fit px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-slate-200 dark:border-slate-700">
                     <Sparkles size={12} className="text-primary sm:w-3.5 sm:h-3.5" /> {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()}
                  </div>
-                 <div className="flex flex-row items-center gap-3 sm:gap-4 md:gap-6">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full border-2 sm:border-3 md:border-4 border-white dark:border-slate-700 shadow-2xl overflow-hidden shrink-0 animate-float">
-                      <img 
-                        key={avatar}
-                        src={avatar === 'neutral' ? 'https://api.dicebear.com/7.x/bottts/svg?seed=neutral' : 
-                             avatar === 'owl' ? '/avatars/owl.png' :
-                             ['fox', 'cat', 'panda', 'dragon', 'deer', 'unicorn', 'bunny', 'kitten', 'cyber_fox', 'astro_bear', 'scholar_koala'].includes(avatar) ? 
-                             `/avatars/${avatar}.${['unicorn', 'bunny', 'kitten', 'fairy', 'cyber_fox', 'astro_bear', 'scholar_koala'].includes(avatar) ? 'jpg' : 'png'}` :
-                             `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatar}`}
-                        alt="Avatar" 
-                        className="w-full h-full object-cover rounded-full transition-transform duration-500 ease-in-out hover:scale-110 animate-in fade-in zoom-in duration-500"
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://api.dicebear.com/7.x/bottts/svg?seed=neutral';
-                        }}
-                      />
-                    </div>
-                     <div className="flex flex-col flex-1 min-w-0">
-                       <div className="flex flex-wrap items-baseline gap-1 sm:gap-1.5 md:gap-2 mb-1 sm:mb-2">
-                         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white tracking-tight leading-none drop-shadow-sm" style={{ fontFamily: "'Amatic SC', cursive" }}>
-                           {getGreeting()},
-                         </h1>
-                         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white tracking-tight leading-none drop-shadow-sm" style={{ fontFamily: "'Dancing Script', cursive" }}>
-                           <span className="relative inline-block text-primary">
-                             {displayName}!
-                             <span className="absolute bottom-0 left-0 w-3/4 h-1.5 sm:h-2 bg-primary/40 -z-10 rounded-full"></span>
-                           </span> 🚀
-                         </h1>
-                       </div>
-                       
-                       <div className="max-w-lg mt-0.5 sm:mt-1">
-                         <p className="text-slate-800 dark:text-slate-200 font-medium italic leading-snug text-xs sm:text-sm md:text-base mb-0.5 sm:mb-1">" {quote.text}"</p>
-                         <p className="text-[9px] sm:text-[10px] md:text-xs font-black text-primary uppercase tracking-widest opacity-80">— {quote.author}</p>
-                       </div>
+                  <div className="flex flex-row items-center gap-2 sm:gap-2.5 md:gap-4 lg:gap-6">
+                     <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full border-2 sm:border-3 md:border-4 border-white dark:border-slate-700 shadow-2xl overflow-hidden shrink-0 animate-float">
+                       <img 
+                         key={avatar}
+                         src={avatar === 'neutral' ? 'https://api.dicebear.com/7.x/bottts/svg?seed=neutral' : 
+                              avatar === 'owl' ? '/avatars/owl.png' :
+                              ['fox', 'cat', 'panda', 'dragon', 'deer', 'unicorn', 'bunny', 'kitten', 'cyber_fox', 'astro_bear', 'scholar_koala'].includes(avatar) ? 
+                              `/avatars/${avatar}.${['unicorn', 'bunny', 'kitten', 'fairy', 'cyber_fox', 'astro_bear', 'scholar_koala'].includes(avatar) ? 'jpg' : 'png'}` :
+                              `https://api.dicebear.com/7.x/avataaars/svg?seed=${avatar}`}
+                         alt="Avatar" 
+                         className="w-full h-full object-cover rounded-full transition-transform duration-500 ease-in-out hover:scale-110 animate-in fade-in zoom-in duration-500"
+                         onError={(e) => {
+                           e.currentTarget.src = 'https://api.dicebear.com/7.x/bottts/svg?seed=neutral';
+                         }}
+                       />
                      </div>
+                      <div className="flex flex-col flex-1 min-w-0">
+                        <div className="flex flex-wrap items-baseline gap-1 sm:gap-1.5 md:gap-2 mb-0.5 sm:mb-1 md:mb-2">
+                          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-black dark:text-white tracking-tight leading-none drop-shadow-sm" style={{ fontFamily: "'Amatic SC', cursive" }}>
+                            {getGreeting()},
+                          </h1>
+                          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-black dark:text-white tracking-tight leading-none drop-shadow-sm" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                            <span className="relative inline-block text-primary">
+                              {displayName}!
+                              <span className="absolute bottom-0 left-0 w-3/4 h-1.5 sm:h-2 md:h-2 bg-primary/40 -z-10 rounded-full"></span>
+                            </span> 🚀
+                          </h1>
+                        </div>
+                        
+                        <div className="max-w-lg mt-0.5">
+                          <p className="text-slate-800 dark:text-slate-200 font-medium italic leading-snug text-[11px] sm:text-xs md:text-sm lg:text-base mb-0.5">" {quote.text}"</p>
+                          <p className="text-[8px] sm:text-[9px] md:text-[10px] lg:text-[10px] font-black text-primary uppercase tracking-widest opacity-80">— {quote.author}</p>
+                        </div>
+                      </div>
                  </div>
                </div>
 
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full">
-                  <div className="bg-white/80 dark:bg-slate-950/40 backdrop-blur-md px-3 py-2 sm:p-5 rounded-2xl shadow-sm border border-white/20 dark:border-slate-700/50 flex-1">
-                     <div className="flex items-center gap-2 sm:gap-3 mb-1">
-                        <div className={clsx("w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl flex items-center justify-center shadow-inner", streak > 0 ? "bg-orange-50 text-orange-500" : "bg-slate-50 dark:bg-slate-800 text-slate-400")}
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 w-full">
+                  <div className="bg-white/80 dark:bg-slate-950/40 backdrop-blur-md px-2 py-1.5 sm:px-2.5 sm:py-2 md:px-4 md:py-3 lg:px-6 lg:py-5 rounded-lg sm:rounded-xl md:rounded-2xl shadow-sm border border-white/20 dark:border-slate-700/50 flex-1">
+                     <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 mb-1 sm:mb-1.5">
+                        <div className={clsx("w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 flex-shrink-0 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center shadow-inner", streak > 0 ? "bg-orange-50 text-orange-500" : "bg-slate-50 dark:bg-slate-800 text-slate-400")}
                         >
-                           <Flame size={16} fill={streak > 0 ? "currentColor" : "none"} className="sm:w-5 sm:h-5" />
+                           <Flame size={12} fill={streak > 0 ? "currentColor" : "none"} className="sm:w-[14px] sm:h-[14px] md:w-5 md:h-5 lg:w-7 lg:h-7" />
                         </div>
                         <div className="flex-1 min-w-0">
-                           <p className="text-[8px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Streak</p>
-                           <p className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white truncate">{streak} Days</p>
+                           <p className="text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-tight sm:tracking-widest leading-none mb-0.5">Streak</p>
+                           <p className="text-[11px] sm:text-xs md:text-lg lg:text-2xl font-black text-slate-900 dark:text-white truncate">{streak} Days</p>
                         </div>
                      </div>
                      <DailyProgressLights />

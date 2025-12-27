@@ -332,54 +332,49 @@ export const Layout: React.FC = () => {
       </main>
 
       {/* Mobile/Tablet Bottom Navigation */}
-      <div className="xl:hidden fixed bottom-0 left-0 right-0 z-[100] mobile-nav-bar pb-[env(safe-area-inset-bottom)] pointer-events-none">
-        <div className="mx-4 mb-4 pointer-events-auto">
-          <div className="glass-card rounded-[2rem] p-2 flex items-center justify-between shadow-2xl shadow-indigo-900/10 gap-1 overflow-x-auto scrollbar-hide backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 border border-white/20 dark:border-slate-700/50">
-             <div className="flex items-center gap-1 min-w-max px-2">
-                {navItems.map((item) => {
-                  const active = isActive(item.path);
-                  return (
-                  <NavLink 
-                     key={item.path} 
-                     to={item.path} 
-                     className={() => `
-                       p-3.5 rounded-2xl transition-all duration-300 flex-shrink-0 relative active:scale-95
-                       ${active 
-                         ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' 
-                         : 'text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200'}
-                     `}
-                  >
-                    <item.icon size={24} className="sm:w-6 sm:h-6" />
-                    {active && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white/50" />}
-                  </NavLink>
-                )})}
-             </div>
-             
-             <div className="flex-shrink-0 px-2 border-l border-slate-200 dark:border-slate-800 ml-1 flex items-center gap-2">
-                {!isAuthenticated ? (
-                  <button 
-                     onClick={() => setShowLoginModal(true)}
-                     className="p-3.5 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 transition-all hover:scale-105 active:scale-95 shadow-lg"
-                  >
-                     <LogIn size={24} className="sm:w-6 sm:h-6" />
-                  </button>
-                ) : (
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white dark:border-slate-700 overflow-hidden shadow-sm active:scale-95 transition-transform">
-                     <img 
-                       src="https://api.dicebear.com/7.x/bottts/svg?seed=neutral"
-                       alt="Avatar" 
-                       className="w-full h-full bg-indigo-100" 
-                     />
-                  </div>
-                )}
-                <button 
-                   onClick={() => setIsLogModalOpen(true)}
-                   className="p-3.5 rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 hover:scale-105 active:scale-95 transition-all"
+      <div className="xl:hidden fixed bottom-6 left-6 right-6 z-[100] animate-slide-up mobile-nav-bar">
+        <div className="glass-card rounded-[2rem] p-2 flex items-center justify-between shadow-2xl shadow-indigo-900/10 gap-1 overflow-x-auto scrollbar-hide">
+           <div className="flex items-center gap-1 min-w-max px-2">
+              {navItems.map((item) => (
+                <NavLink 
+                   key={item.path} 
+                   to={item.path} 
+                   className={({ isActive: isLinkActive }) => `
+                     p-2.5 sm:p-3.5 rounded-2xl transition-all duration-300 flex-shrink-0
+                     ${isLinkActive 
+                       ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 scale-105' 
+                       : 'text-slate-400 hover:text-slate-600 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600/50'}
+                   `}
                 >
-                   <PlusCircle size={24} className="sm:w-6 sm:h-6" />
+                  <item.icon size={20} className="sm:w-6 sm:h-6" />
+                </NavLink>
+              ))}
+           </div>
+           
+           <div className="flex-shrink-0 px-2 border-l border-slate-100 dark:border-slate-800 ml-1 flex items-center gap-2">
+              {!isAuthenticated ? (
+                <button 
+                   onClick={() => setShowLoginModal(true)}
+                   className="p-2.5 sm:p-3.5 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 transition-all hover:scale-105 active:scale-95"
+                >
+                   <LogIn size={20} className="sm:w-6 sm:h-6" />
                 </button>
-             </div>
-          </div>
+              ) : (
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white dark:border-slate-700 overflow-hidden shadow-sm">
+                   <img 
+                     src="https://api.dicebear.com/7.x/bottts/svg?seed=neutral"
+                     alt="Avatar" 
+                     className="w-full h-full bg-indigo-100" 
+                   />
+                </div>
+              )}
+              <button 
+                 onClick={() => setIsLogModalOpen(true)}
+                 className="p-2.5 sm:p-3.5 rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400 hover:scale-105 active:scale-95 transition-all"
+              >
+                 <PlusCircle size={20} className="sm:w-6 sm:h-6" />
+              </button>
+           </div>
         </div>
       </div>
 

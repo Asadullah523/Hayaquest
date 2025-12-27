@@ -91,8 +91,21 @@ export const ImatDashboard: React.FC = () => {
         };
 
         checkProgress();
+        
+        // Re-check when page becomes visible (e.g., returning from quiz)
+        const handleVisibilityChange = () => {
+            if (!document.hidden) {
+                checkProgress();
+            }
+        };
+        
         window.addEventListener('storage', checkProgress);
-        return () => window.removeEventListener('storage', checkProgress);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        
+        return () => {
+            window.removeEventListener('storage', checkProgress);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
     }, []);
 
     // Filter Subjects

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import type { Resource } from '../../data/imatResources';
 import { BookOpen, ExternalLink, FileText, Lock, Sparkles, MonitorPlay, Trash2, AlertTriangle } from 'lucide-react';
+import { Browser } from '@capacitor/browser';
+import { Capacitor } from '@capacitor/core';
 
 interface ResourceCardProps {
   resource: Resource;
@@ -10,14 +12,26 @@ interface ResourceCardProps {
 export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDelete }) => {
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = async () => {
     if (showConfirm) return; // Prevent opening if in delete mode
-    if (resource.url) {
-      window.open(resource.url, '_blank');
-    } else if (resource.localPath) {
-      window.open(resource.localPath, '_blank');
+    
+    const url = resource.url || resource.localPath;
+    if (!url) {
+      alert("This resource is not currently linked to a file.");
+      return;
+    }
+
+    // Use Capacitor Browser API on native platforms (Android/iOS)
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Browser.open({ url });
+      } catch (error) {
+        console.error('Failed to open URL:', error);
+        alert('Unable to open this resource.');
+      }
     } else {
-        alert("This resource is not currently linked to a file.");
+      // Use standard window.open for web
+      window.open(url, '_blank');
     }
   };
 

@@ -54,26 +54,26 @@ export const GoalProgressWidget: React.FC = () => {
 
   return (
     <div className={clsx(
-      "bg-white/80 dark:bg-slate-950/40 backdrop-blur-md px-1.5 sm:px-4 md:px-6 py-1 sm:py-3 md:py-5 rounded-lg sm:rounded-2xl shadow-sm border border-white/20 dark:border-slate-700/50 flex-1 relative overflow-hidden group/goal transition-all duration-500",
+      "bg-white/80 dark:bg-slate-950/40 backdrop-blur-md px-2 py-1.5 sm:px-2.5 sm:py-2 md:px-4 md:py-3 lg:px-6 lg:py-5 rounded-lg sm:rounded-xl md:rounded-2xl shadow-sm border border-white/20 dark:border-slate-700/50 flex-1 relative overflow-hidden group/goal transition-all duration-500",
       goalPercentage === 100 && "goal-met-glow goal-met-shine"
     )}>
-      <div className="flex items-center justify-between mb-0.5 sm:mb-2 md:mb-3">
-        <p className="text-[5px] sm:text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-tight sm:tracking-widest leading-none">Goal</p>
+      <div className="flex items-center justify-between mb-1 sm:mb-1.5 md:mb-2 lg:mb-3">
+        <p className="text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-tight sm:tracking-widest leading-none">Goal</p>
         {goalPercentage === 100 && (
           <div className="flex items-center gap-0.5 text-emerald-500 animate-bounce">
-            <CheckCircle2 size={8} strokeWidth={3} className="sm:w-3 sm:h-3" />
-            <span className="text-[5px] sm:text-[9px] font-black uppercase tracking-tight">Met!</span>
+            <CheckCircle2 size={10} strokeWidth={3} className="sm:w-3 sm:h-3" />
+            <span className="text-[7px] sm:text-[9px] font-black uppercase tracking-tight">Met!</span>
           </div>
         )}
       </div>
-      <div className="flex items-end gap-1 sm:gap-2 mb-0.5 sm:mb-2 md:mb-3">
+      <div className="flex items-end gap-1 sm:gap-2 mb-1 sm:mb-1.5 md:mb-2 lg:mb-3">
         <p className={clsx(
-          "text-[9px] sm:text-lg md:text-2xl font-black whitespace-nowrap",
+          "text-[11px] sm:text-xs md:text-lg lg:text-2xl font-black whitespace-nowrap",
           goalPercentage === 100 && "text-premium-shine"
         )}>
           {formatStudyTime(todaysStudySeconds)}
         </p>
-        <p className="text-[5px] sm:text-[10px] md:text-xs font-bold text-slate-400 mb-0.5 truncate">/ {dailyGoalMinutes}m</p>
+        <p className="text-[7px] sm:text-[10px] md:text-xs font-bold text-slate-400 mb-0.5 truncate">/ {dailyGoalMinutes}m</p>
       </div>
       <div className="w-full h-0.5 sm:h-1.5 md:h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
         <div 
