@@ -22,17 +22,23 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDelete }
     }
 
     // Convert relative local paths to absolute URLs for Capacitor
+    // This MUST point to the live website so the system browser can resolve it.
     if (url.startsWith('/') && !url.includes('://')) {
-      url = window.location.origin + url;
+      const liveOrigin = 'https://hayaquest.vercel.app';
+      url = liveOrigin + url;
     }
 
     // Use Capacitor Browser API on native platforms (Android/iOS)
     if (Capacitor.isNativePlatform()) {
       try {
-        await Browser.open({ url });
+        await Browser.open({ 
+          url,
+          windowName: '_blank',
+          presentationStyle: 'fullscreen'
+        });
       } catch (error) {
-        console.error('Failed to open URL:', error);
-        alert('Unable to open this resource.');
+        console.error('Failed to open PDF:', error);
+        alert('Cannot open PDF. Please ensure you have internet access and a PDF viewer app installed.');
       }
     } else {
       // Use standard window.open for web

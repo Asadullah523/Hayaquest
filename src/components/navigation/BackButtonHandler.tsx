@@ -1,17 +1,15 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setupBackButtonHandler } from '../../utils/backButtonHandler';
 
 export const BackButtonHandler: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
-    // Setup back button handler with navigation capabilities
-    const getCurrentPath = () => location.pathname;
-    const cleanup = setupBackButtonHandler(navigate, getCurrentPath);
+    // Setup back button handler
+    const cleanup = setupBackButtonHandler(navigate);
     return cleanup;
-  }, [navigate, location]);
+  }, [navigate]);
 
   return <>{children}</>;
 };
