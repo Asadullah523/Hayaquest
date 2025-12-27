@@ -3,8 +3,10 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useUserStore } from '../../store/useUserStore';
 import api from '../../services/api';
 import { syncService } from '../../services/syncService';
-import { X, Mail, Lock, User, Sparkles, Loader2, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { X, Mail, Lock, User, Sparkles, Loader2, ArrowRight, Eye, EyeOff, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+import { ServerConfigModal } from './ServerConfigModal';
 
 interface LoginModalProps {
   onClose: () => void;
@@ -12,6 +14,7 @@ interface LoginModalProps {
 
 export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [showConfig, setShowConfig] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -84,6 +87,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
             className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-400"
           >
             <X size={20} />
+          </button>
+
+          <button 
+            onClick={() => setShowConfig(true)}
+            className="absolute top-6 left-6 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-400"
+            title="Server Settings"
+          >
+            <Settings size={20} />
           </button>
 
           <div className="mb-8 text-center">
@@ -191,6 +202,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
           </div>
         </div>
       </motion.div>
+      
+      {showConfig && <ServerConfigModal onClose={() => setShowConfig(false)} />}
     </div>
   );
 };
