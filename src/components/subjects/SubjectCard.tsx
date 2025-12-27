@@ -85,14 +85,14 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ subject, onClick }) =>
     <div 
         onClick={handleBookClick}
         className={clsx(
-            "relative cursor-pointer group select-none animate-premium-fade-in",
+            "relative cursor-pointer group select-none animate-premium-fade-in active:scale-[0.96] transition-transform duration-200 ease-out",
             isOpening ? 'z-50' : 'z-0 hover:z-40',
             // Responsive sizing
             "h-[170px] w-[110px] sm:h-72 sm:w-52 md:h-80 md:w-60"
         )} 
         style={{ 
             perspective: '2000px',
-            transition: 'z-index 0s linear 0.1s'
+            // z-index transition handled separately in JS logic basically or relying on class
         }}
     >
       <div className={`relative w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isOpening || onClick ? '' : 'group-hover:-rotate-y-12 group-hover:translate-x-3'}`}

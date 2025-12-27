@@ -123,7 +123,7 @@ export const TimerWidget: React.FC = () => {
       </div>
 
       {/* Circular Timer */}
-      <div className="relative w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] md:w-44 md:h-44 lg:w-52 lg:h-52 flex items-center justify-center mt-4 sm:mt-6">
+      <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 flex items-center justify-center mt-6 sm:mt-8">
         {/* Background Circle */}
         <svg className="absolute w-full h-full transform -rotate-90" viewBox="0 0 200 200">
           <circle

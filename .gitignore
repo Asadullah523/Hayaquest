@@ -29,4 +29,5 @@ backups_temp/
 !parsed_questions_2023.json
 !.vscode/settings.json
 !vercel.json
+!public/manifest.json
 .env

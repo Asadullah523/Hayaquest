@@ -5,6 +5,28 @@
 @tailwind utilities;
 
 @layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    body {
+        @apply select-none;
+        /* Disable text selection globally */
+        overscroll-behavior-y: none;
+        /* Prevent pull-to-refresh reload */
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Re-enable text selection for inputs and specific areas */
+    input,
+    textarea,
+    [contenteditable="true"] {
+        @apply select-text;
+    }
+}
+
+@layer base {
     :root {
         --primary: 219 100% 49%;
         --secondary: 262 83% 58%;
