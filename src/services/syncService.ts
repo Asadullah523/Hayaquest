@@ -87,20 +87,31 @@ export const syncService = {
       if (!remoteData) return;
 
       // Restore to Dexie
+      // Restore to Dexie
       await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
-        await db.subjects.clear();
-        await db.topics.clear();
-        await db.logs.clear();
-        await db.timetable.clear();
-        await db.settings.clear();
-        await db.resources.clear();
+        // Smart Sync: Upsert new/updated data, remove deleted data
+        // This prevents "flickering" caused by clearing tables
 
-        if (remoteData.subjects) await db.subjects.bulkAdd(remoteData.subjects);
-        if (remoteData.topics) await db.topics.bulkAdd(remoteData.topics);
-        if (remoteData.logs) await db.logs.bulkAdd(remoteData.logs);
-        if (remoteData.timetable) await db.timetable.bulkAdd(remoteData.timetable);
-        if (remoteData.settings) await db.settings.bulkAdd(remoteData.settings);
-        if (remoteData.resources) await db.resources.bulkAdd(remoteData.resources);
+        const syncTable = async (table: any, remoteItems: any[]) => {
+            if (!remoteItems) return;
+            // 1. Upsert (Update or Insert) all remote items
+            await table.bulkPut(remoteItems);
+            
+            // 2. Find and delete local items that are no longer in remote
+            const remoteIds = new Set(remoteItems.map((i: any) => i.id).filter((id: any) => id !== undefined));
+            const localKeys = await table.toCollection().primaryKeys();
+            const toDelete = localKeys.filter((k: any) => !remoteIds.has(k));
+            if (toDelete.length > 0) {
+                await table.bulkDelete(toDelete);
+            }
+        };
+
+        await syncTable(db.subjects, remoteData.subjects || []);
+        await syncTable(db.topics, remoteData.topics || []);
+        await syncTable(db.logs, remoteData.logs || []);
+        await syncTable(db.timetable, remoteData.timetable || []);
+        await syncTable(db.settings, remoteData.settings || []);
+        await syncTable(db.resources, remoteData.resources || []);
       });
 
       // Restore to Zustand stores
@@ -187,8 +198,8 @@ export const syncService = {
     }
   },
 
-  initAutoSync(intervalMinutes = 2) {
-    const interval = intervalMinutes * 60 * 1000;
+  initAutoSync(intervalSeconds = 15) {
+    const interval = intervalSeconds * 1000;
     
     // Background interval for both backup and restore
     setInterval(async () => {

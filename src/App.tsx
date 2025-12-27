@@ -57,17 +57,17 @@ function App() {
           loadAllTopics()
         ]);
 
-        // 3. Initialize Auto-sync
-        syncService.initAutoSync(2);
+        // 3. Initialize Auto-sync (every 15 seconds)
+        syncService.initAutoSync(15);
 
         // 4. Cloud Restore on Refresh
         const token = localStorage.getItem('auth-token');
         if (token) {
-          console.log('Token found, performing initial cloud restore...');
+          // console.log('Token found, performing initial cloud restore...');
           try {
             await syncService.restore();
           } catch (err) {
-            console.error('Initial restore failed:', err);
+            // console.error('Initial restore failed:', err);
             // Non-critical failure, continue
           }
         }
