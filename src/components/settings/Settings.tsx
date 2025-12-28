@@ -20,6 +20,15 @@ export const Settings: React.FC = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [hasGuestData, setHasGuestData] = useState(false);
+
+  React.useEffect(() => {
+    const checkGuestData = async () => {
+        const count = await db.subjects.where('userId').equals('guest').count();
+        setHasGuestData(count > 0);
+    };
+    checkGuestData();
+  }, []);
 
   const avatars = [
     { id: 'fox', name: 'Fox Scholar', path: '/avatars/fox.png' },
@@ -48,6 +57,9 @@ export const Settings: React.FC = () => {
       // VITAL: Pause sync before wiping anything to prevent race condition where
       // an empty database is backed up to cloud before the page reloads.
       syncService.pauseSync();
+
+      const lastResetAt = Date.now();
+      localStorage.setItem('last_reset_at', lastResetAt.toString());
       
       setStatus({ type: 'loading', message: 'Resetting your data...', details: [] });
       const details: string[] = [];
@@ -55,7 +67,7 @@ export const Settings: React.FC = () => {
       try {
           // 1. Clear cloud data first if logged in
           if (isAuthenticated) {
-              await syncService.clearCloudData();
+              await syncService.clearCloudData(lastResetAt);
               details.push('Cloud data cleared successfully');
               setStatus(prev => ({ ...prev, details: [...details] }));
           } else {
@@ -82,13 +94,12 @@ export const Settings: React.FC = () => {
           setStatus(prev => ({ ...prev, details: [...details] }));
 
           // 3. Clear IndexedDB (progress, subject logs, etc.)
+          const userId = isAuthenticated && user ? user.email : 'guest';
           await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
-            await db.subjects.clear();
-            await db.topics.clear();
-            await db.logs.clear();
-            await db.timetable.clear();
-            await db.settings.clear();
-            await db.resources.clear();
+            const tables = [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources];
+            for (const table of tables) {
+                await table.where('userId').equals(userId).delete();
+            }
           });
           details.push('Local database wiped clean');
           setStatus(prev => ({ ...prev, details: [...details] }));
@@ -118,6 +129,24 @@ export const Settings: React.FC = () => {
           const errorMessage = e.response?.data?.message || e.message || 'Unknown error';
           setStatus({ type: 'error', message: `Failed to reset data: ${errorMessage}` });
       }
+  };
+
+  const handleMergeGuestData = async () => {
+    if (!window.confirm("This will push your local Guest progress into your logged-in account. This cannot be undone. Proceed?")) return;
+    
+    setSyncing(true);
+    setStatus({ type: 'loading', message: 'Merging local data into account...' });
+    try {
+        await syncService.mergeGuestData();
+        setHasGuestData(false);
+        setStatus({ type: 'success', message: 'Local progress merged successfully!' });
+        setTimeout(() => window.location.reload(), 2000);
+    } catch (err) {
+        console.error(err);
+        setStatus({ type: 'error', message: 'Merge failed.' });
+    } finally {
+        setSyncing(false);
+    }
   };
 
   const handleCloudSync = async () => {
@@ -754,6 +783,27 @@ export const Settings: React.FC = () => {
                           </button>
                       )}
                   </div>
+
+                  {isAuthenticated && hasGuestData && (
+                    <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 rounded-2xl animate-in slide-in-from-top-2">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+                                <Upload size={20} />
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-xs font-bold text-amber-800 dark:text-amber-300">Found Local Guest Progress!</p>
+                                <p className="text-[10px] text-amber-600 dark:text-amber-500">You have progress saved as a guest. Do you want to push it to your account?</p>
+                            </div>
+                            <button
+                              onClick={handleMergeGuestData}
+                              disabled={syncing}
+                              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg shadow-lg shadow-amber-500/20 transition-all active:scale-95 disabled:opacity-50"
+                            >
+                                Push Progress
+                            </button>
+                        </div>
+                    </div>
+                  )}
               </div>
           </motion.div>
       </div>

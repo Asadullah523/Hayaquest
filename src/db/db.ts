@@ -11,13 +11,13 @@ export class HayaDB extends Dexie {
 
   constructor() {
     super('HayaDB');
-    this.version(2).stores({
-      subjects: '++id, name, archived, parentId',
-      topics: '++id, subjectId, status',
-      logs: '++id, date, subjectId, timestamp',
-      timetable: '++id, dayOfWeek',
-      settings: 'key',
-      resources: '++id, title, category, type, dateAdded' // Blob is stored in object but not indexed
+    this.version(3).stores({
+      subjects: '++id, name, archived, parentId, userId',
+      topics: '++id, subjectId, status, userId',
+      logs: '++id, date, subjectId, timestamp, userId',
+      timetable: '++id, dayOfWeek, userId',
+      settings: 'key, userId',
+      resources: '++id, title, category, type, dateAdded, userId' 
     });
   }
 }

@@ -3,6 +3,12 @@ import { persist } from 'zustand/middleware';
 import { db } from '../db/db';
 import type { TimetableSlot } from '../types';
 import { syncService } from '../services/syncService';
+import { useAuthStore } from './useAuthStore';
+
+const getCurrentUserId = () => {
+  const { user, isAuthenticated } = useAuthStore.getState();
+  return isAuthenticated && user ? user.email : 'guest';
+};
 
 interface TimetableState {
   slots: TimetableSlot[];
@@ -38,7 +44,8 @@ export const useTimetableStore = create<TimetableState>()(
       loadTimetable: async () => {
         set({ isLoading: true });
         try {
-          const slots = await db.timetable.toArray();
+          const userId = getCurrentUserId();
+          const slots = await db.timetable.where('userId').equals(userId).toArray();
           set({ slots, isLoading: false });
         } catch (error) {
           set({ error: 'Failed to load timetable', isLoading: false });
@@ -101,23 +108,19 @@ export const useTimetableStore = create<TimetableState>()(
 
       assignSlot: async (slotData) => {
         try {
-            // Check if exists, update or add
-            // For simple MVP: Find overlap, remove old, add new.
-            // Assuming existing logic is fine
-            
-            // Find existing slot at this time
+            const userId = getCurrentUserId();
             const existing = await db.timetable
-                .where({ dayOfWeek: slotData.dayOfWeek as any, startTime: slotData.startTime })
+                .where({ dayOfWeek: slotData.dayOfWeek as any, startTime: slotData.startTime, userId })
                 .first();
 
             if (existing && existing.id) {
                 await db.timetable.update(existing.id, slotData);
             } else {
-                await db.timetable.add(slotData as TimetableSlot);
+                await db.timetable.add({ ...slotData, userId } as TimetableSlot);
             }
             
             // Reload
-            const slots = await db.timetable.toArray();
+            const slots = await db.timetable.where('userId').equals(userId).toArray();
             set({ slots });
             syncService.triggerAutoBackup();
         } catch (error) {
@@ -128,14 +131,15 @@ export const useTimetableStore = create<TimetableState>()(
 
       clearSlot: async (dayOfWeek, startTime) => {
           try {
+               const userId = getCurrentUserId();
                const existing = await db.timetable
-                .where({ dayOfWeek, startTime })
+                .where({ dayOfWeek, startTime, userId })
                 .first();
                
                if (existing && existing.id) {
                    await db.timetable.delete(existing.id);
                    // Reload
-                   const slots = await db.timetable.toArray();
+                   const slots = await db.timetable.where('userId').equals(userId).toArray();
                    set({ slots });
                    syncService.triggerAutoBackup();
                }
@@ -146,8 +150,9 @@ export const useTimetableStore = create<TimetableState>()(
 
       moveSlot: async (fromDay, fromTime, toDay, toTime) => {
           try {
+              const userId = getCurrentUserId();
               const slot = await db.timetable
-                 .where({ dayOfWeek: fromDay, startTime: fromTime })
+                 .where({ dayOfWeek: fromDay, startTime: fromTime, userId })
                  .first();
               
               if (!slot || !slot.id) return;
@@ -171,7 +176,7 @@ export const useTimetableStore = create<TimetableState>()(
 
               // Check if target is occupied
               const targetSlot = await db.timetable
-                 .where({ dayOfWeek: toDay, startTime: toTime })
+                 .where({ dayOfWeek: toDay, startTime: toTime, userId })
                  .first();
               
               if (targetSlot) {
@@ -186,7 +191,7 @@ export const useTimetableStore = create<TimetableState>()(
               });
 
               // Reload
-              const slots = await db.timetable.toArray();
+              const slots = await db.timetable.where('userId').equals(userId).toArray();
               set({ slots });
               syncService.triggerAutoBackup();
 

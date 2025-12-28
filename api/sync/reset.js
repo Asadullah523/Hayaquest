@@ -21,7 +21,9 @@ const dataBackupSchema = new mongoose.Schema({
         gamification: Object,
         achievements: Array,
         writingChecker: Object,
-        englishProgress: Object
+        englishProgress: Object,
+        quiz: Object,
+        lastResetAt: Number
     },
     lastSynced: {
         type: Date,
@@ -60,9 +62,32 @@ export default async function handler(req, res) {
         const userId = decoded.userId;
 
         await connectDB();
-        await DataBackup.findOneAndDelete({ userId });
+        const { lastResetAt } = req.body || {};
+        const emptyData = {
+            subjects: [],
+            topics: [],
+            logs: [],
+            timetable: [],
+            settings: [],
+            resources: [],
+            gamification: { xp: 0, level: 1, unlockedBadges: [] },
+            achievements: [],
+            writingChecker: {},
+            englishProgress: {},
+            quiz: {},
+            lastResetAt: lastResetAt || Date.now()
+        };
 
-        res.json({ message: 'Data cleared from cloud' });
+        let backup = await DataBackup.findOne({ userId });
+        if (backup) {
+            backup.data = emptyData;
+            backup.lastSynced = new Date();
+        } else {
+            backup = new DataBackup({ userId, data: emptyData });
+        }
+        await backup.save();
+
+        res.json({ message: 'Data cleared from cloud', lastResetAt: emptyData.lastResetAt });
     } catch (err) {
         console.error('SERVERLESS RESET ERROR:', err);
         res.status(err.name === 'JsonWebTokenError' ? 401 : 500).json({

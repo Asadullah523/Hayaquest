@@ -6,6 +6,7 @@ import { Suspense, lazy, useState, useEffect } from 'react';
 import { initializePresetSubjects } from './utils/initializePresetSubjects';
 import { useSubjectStore } from './store/useSubjectStore';
 import { syncService } from './services/syncService';
+import { useAuthStore } from './store/useAuthStore';
 
 // Lazy load pages for better performance
 const Dashboard = lazy(() => import('./components/dashboard/Dashboard').then(module => ({ default: module.Dashboard })));
@@ -32,53 +33,49 @@ const LoadingFallback = () => (
   </div>
 );
 
-function App() {
+const App = () => {
   const { loadSubjects, loadAllTopics } = useSubjectStore();
+  const { isAuthenticated, user } = useAuthStore();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const handleFocus = async () => {
-      // Use getState to get current auth status
-      import('./store/useAuthStore').then(({ useAuthStore }) => {
-        if (useAuthStore.getState().isAuthenticated) {
-          console.log('App focused: Syncing with cloud...');
-          syncService.restore().catch(err => console.error('Focus sync failed', err));
-        }
-      });
-    };
-
+    let focusListener: (() => void) | null = null;
+    
     const bootstrap = async () => {
+      setIsReady(false);
       try {
-        // 1. Initialize DB structure
+        // 1. Initialize DB structure for the current bucket (guest or user)
         await initializePresetSubjects();
         
-        // 2. Load data from local DB
+        // 2. Load data from local DB for the current bucket
         await Promise.all([
           loadSubjects(),
           loadAllTopics()
         ]);
 
-        // 3. Initialize Auto-sync (every 15 seconds)
+        // 3. Initialize Auto-sync (every 15 seconds) if not already done
         syncService.initAutoSync(15);
 
-        // 4. Cloud Restore on Refresh
-        const token = localStorage.getItem('auth-token');
-        if (token) {
-          // console.log('Token found, performing initial cloud restore...');
+        // 4. Cloud Restore on Login
+        if (isAuthenticated) {
           try {
             await syncService.restore();
           } catch (err) {
-            // console.error('Initial restore failed:', err);
-            // Non-critical failure, continue
+            console.error('Initial restore failed:', err);
           }
+          
+          // 5. Add focus listener for active users
+          const handleFocus = async () => {
+             if (useAuthStore.getState().isAuthenticated) {
+               syncService.restore().catch(err => console.error('Focus sync failed', err));
+             }
+          };
+          window.addEventListener('focus', handleFocus);
+          focusListener = handleFocus;
         }
-
-        // 5. Add focus listener
-        window.addEventListener('focus', handleFocus);
       } catch (error) {
         console.error("Failed to bootstrap application:", error);
       } finally {
-        // VITAL: Always set ready to true so we don't get stuck on white screen
         setIsReady(true);
       }
     };
@@ -86,9 +83,10 @@ function App() {
     bootstrap();
 
     return () => {
-      window.removeEventListener('focus', handleFocus);
+      if (focusListener) window.removeEventListener('focus', focusListener);
     };
-  }, [loadSubjects, loadAllTopics]);
+  }, [loadSubjects, loadAllTopics, isAuthenticated, user?.email]);
+
 
   if (!isReady) {
     return <GlobalLoader />;

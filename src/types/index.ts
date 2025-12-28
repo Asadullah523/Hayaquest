@@ -20,6 +20,7 @@ export interface Subject {
   isPreset?: boolean; // True for IMAT/MDCAT preset subjects
   parentId?: number; // NEW: To group subjects (e.g., Biology under IMAT)
   updatedAt?: number; // timestamp for sync conflict resolution
+  userId?: string; // Partition for guest vs account data
 }
 
 export interface Topic {
@@ -39,6 +40,7 @@ export interface Topic {
   lastCompletedDate?: string; // Last date marked complete (YYYY-MM-DD)
   completedAt?: number; // Timestamp when marked as completed (for streak calc)
   updatedAt?: number; // timestamp for sync conflict resolution
+  userId?: string; // Partition for guest vs account data
 }
 
 export interface StudyLog {
@@ -50,6 +52,7 @@ export interface StudyLog {
   notes?: string;
   type: StudyType;
   timestamp: number;
+  userId?: string; // Partition for guest vs account data
 }
 
 export interface TimetableSlot {
@@ -73,4 +76,5 @@ export interface Streak {
 export interface Settings {
   key: string;
   value: any;
+  userId?: string; // Partition for guest vs account data
 }

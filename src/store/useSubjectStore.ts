@@ -3,6 +3,12 @@ import { db } from '../db/db';
 import type { Subject, Topic } from '../types';
 import { useGamificationStore } from './useGamificationStore';
 import { syncService } from '../services/syncService';
+import { useAuthStore } from './useAuthStore';
+
+const getCurrentUserId = () => {
+  const { user, isAuthenticated } = useAuthStore.getState();
+  return isAuthenticated && user ? user.email : 'guest';
+};
 
 interface SubjectState {
   subjects: Subject[];
@@ -55,7 +61,8 @@ export const useSubjectStore = create<SubjectState>((set) => ({
   loadSubjects: async () => {
     set({ isLoading: true, error: null });
     try {
-      const subjects = await db.subjects.toArray();
+      const userId = getCurrentUserId();
+      const subjects = await db.subjects.where('userId').equals(userId).toArray();
       set({ subjects, isLoading: false });
     } catch (error) {
       set({ error: 'Failed to load subjects', isLoading: false });
@@ -65,7 +72,8 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   loadAllTopics: async () => {
     try {
-        const topics = await db.topics.toArray();
+        const userId = getCurrentUserId();
+        const topics = await db.topics.where('userId').equals(userId).toArray();
         set({ topics });
     } catch (error) {
         console.error(error);
@@ -74,10 +82,17 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   getParentProgress: async (parentId) => {
     try {
-      const children = await db.subjects.where('parentId').equals(parentId).toArray();
+      const userId = getCurrentUserId();
+      const children = await db.subjects
+        .where('parentId').equals(parentId)
+        .and(s => s.userId === userId)
+        .toArray();
       const childIds = children.map(s => s.id).filter(Boolean) as number[];
       
-      const allTopics = await db.topics.where('subjectId').anyOf(childIds).toArray();
+      const allTopics = await db.topics
+        .where('subjectId').anyOf(childIds)
+        .and(t => t.userId === userId)
+        .toArray();
       const completed = allTopics.filter(t => t.isCompleted).length;
       const total = allTopics.length;
       const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -91,8 +106,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   addSubject: async (subject) => {
     try {
-      const id = await db.subjects.add(subject as Subject);
-      const newSubject = { ...subject, id, updatedAt: Date.now() };
+      const userId = getCurrentUserId();
+      const subjectWithUser = { ...subject, userId, updatedAt: Date.now() };
+      const id = await db.subjects.add(subjectWithUser as Subject);
+      const newSubject = { ...subjectWithUser, id };
       set((state) => ({ subjects: [...state.subjects, newSubject] }));
       
       // NEW: Trigger achievement check on subject creation
@@ -139,7 +156,11 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   loadTopics: async (subjectId) => {
      try {
-       const newTopics = await db.topics.where('subjectId').equals(subjectId).toArray();
+       const userId = getCurrentUserId();
+       const newTopics = await db.topics
+        .where('subjectId').equals(subjectId)
+        .and(t => t.userId === userId)
+        .toArray();
        
        // Merge with existing topics instead of replacing
        set((state) => {
@@ -155,8 +176,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   addTopic: async (topic) => {
     try {
-      const id = await db.topics.add(topic as Topic);
-      const newTopic = { ...topic, id, updatedAt: Date.now() };
+      const userId = getCurrentUserId();
+      const topicWithUser = { ...topic, userId, updatedAt: Date.now() };
+      const id = await db.topics.add(topicWithUser as Topic);
+      const newTopic = { ...topicWithUser, id };
       set((state) => ({ topics: [...state.topics, newTopic] }));
       syncService.triggerAutoBackup();
       return id;
@@ -315,6 +338,7 @@ export const useSubjectStore = create<SubjectState>((set) => ({
   importSyllabus: async (syllabusData: any[]) => {
     set({ isLoading: true });
     try {
+        const userId = getCurrentUserId();
         for (const subjectData of syllabusData) {
             const subjectId = await db.subjects.add({
                 name: subjectData.name,
@@ -323,7 +347,8 @@ export const useSubjectStore = create<SubjectState>((set) => ({
                 targetHoursPerWeek: subjectData.targetHoursPerWeek,
                 icon: 'book', // Default icon
                 createdAt: Date.now(),
-                archived: false
+                archived: false,
+                userId
             });
 
             if (subjectData.topics && Array.isArray(subjectData.topics)) {
@@ -334,14 +359,15 @@ export const useSubjectStore = create<SubjectState>((set) => ({
                     status: 'not-started',
                     learningProgress: 0,
                     revisionCount: 0,
-                    masteryLevel: 0
+                    masteryLevel: 0,
+                    userId
                 }));
                 // @ts-ignore
                 await db.topics.bulkAdd(topicsToAdd);
             }
         }
         
-        const subjects = await db.subjects.toArray();
+        const subjects = await db.subjects.where('userId').equals(userId).toArray();
         set({ subjects, isLoading: false });
     } catch (error) {
         console.error('Failed to import syllabus', error);

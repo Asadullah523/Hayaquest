@@ -21,7 +21,9 @@ const dataBackupSchema = new mongoose.Schema({
         gamification: Object,
         achievements: Array,
         writingChecker: Object,
-        englishProgress: Object
+        englishProgress: Object,
+        quiz: Object,
+        lastResetAt: Number
     },
     lastSynced: {
         type: Date,
@@ -60,7 +62,7 @@ export default async function handler(req, res) {
         const userId = decoded.userId;
 
         await connectDB();
-        const { data } = req.body;
+        const data = req.body.data || req.body;
 
         let backup = await DataBackup.findOne({ userId });
         if (backup) {

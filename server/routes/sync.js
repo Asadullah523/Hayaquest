@@ -20,7 +20,8 @@ const auth = (req, res, next) => {
 
 router.post('/backup', auth, async (req, res) => {
     try {
-        const { data } = req.body;
+        // Handle both nested {data: ...} and flat body structures
+        const data = req.body.data || req.body;
         let backup = await DataBackup.findOne({ userId: req.userId });
         if (backup) {
             backup.data = data;
@@ -47,8 +48,31 @@ router.get('/restore', auth, async (req, res) => {
 
 router.delete('/reset', auth, async (req, res) => {
     try {
-        await DataBackup.findOneAndDelete({ userId: req.userId });
-        res.json({ message: 'Data cleared from cloud' });
+        const { lastResetAt } = req.body;
+        const emptyData = {
+            subjects: [],
+            topics: [],
+            logs: [],
+            timetable: [],
+            settings: [],
+            resources: [],
+            gamification: { xp: 0, level: 1, unlockedBadges: [] },
+            achievements: [],
+            writingChecker: {},
+            englishProgress: {},
+            quiz: {},
+            lastResetAt: lastResetAt || Date.now()
+        };
+
+        let backup = await DataBackup.findOne({ userId: req.userId });
+        if (backup) {
+            backup.data = emptyData;
+            backup.lastSynced = Date.now();
+        } else {
+            backup = new DataBackup({ userId: req.userId, data: emptyData });
+        }
+        await backup.save();
+        res.json({ message: 'Data cleared from cloud', lastResetAt: emptyData.lastResetAt });
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
     }

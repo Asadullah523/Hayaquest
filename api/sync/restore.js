@@ -23,7 +23,9 @@ const dataBackupSchema = new mongoose.Schema({
         writingChecker: Object,
         englishProgress: Object,
         user: Object,
-        timer: Object
+        timer: Object,
+        quiz: Object,
+        lastResetAt: Number
     },
     lastSynced: {
         type: Date,

@@ -3,6 +3,12 @@ import { db } from '../db/db';
 import type { StudyLog } from '../types';
 import { useGamificationStore } from './useGamificationStore';
 import { syncService } from '../services/syncService';
+import { useAuthStore } from './useAuthStore';
+
+const getCurrentUserId = () => {
+  const { user, isAuthenticated } = useAuthStore.getState();
+  return isAuthenticated && user ? user.email : 'guest';
+};
 
 interface LogState {
   logs: StudyLog[];
@@ -31,7 +37,8 @@ export const useLogStore = create<LogState>((set, get) => ({
 
   addLog: async (log) => {
     try {
-      await db.logs.add(log as StudyLog);
+      const userId = getCurrentUserId();
+      await db.logs.add({ ...log, userId } as StudyLog);
       
       // Calculate XP: 10 XP per 15 minutes (900 seconds)
       const xpEarned = Math.max(10, Math.floor(log.durationSeconds / 900) * 10);
@@ -50,7 +57,8 @@ export const useLogStore = create<LogState>((set, get) => ({
   loadLogsByDate: async (_date) => {
     set({ isLoading: true });
     try {
-       const logs = await db.logs.toArray(); 
+       const userId = getCurrentUserId();
+       const logs = await db.logs.where('userId').equals(userId).toArray(); 
        set({ logs, isLoading: false });
     } catch (error) {
       set({ error: 'Failed to load logs', isLoading: false });
@@ -60,7 +68,8 @@ export const useLogStore = create<LogState>((set, get) => ({
   loadAllLogs: async () => {
       set({ isLoading: true });
       try {
-          const logs = await db.logs.orderBy('timestamp').toArray();
+          const userId = getCurrentUserId();
+          const logs = await db.logs.where('userId').equals(userId).sortBy('timestamp');
           set({ logs, isLoading: false });
       } catch (error) {
           set({ error: 'Failed to load all logs' });
@@ -70,11 +79,9 @@ export const useLogStore = create<LogState>((set, get) => ({
   loadRecentLogs: async (limit = 10) => {
       set({ isLoading: true });
       try {
-          const logs = await db.logs.orderBy('timestamp').reverse().limit(limit).toArray();
-          set({ recentLogs: logs, isLoading: false });
-          // If we haven't loaded 'logs' (all logs) yet, we might want to populate it with this subset 
-          // to show *something* on analytics immediately, but strictly separate is better for clarity.
-          // For now, let's keep 'logs' as the "Analytics Source of Truth" (all logs) and 'recentLogs' for dashboards.
+          const userId = getCurrentUserId();
+          const logs = await db.logs.where('userId').equals(userId).reverse().sortBy('timestamp');
+          set({ recentLogs: logs.slice(0, limit), isLoading: false });
       } catch (error) {
           set({ error: 'Failed to load recent logs' });
       }
@@ -83,9 +90,10 @@ export const useLogStore = create<LogState>((set, get) => ({
   calculateStreak: async () => {
     try {
         const { differenceInCalendarDays, startOfDay } = await import('date-fns');
+        const userId = getCurrentUserId();
         
-        const logs = await db.logs.toArray();
-        const completedTopics = await db.topics.filter(t => t.isCompleted && !!t.completedAt).toArray();
+        const logs = await db.logs.where('userId').equals(userId).toArray();
+        const completedTopics = await db.topics.where('userId').equals(userId).filter(t => t.isCompleted && !!t.completedAt).toArray();
         
         // Include today's focus time from timer store
         const { useTimerStore } = await import('./useTimerStore');
