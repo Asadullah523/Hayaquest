@@ -77,17 +77,12 @@ export const syncService = {
     };
 
     // Get data from Dexie filtered by userId and ensure syncIds exist
-    const allSubjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray(), 'subject');
-    const allTopics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray(), 'topic');
+    const subjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray(), 'subject');
+    const topics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray(), 'topic');
     
-    // CRITICAL FIX: Exclude preset subjects and topics from cloud backup
-    // Preset subjects are structural data that should be initialized locally, not synced
-    const subjects = allSubjects.filter(s => !s.isPreset);
-    const topics = allTopics.filter(t => {
-      // Only include topics that belong to user-created subjects (non-preset)
-      const subject = allSubjects.find(s => s.id === t.subjectId);
-      return subject && !subject.isPreset;
-    });
+    // We no longer filter out presets here. 
+    // This ensures that topic completion (progress) for IMAT/MDCAT is uploaded to cloud.
+    // The restore() logic will safely handle structural vs progress updates.
     
     const logs = await ensureSyncId(db.logs, await db.logs.where('userId').equals(userId).toArray());
     const timetable = await ensureSyncId(db.timetable, await db.timetable.where('userId').equals(userId).toArray());
@@ -112,8 +107,8 @@ export const syncService = {
     }
 
     
-    console.log(`📦 Backup: ${allSubjects.length} total subjects (${subjects.length} user-created, ${allSubjects.length - subjects.length} preset skipped)`);
-    console.log(`📦 Backup: ${allTopics.length} total topics (${topics.length} user-created, ${allTopics.length - topics.length} preset skipped)`);
+    console.log(`📦 Backup: ${subjects.length} total subjects (including presets)`);
+    console.log(`📦 Backup: ${topics.length} total topics (including presets)`);
 
     return {
       subjects,
@@ -587,34 +582,31 @@ export const syncService = {
         const guestSubjects = await db.subjects.where('userId').equals(guestId).toArray();
         const userSubjects = await db.subjects.where('userId').equals(userId).toArray();
         
-        // Filter out preset subjects from guest - they should exist on both sides already
-        const guestCustomSubjects = guestSubjects.filter(s => !s.isPreset);
+
         
         const subjectMap = new Map<string, number>(); // key: parentId-name, value: userId-id
         userSubjects.forEach(s => subjectMap.set(`${s.parentId || 0}-${normalizeName(s.name)}`, s.id!));
 
         const guestToUserSubjectIdMap = new Map<number, number>();
         
-        if (guestCustomSubjects.length === 0) {
-            console.log('🤝 Merge: No custom guest subjects to merge. Skipping subject merge.');
-        } else {
-            console.log(`🤝 Merge: Found ${guestCustomSubjects.length} custom guest subjects to merge.`);
+        console.log(`🤝 Merge: Mapping ${guestSubjects.length} guest subjects into [${userId}]`);
 
-            for (const gs of guestCustomSubjects) {
-                const key = `${gs.parentId || 0}-${normalizeName(gs.name)}`;
-                const existingId = subjectMap.get(key);
-                
-                if (existingId) {
-                    console.log(`🤝 Merge: Subject [${gs.name}] already exists. Mapping ID ${gs.id} -> ${existingId}`);
-                    guestToUserSubjectIdMap.set(gs.id!, existingId);
-                    // Update local update time to ensure it syncs
-                    await db.subjects.update(existingId, { updatedAt: Date.now() });
-                } else {
-                    const { id: oldId, ...data } = gs;
-                    const newId = await db.subjects.add({ ...data, userId, updatedAt: Date.now() }) as number;
-                    guestToUserSubjectIdMap.set(oldId!, newId);
-                    subjectMap.set(key, newId);
-                }
+        for (const gs of guestSubjects) {
+            const key = `${gs.parentId || 0}-${normalizeName(gs.name)}`;
+            const existingId = subjectMap.get(key);
+            
+            if (existingId) {
+                console.log(`🤝 Merge: Subject [${gs.name}] matched. Mapping ID ${gs.id} -> ${existingId}`);
+                guestToUserSubjectIdMap.set(gs.id!, existingId);
+                // Update local update time to ensure it syncs
+                await db.subjects.update(existingId, { updatedAt: Date.now() });
+            } else if (!gs.isPreset) {
+                // Only add if it's NOT a preset and doesn't exist. 
+                // Missing presets will be handled by initializePresetSubjects after merge.
+                const { id: oldId, ...data } = gs;
+                const newId = await db.subjects.add({ ...data, userId, updatedAt: Date.now() }) as number;
+                guestToUserSubjectIdMap.set(oldId!, newId);
+                subjectMap.set(key, newId);
             }
         }
 

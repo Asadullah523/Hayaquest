@@ -124,8 +124,7 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
         priority: data.priority,
         targetHoursPerWeek: data.targetHoursPerWeek,
         archived: false,
-        syncId,
-        updatedAt: 1
+        syncId
       });
     } else {
       subjectId = await db.subjects.add({
@@ -162,8 +161,7 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
           await db.subjects.update(chapterId, { 
             name: chapter.title,
             archived: false,
-            syncId: chapterSyncId,
-            updatedAt: 1
+            syncId: chapterSyncId
           });
         } else {
           chapterId = await db.subjects.add({
@@ -207,7 +205,7 @@ async function syncTopicsByName(subjectId: number, topicNames: string[], userId:
         }
 
         if (existing) {
-            await db.topics.update(existing.id!, { name, syncId, updatedAt: 1 });
+            await db.topics.update(existing.id!, { name, syncId });
         } else {
             await db.topics.add({
                 subjectId,
@@ -264,7 +262,7 @@ async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: s
             } as Subject) as number;
         } else {
             chapterId = existingChapter.id!;
-            await db.subjects.update(chapterId, { archived: false, syncId, updatedAt: 1 });
+            await db.subjects.update(chapterId, { archived: false, syncId });
         }
 
         // Sync topics by name
@@ -309,7 +307,7 @@ async function deduplicateParent(name: string, icon: string, color: string, user
             await deleteSubjectTree(red.id!, userId);
         }
     }
-    await db.subjects.update(masterId, { icon, color, archived: false, syncId, updatedAt: 1 });
+    await db.subjects.update(masterId, { icon, color, archived: false, syncId });
     return masterId;
 }
 
