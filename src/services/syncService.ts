@@ -229,7 +229,6 @@ export const syncService = {
         const remoteSubjects = remoteData.subjects || [];
         const syncIdToLocalSubjectId = new Map<string, number>();
         
-        const remoteSyncIdsFound = new Set<string>();
 
         // Build existing map and legacy map
         localSubjects.forEach(s => { 
