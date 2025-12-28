@@ -215,27 +215,7 @@ export const syncService = {
 
       if (!remoteData) return;
 
-      // 0. MIGRATION: Clean preset subjects from cloud backup
-      // This fixes existing users who have preset subjects in their cloud data
-      if (remoteData.subjects && remoteData.subjects.length > 0) {
-        const preCleanCount = remoteData.subjects.length;
-        remoteData.subjects = remoteData.subjects.filter((s: any) => !s.isPreset);
-        
-        // Also filter out topics that belong to preset subjects
-        if (remoteData.topics && remoteData.topics.length > 0) {
-          const presetSubjectIds = new Set(
-            (await db.subjects.where('userId').equals(userId).toArray())
-              .filter(s => s.isPreset)
-              .map(s => s.id)
-          );
-          remoteData.topics = remoteData.topics.filter((t: any) => !presetSubjectIds.has(t.subjectId));
-        }
-        
-        const postCleanCount = remoteData.subjects.length;
-        if (preCleanCount !== postCleanCount) {
-          console.log(`🧹 Cloud Migration: Removed ${preCleanCount - postCleanCount} preset subjects from remote data`);
-        }
-      }
+      // Migration phase removed: Presets are now part of the global cloud state to sync progress.
 
       // 1. CHECK FOR CROSS-DEVICE RESET
       const localLastReset = parseInt(localStorage.getItem('last_reset_at') || '0');

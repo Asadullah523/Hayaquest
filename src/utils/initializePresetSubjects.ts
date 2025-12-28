@@ -124,6 +124,7 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
         priority: data.priority,
         targetHoursPerWeek: data.targetHoursPerWeek,
         archived: false,
+        isPreset: true,
         syncId
       });
     } else {
@@ -161,6 +162,7 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
           await db.subjects.update(chapterId, { 
             name: chapter.title,
             archived: false,
+            isPreset: true,
             syncId: chapterSyncId
           });
         } else {
@@ -205,7 +207,7 @@ async function syncTopicsByName(subjectId: number, topicNames: string[], userId:
         }
 
         if (existing) {
-            await db.topics.update(existing.id!, { name, syncId });
+            await db.topics.update(existing.id!, { name, syncId, isPreset: true });
         } else {
             await db.topics.add({
                 subjectId,
@@ -215,6 +217,7 @@ async function syncTopicsByName(subjectId: number, topicNames: string[], userId:
                 learningProgress: 0,
                 revisionCount: 0,
                 masteryLevel: 0,
+                isPreset: true,
                 updatedAt: 1,
                 userId,
                 syncId
@@ -262,7 +265,7 @@ async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: s
             } as Subject) as number;
         } else {
             chapterId = existingChapter.id!;
-            await db.subjects.update(chapterId, { archived: false, syncId });
+            await db.subjects.update(chapterId, { archived: false, syncId, isPreset: true });
         }
 
         // Sync topics by name
@@ -307,7 +310,7 @@ async function deduplicateParent(name: string, icon: string, color: string, user
             await deleteSubjectTree(red.id!, userId);
         }
     }
-    await db.subjects.update(masterId, { icon, color, archived: false, syncId });
+    await db.subjects.update(masterId, { icon, color, archived: false, syncId, isPreset: true });
     return masterId;
 }
 

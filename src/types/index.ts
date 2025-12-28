@@ -35,6 +35,7 @@ export interface Topic {
   masteryLevel: number; // 0-100
   lastStudied?: number; // timestamp
   notes?: string;
+  isPreset?: boolean; // NEW: Protect from sync deletion
   // Daily recurring task fields
   isRecurring?: boolean; // Whether this is a daily recurring task
   completionDates?: string[]; // Array of dates (YYYY-MM-DD) when task was completed

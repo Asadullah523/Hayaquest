@@ -40,6 +40,23 @@ const App = () => {
   const { isAuthenticated, user } = useAuthStore();
   const [isReady, setIsReady] = useState(false);
 
+  // Global recovery for dynamic import failures (Deployment issues)
+  useEffect(() => {
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      const error = event.reason;
+      if (error && (
+        error.name === 'ChunkLoadError' || 
+        (error.message && error.message.includes('Failed to fetch dynamically imported module'))
+      )) {
+        console.warn('Recovering from module load error - Reloading...', error);
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('unhandledrejection', handleRejection);
+    return () => window.removeEventListener('unhandledrejection', handleRejection);
+  }, []);
+
   useEffect(() => {
     let focusListener: (() => void) | null = null;
     
