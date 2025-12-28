@@ -21,6 +21,7 @@ export interface Subject {
   parentId?: number; // NEW: To group subjects (e.g., Biology under IMAT)
   updatedAt?: number; // timestamp for sync conflict resolution
   userId?: string; // Partition for guest vs account data
+  syncId?: string; // NEW: Global unique identifier
 }
 
 export interface Topic {
@@ -41,6 +42,7 @@ export interface Topic {
   completedAt?: number; // Timestamp when marked as completed (for streak calc)
   updatedAt?: number; // timestamp for sync conflict resolution
   userId?: string; // Partition for guest vs account data
+  syncId?: string; // NEW: Global unique identifier
 }
 
 export interface StudyLog {
@@ -54,6 +56,7 @@ export interface StudyLog {
   timestamp: number;
   userId?: string; // Partition for guest vs account data
   updatedAt?: number; // timestamp for sync conflict resolution
+  syncId?: string; // NEW: Global unique identifier
 }
 
 export interface TimetableSlot {
@@ -67,6 +70,7 @@ export interface TimetableSlot {
   recurring: boolean;
   userId?: string; // Partition for guest vs account data
   updatedAt?: number; // timestamp for sync conflict resolution
+  syncId?: string; // NEW: Global unique identifier
 }
 
 export interface Streak {
@@ -81,4 +85,5 @@ export interface Settings {
   value: any;
   userId?: string; // Partition for guest vs account data
   updatedAt?: number; // timestamp for sync conflict resolution
+  syncId?: string; // NEW: Global unique identifier
 }

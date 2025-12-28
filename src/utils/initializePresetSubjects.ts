@@ -11,13 +11,17 @@ import { useAuthStore } from '../store/useAuthStore';
 
 const IMAT_PARENT_NAME = 'IMAT Prep';
 const MDCAT_PARENT_NAME = 'MDCAT Prep';
-const SYLLABUS_VERSION = 'v3.1'; 
+const SYLLABUS_VERSION = 'v3.2'; // Forced increment for syncId backfill
 
 let isInitializing = false;
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
   return isAuthenticated && user ? user.email : 'guest';
+};
+
+const generateSyncId = (type: 'subject' | 'topic', path: string) => {
+    return `${type}:${path.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
 };
 
 export async function initializePresetSubjects(): Promise<void> {
@@ -52,26 +56,26 @@ export async function initializePresetSubjects(): Promise<void> {
     console.log('🚀 DEEP SYNC: Implementing Hierarchical Prep Sections...');
 
     // 1. DEDUPLICATE ROOT PARENTS
-    const imatParentId = await deduplicateParent(IMAT_PARENT_NAME, '🎓', '#818cf8', userId);
-    const mdcatParentId = await deduplicateParent(MDCAT_PARENT_NAME, '🩺', '#ec4899', userId);
+    const imatParentId = await deduplicateParent(IMAT_PARENT_NAME, '🎓', '#818cf8', userId, 'imat');
+    const mdcatParentId = await deduplicateParent(MDCAT_PARENT_NAME, '🩺', '#ec4899', userId, 'mdcat');
     
     // 2. ROOT SCIENCE BOOKS (Kept separate)
-    const rootBiologyId = await deduplicateParent('Biology', '🧬', '#10b981', userId);
-    const rootChemistryId = await deduplicateParent('Chemistry', '🧪', '#3b82f6', userId);
-    const rootPhysicsId = await deduplicateParent('Physics', '⚛️', '#f59e0b', userId);
+    const rootBiologyId = await deduplicateParent('Biology', '🧬', '#10b981', userId, 'biology');
+    const rootChemistryId = await deduplicateParent('Chemistry', '🧪', '#3b82f6', userId, 'chemistry');
+    const rootPhysicsId = await deduplicateParent('Physics', '⚛️', '#f59e0b', userId, 'physics');
 
     // Sync hierarchical roots
-    await syncHierarchicalRoot(rootBiologyId, biologySyllabus, userId);
-    await syncHierarchicalRoot(rootChemistryId, chemistrySyllabus, userId);
-    await syncHierarchicalRoot(rootPhysicsId, physicsSyllabus, userId);
+    await syncHierarchicalRoot(rootBiologyId, biologySyllabus, userId, 'biology');
+    await syncHierarchicalRoot(rootChemistryId, chemistrySyllabus, userId, 'chemistry');
+    await syncHierarchicalRoot(rootPhysicsId, physicsSyllabus, userId, 'physics');
 
     // 3. NUCLEAR WIPE REMOVED
     // We no longer wipe children because it deletes local progress.
     // Instead, processSyllabusAtomic will now update or add missing items.
 
     // 4. SEQUENTIAL RE-INITIALIZATION (Supports Chapters & Flat Topics)
-    await processSyllabusAtomic(imatSyllabus, imatParentId, userId);
-    await processSyllabusAtomic(mdcatSyllabus, mdcatParentId, userId);
+    await processSyllabusAtomic(imatSyllabus, imatParentId, userId, 'imat');
+    await processSyllabusAtomic(mdcatSyllabus, mdcatParentId, userId, 'mdcat');
 
     // 5. GLOBAL TOPIC CLEANUP
     await deduplicateAllTopics(userId);
@@ -92,25 +96,35 @@ export async function initializePresetSubjects(): Promise<void> {
 
 // wipeAllChildren removed to protect localized data
 
-async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: string) {
+async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: string, pathPrefix: string) {
   for (const data of syllabus) {
+    const currentPath = `${pathPrefix}:${data.name.toLowerCase().replace(/ /g, '_')}`;
+    const syncId = generateSyncId('subject', currentPath);
+
     // 1. DEDUPLICATE SUBJECT
     let subjectId: number;
     const allSubjects = await db.subjects.where('userId').equals(userId).toArray();
-    const existingSubject = allSubjects.find(s => 
-        s.parentId === parentId && 
-        normalizeName(s.name) === normalizeName(data.name)
-    );
+    
+    // First try by syncId, then by name for legacy
+    let existingSubject = allSubjects.find(s => s.syncId === syncId);
+    if (!existingSubject) {
+        existingSubject = allSubjects.find(s => 
+            s.parentId === parentId && 
+            normalizeName(s.name) === normalizeName(data.name)
+        );
+    }
     
     if (existingSubject) {
       subjectId = existingSubject.id!;
       await db.subjects.update(subjectId, {
-        name: data.name, // Ensure canonical casing from syllabus
+        name: data.name, 
         color: data.color,
         icon: getSubjectIcon(data.name),
         priority: data.priority,
         targetHoursPerWeek: data.targetHoursPerWeek,
-        archived: false
+        archived: false,
+        syncId,
+        updatedAt: 1
       });
     } else {
       subjectId = await db.subjects.add({
@@ -120,26 +134,35 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
         priority: data.priority,
         targetHoursPerWeek: data.targetHoursPerWeek,
         createdAt: Date.now(),
-        updatedAt: Date.now(),
+        updatedAt: 1,
         isPreset: true,
         parentId: parentId,
         archived: false,
-        userId
+        userId,
+        syncId
       } as Subject) as number;
     }
 
     // A. Handle Hierarchical Chapters
     if (data.chapters && data.chapters.length > 0) {
       for (const chapter of data.chapters) {
+        const chapterPath = `${currentPath}:${chapter.title.toLowerCase().replace(/ /g, '_')}`;
+        const chapterSyncId = generateSyncId('subject', chapterPath);
+        
         let chapterId: number;
         const subSubjects = await db.subjects.where('parentId').equals(subjectId).toArray();
-        const existingChapter = subSubjects.find(s => normalizeName(s.name) === normalizeName(chapter.title));
+        let existingChapter = subSubjects.find(s => s.syncId === chapterSyncId);
+        if (!existingChapter) {
+            existingChapter = subSubjects.find(s => normalizeName(s.name) === normalizeName(chapter.title));
+        }
         
         if (existingChapter) {
           chapterId = existingChapter.id!;
           await db.subjects.update(chapterId, { 
-            name: chapter.title, // Canonical casing
-            archived: false 
+            name: chapter.title,
+            archived: false,
+            syncId: chapterSyncId,
+            updatedAt: 1
           });
         } else {
           chapterId = await db.subjects.add({
@@ -149,53 +172,59 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
             icon: '📖',
             priority: 'medium',
             createdAt: Date.now(),
-            updatedAt: Date.now(),
+            updatedAt: 1,
             isPreset: true,
             archived: false,
-            userId
+            userId,
+            syncId: chapterSyncId
           } as Subject) as number;
         }
 
         if (chapter.topics && chapter.topics.length > 0) {
-          await syncTopicsByName(chapterId, chapter.topics, userId);
+          await syncTopicsByName(chapterId, chapter.topics, userId, chapterPath);
         }
       }
     } 
     // B. Handle Flat Topics
     else if (data.topics && data.topics.length > 0) {
-      await syncTopicsByName(subjectId, data.topics, userId);
+      await syncTopicsByName(subjectId, data.topics, userId, currentPath);
     }
   }
 }
 
-async function syncTopicsByName(subjectId: number, topicNames: string[], userId: string) {
+async function syncTopicsByName(subjectId: number, topicNames: string[], userId: string, pathPrefix: string) {
     const existingTopics = await db.topics
         .where('subjectId').equals(subjectId)
         .and(t => t.userId === userId)
         .toArray();
-    const existingNames = new Set(existingTopics.map(t => t.name.trim().toLowerCase()));
     
-    // Only add topics that don't exist yet
-    const topicsToAdd = topicNames
-        .filter(name => !existingNames.has(name.trim().toLowerCase()))
-        .map(name => ({
-            subjectId,
-            name,
-            isCompleted: false,
-            status: 'not-started' as const,
-            learningProgress: 0,
-            revisionCount: 0,
-            masteryLevel: 0,
-            updatedAt: Date.now(),
-            userId
-        }));
-    
-    if (topicsToAdd.length > 0) {
-        await db.topics.bulkAdd(topicsToAdd);
+    for (const name of topicNames) {
+        const syncId = generateSyncId('topic', `${pathPrefix}:${name.toLowerCase().replace(/ /g, '_')}`);
+        let existing = existingTopics.find(t => t.syncId === syncId);
+        if (!existing) {
+            existing = existingTopics.find(t => normalizeName(t.name) === normalizeName(name));
+        }
+
+        if (existing) {
+            await db.topics.update(existing.id!, { name, syncId, updatedAt: 1 });
+        } else {
+            await db.topics.add({
+                subjectId,
+                name,
+                isCompleted: false,
+                status: 'not-started',
+                learningProgress: 0,
+                revisionCount: 0,
+                masteryLevel: 0,
+                updatedAt: 1,
+                userId,
+                syncId
+            });
+        }
     }
 }
 
-async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: string) {
+async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: string, pathPrefix: string) {
     // 1. Cleanup old chapters that are no longer in syllabus
     const existing = await db.subjects
         .where('parentId').equals(parentId)
@@ -208,9 +237,15 @@ async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: s
 
     // 2. Sync existing/new chapters
     for (const chapter of syllabus) {
+        const currentPath = `${pathPrefix}:${chapter.title.toLowerCase().replace(/ /g, '_')}`;
+        const syncId = generateSyncId('subject', currentPath);
+        
         let chapterId: number;
         const currentChildren = await db.subjects.where('parentId').equals(parentId).toArray();
-        const existingChapter = currentChildren.find(s => normalizeName(s.name) === normalizeName(chapter.title));
+        let existingChapter = currentChildren.find(s => s.syncId === syncId);
+        if (!existingChapter) {
+            existingChapter = currentChildren.find(s => normalizeName(s.name) === normalizeName(chapter.title));
+        }
         
         if (!existingChapter) {
             chapterId = await db.subjects.add({
@@ -220,19 +255,20 @@ async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: s
                 icon: '📖',
                 priority: 'medium',
                 createdAt: Date.now(),
-                updatedAt: Date.now(),
+                updatedAt: 1,
                 isPreset: true,
                 archived: false,
-                userId
+                userId,
+                syncId
             } as Subject) as number;
         } else {
             chapterId = existingChapter.id!;
-            await db.subjects.update(chapterId, { archived: false });
+            await db.subjects.update(chapterId, { archived: false, syncId, updatedAt: 1 });
         }
 
         // Sync topics by name
         if (chapter.topics && chapter.topics.length > 0) {
-            await syncTopicsByName(chapterId, chapter.topics, userId);
+            await syncTopicsByName(chapterId, chapter.topics, userId, currentPath);
         }
     }
 }
@@ -250,13 +286,19 @@ async function deleteSubjectTree(id: number, userId: string) {
     await db.logs.where('subjectId').equals(id).delete();
 }
 
-async function deduplicateParent(name: string, icon: string, color: string, userId: string): Promise<number> {
+async function deduplicateParent(name: string, icon: string, color: string, userId: string, pathPrefix: string): Promise<number> {
+    const syncId = generateSyncId('subject', pathPrefix);
     const allSubjects = await db.subjects.where('userId').equals(userId).toArray();
-    const parents = allSubjects.filter(s => !s.parentId && normalizeName(s.name) === normalizeName(name));
+    
+    // Find by syncId or name
+    let parents = allSubjects.filter(s => s.syncId === syncId);
+    if (parents.length === 0) {
+        parents = allSubjects.filter(s => !s.parentId && normalizeName(s.name) === normalizeName(name));
+    }
 
     if (parents.length === 0) {
         return await db.subjects.add({
-            name, color, icon, priority: 'high', createdAt: Date.now(), updatedAt: Date.now(), isPreset: true, archived: false, userId
+            name, color, icon, priority: 'high', createdAt: Date.now(), updatedAt: 1, isPreset: true, archived: false, userId, syncId
         } as Subject) as number;
     }
     const [master, ...redundant] = parents;
@@ -266,7 +308,7 @@ async function deduplicateParent(name: string, icon: string, color: string, user
             await deleteSubjectTree(red.id!, userId);
         }
     }
-    await db.subjects.update(masterId, { icon, color, archived: false });
+    await db.subjects.update(masterId, { icon, color, archived: false, syncId, updatedAt: 1 });
     return masterId;
 }
 

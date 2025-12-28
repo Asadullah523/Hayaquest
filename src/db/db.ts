@@ -11,13 +11,13 @@ export class HayaDB extends Dexie {
 
   constructor() {
     super('HayaDB');
-    this.version(3).stores({
-      subjects: '++id, name, archived, parentId, userId',
-      topics: '++id, subjectId, status, userId',
-      logs: '++id, date, subjectId, timestamp, userId',
-      timetable: '++id, dayOfWeek, userId',
-      settings: 'key, userId',
-      resources: '++id, title, category, type, dateAdded, userId' 
+    this.version(4).stores({
+      subjects: '++id, name, archived, parentId, userId, syncId',
+      topics: '++id, subjectId, status, userId, syncId',
+      logs: '++id, date, subjectId, timestamp, userId, syncId',
+      timetable: '++id, dayOfWeek, userId, syncId',
+      settings: 'key, userId, syncId',
+      resources: '++id, title, category, type, dateAdded, userId, syncId' 
     });
   }
 }
