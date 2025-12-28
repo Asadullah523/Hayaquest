@@ -64,18 +64,23 @@ const App = () => {
             console.error('Initial restore failed:', err);
           }
           
-          // 5. Add focus listener for active users
+          // 5. Add focus and visibility listeners for active users
           const handleFocus = async () => {
              if (useAuthStore.getState().isAuthenticated) {
                syncService.restore().catch(err => console.error('Focus sync failed', err));
              }
           };
           window.addEventListener('focus', handleFocus);
+          window.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') handleFocus();
+          });
           focusListener = handleFocus;
         }
       } catch (error) {
         console.error("Failed to bootstrap application:", error);
       } finally {
+        // 6. Mark sync service as initialized (Backups now allowed)
+        syncService.markInitialized();
         setIsReady(true);
       }
     };

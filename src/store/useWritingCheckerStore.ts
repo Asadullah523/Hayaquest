@@ -7,6 +7,7 @@ interface WritingCheckerState {
   drafts: Draft[];
   currentDraftId: string | null;
   preferences: UserPreferences;
+  updatedAt?: number;
   
   // Actions
   saveDraft: (draft: Omit<Draft, 'id' | 'createdAt' | 'updatedAt'>) => string;
@@ -27,6 +28,7 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
         checkAsYouType: true,
         highlightSeverity: ['error', 'warning', 'info'],
       },
+      updatedAt: 0,
 
       saveDraft: (draft) => {
         const now = Date.now();
@@ -40,6 +42,7 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
         set((state) => ({
           drafts: [newDraft, ...state.drafts],
           currentDraftId: newDraft.id,
+          updatedAt: now,
         }));
         
         syncService.triggerAutoBackup();
@@ -54,6 +57,7 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
               ? { ...draft, ...updates, updatedAt: Date.now() }
               : draft
           ),
+          updatedAt: Date.now(),
         }));
         syncService.triggerAutoBackup();
       },
@@ -62,6 +66,7 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
         set((state) => ({
           drafts: state.drafts.filter((draft) => draft.id !== id),
           currentDraftId: state.currentDraftId === id ? null : state.currentDraftId,
+          updatedAt: Date.now(),
         }));
         syncService.triggerAutoBackup();
       },
@@ -72,14 +77,15 @@ export const useWritingCheckerStore = create<WritingCheckerState>()(
       },
 
       setCurrentDraft: (id) => {
-        set({ currentDraftId: id });
+        set({ currentDraftId: id, updatedAt: Date.now() });
         syncService.triggerAutoBackup();
       },
 
       updatePreferences: (preferences) => {
-        set((state) => ({
-          preferences: { ...state.preferences, ...preferences },
-        }));
+        set({
+          preferences: { ...get().preferences, ...preferences },
+          updatedAt: Date.now(),
+        });
         syncService.triggerAutoBackup();
       },
     }),

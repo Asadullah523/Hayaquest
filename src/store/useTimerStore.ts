@@ -48,6 +48,7 @@ interface TimerState {
     lastUpdatedDate: string; // YYYY-MM-DD
     subjectFocusTime: Record<number, number>; // subjectId -> seconds
   };
+  updatedAt?: number;
   
   // Actions
   start: () => void;
@@ -441,6 +442,7 @@ export const useTimerStore = create<TimerState>()(
         lastUpdatedDate: new Date().toISOString().split('T')[0],
         subjectFocusTime: {},
       },
+      updatedAt: 0,
 
       start: () => {
         // Resume AudioContext on user interaction
@@ -477,11 +479,11 @@ export const useTimerStore = create<TimerState>()(
             },
           });
         }
-
         set({ 
           isActive: true,
           timerReferenceTime: Date.now(),
-          timeLeftWhenStarted: get().timeLeft
+          timeLeftWhenStarted: get().timeLeft,
+          updatedAt: Date.now()
         });
 
         // Schedule Native Notification
@@ -524,10 +526,11 @@ export const useTimerStore = create<TimerState>()(
           set({ 
             isActive: false,
             timeLeft: actualTimeLeft,
-            timerReferenceTime: null
+            timerReferenceTime: null,
+            updatedAt: Date.now()
           });
         } else {
-          set({ isActive: false, timerReferenceTime: null });
+          set({ isActive: false, timerReferenceTime: null, updatedAt: Date.now() });
         }
         
         stopSound();
@@ -553,7 +556,8 @@ export const useTimerStore = create<TimerState>()(
           timeLeft: duration, 
           activeSession: null,
           timerReferenceTime: null,
-          timeLeftWhenStarted: duration
+          timeLeftWhenStarted: duration,
+          updatedAt: Date.now()
         });
       },
 
@@ -603,6 +607,7 @@ export const useTimerStore = create<TimerState>()(
           set((state) => ({ 
             timeLeft: actualTimeLeft,
             todayStats: newStats,
+            updatedAt: Date.now(),
             activeSession: state.activeSession ? {
                 ...state.activeSession,
                 elapsedSeconds: state.activeSession.elapsedSeconds + secondsToAccountFor,
@@ -710,7 +715,7 @@ export const useTimerStore = create<TimerState>()(
 
         stopSound();
         LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
-        set({ mode, timeLeft: duration, isActive: false, activeSession: null });
+        set({ mode, timeLeft: duration, isActive: false, activeSession: null, updatedAt: Date.now() });
       },
 
       updateConfig: (newConfig) => {
@@ -729,7 +734,7 @@ export const useTimerStore = create<TimerState>()(
             }
           }
 
-          return { config, timeLeft };
+          return { config, timeLeft, updatedAt: Date.now() };
         });
       },
 

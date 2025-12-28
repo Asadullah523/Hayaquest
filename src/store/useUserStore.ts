@@ -6,6 +6,7 @@ interface UserState {
   name: string;
   avatar: string;
   dailyGoalMinutes: number;
+  updatedAt: number;
   setName: (name: string) => void;
   setAvatar: (avatar: string) => void;
   setDailyGoalMinutes: (minutes: number) => void;
@@ -17,9 +18,10 @@ export const useUserStore = create<UserState>()(
       name: 'Haya',
       avatar: 'owl',
       dailyGoalMinutes: 120,
-      setName: (name) => { set({ name }); syncService.triggerAutoBackup(); },
-      setAvatar: (avatar) => { set({ avatar }); syncService.triggerAutoBackup(); },
-      setDailyGoalMinutes: (dailyGoalMinutes) => { set({ dailyGoalMinutes }); syncService.triggerAutoBackup(); },
+      updatedAt: 0,
+      setName: (name) => { set({ name, updatedAt: Date.now() }); syncService.triggerAutoBackup(); },
+      setAvatar: (avatar) => { set({ avatar, updatedAt: Date.now() }); syncService.triggerAutoBackup(); },
+      setDailyGoalMinutes: (dailyGoalMinutes) => { set({ dailyGoalMinutes, updatedAt: Date.now() }); syncService.triggerAutoBackup(); },
     }),
     {
       name: 'user-storage',

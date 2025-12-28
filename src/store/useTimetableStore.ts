@@ -114,9 +114,9 @@ export const useTimetableStore = create<TimetableState>()(
                 .first();
 
             if (existing && existing.id) {
-                await db.timetable.update(existing.id, slotData);
+                await db.timetable.update(existing.id, { ...slotData, updatedAt: Date.now() });
             } else {
-                await db.timetable.add({ ...slotData, userId } as TimetableSlot);
+                await db.timetable.add({ ...slotData, userId, updatedAt: Date.now() } as TimetableSlot);
             }
             
             // Reload

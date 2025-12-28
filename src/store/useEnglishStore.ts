@@ -32,6 +32,7 @@ export const useEnglishStore = create<EnglishStore>()(
       shuffledWordIds: null,
       vocabularySessionId: 'initial',
       wordsRead: [],
+      updatedAt: 0,
 
       markWordAsLearned: (wordId) => {
         set((state) => {
@@ -46,6 +47,7 @@ export const useEnglishStore = create<EnglishStore>()(
           return {
             wordsLearned: newWordsLearned,
             shuffledWordIds: newShuffledWordIds,
+            updatedAt: Date.now()
           };
         });
         syncService.triggerAutoBackup();
@@ -56,6 +58,7 @@ export const useEnglishStore = create<EnglishStore>()(
           favoriteWords: state.favoriteWords.includes(wordId)
             ? state.favoriteWords.filter(id => id !== wordId)
             : [...state.favoriteWords, wordId],
+          updatedAt: Date.now()
         }));
         syncService.triggerAutoBackup();
       },
@@ -65,6 +68,7 @@ export const useEnglishStore = create<EnglishStore>()(
           storiesRead: state.storiesRead.includes(storyId)
             ? state.storiesRead
             : [...state.storiesRead, storyId],
+          updatedAt: Date.now()
         }));
         syncService.triggerAutoBackup();
       },
@@ -74,6 +78,7 @@ export const useEnglishStore = create<EnglishStore>()(
           favoriteStories: state.favoriteStories.includes(storyId)
             ? state.favoriteStories.filter(id => id !== storyId)
             : [...state.favoriteStories, storyId],
+          updatedAt: Date.now()
         }));
         syncService.triggerAutoBackup();
       },
@@ -83,6 +88,7 @@ export const useEnglishStore = create<EnglishStore>()(
           grammarTopicsMastered: state.grammarTopicsMastered.includes(topicId)
             ? state.grammarTopicsMastered
             : [...state.grammarTopicsMastered, topicId],
+          updatedAt: Date.now()
         }));
         syncService.triggerAutoBackup();
       },

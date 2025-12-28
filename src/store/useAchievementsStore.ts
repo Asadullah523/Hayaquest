@@ -266,6 +266,7 @@ interface AchievementsState {
   totalFocusSessions: number;
   earlyMorningSessions: number;
   lateNightSessions: number;
+  updatedAt?: number;
   
   // Actions
   updateStats: (stats: Partial<Pick<AchievementsState, 
@@ -304,9 +305,10 @@ export const useAchievementsStore = create<AchievementsState>()(
       totalFocusSessions: 0,
       earlyMorningSessions: 0,
       lateNightSessions: 0,
+      updatedAt: 0,
 
       updateStats: (stats) => {
-        set((state) => ({ ...state, ...stats }));
+        set((state) => ({ ...state, ...stats, updatedAt: Date.now() }));
         get().checkAchievements();
         syncService.triggerAutoBackup();
       },
@@ -330,7 +332,8 @@ export const useAchievementsStore = create<AchievementsState>()(
 
         if (newUnlocks.length > 0) {
           set(s => ({ 
-            unlockedAchievements: [...s.unlockedAchievements, ...newUnlocks] 
+            unlockedAchievements: [...s.unlockedAchievements, ...newUnlocks],
+            updatedAt: Date.now()
           }));
           console.log('🏆 New Achievements Unlocked:', newUnlocks);
           syncService.triggerAutoBackup();

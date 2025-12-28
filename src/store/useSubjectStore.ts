@@ -107,9 +107,9 @@ export const useSubjectStore = create<SubjectState>((set) => ({
   addSubject: async (subject) => {
     try {
       const userId = getCurrentUserId();
-      const subjectWithUser = { ...subject, userId, updatedAt: Date.now() };
-      const id = await db.subjects.add(subjectWithUser as Subject);
-      const newSubject = { ...subjectWithUser, id };
+      const updatedAt = Date.now();
+      const id = await db.subjects.add({ ...subject, userId, updatedAt } as Subject);
+      const newSubject = { ...subject, id, userId, updatedAt };
       set((state) => ({ subjects: [...state.subjects, newSubject] }));
       
       // NEW: Trigger achievement check on subject creation
@@ -127,10 +127,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   updateSubject: async (id, changes) => {
     try {
-      const updatedChanges = { ...changes, updatedAt: Date.now() };
-      await db.subjects.update(id, updatedChanges);
+      const updatedAt = Date.now();
+      await db.subjects.update(id, { ...changes, updatedAt });
       set((state) => ({
-        subjects: state.subjects.map(s => s.id === id ? { ...s, ...updatedChanges } : s)
+        subjects: state.subjects.map(s => s.id === id ? { ...s, ...changes, updatedAt } : s)
       }));
       syncService.triggerAutoBackup();
     } catch (error) {
@@ -177,9 +177,9 @@ export const useSubjectStore = create<SubjectState>((set) => ({
   addTopic: async (topic) => {
     try {
       const userId = getCurrentUserId();
-      const topicWithUser = { ...topic, userId, updatedAt: Date.now() };
-      const id = await db.topics.add(topicWithUser as Topic);
-      const newTopic = { ...topicWithUser, id };
+      const updatedAt = Date.now();
+      const id = await db.topics.add({ ...topic, userId, updatedAt } as Topic);
+      const newTopic = { ...topic, id, userId, updatedAt };
       set((state) => ({ topics: [...state.topics, newTopic] }));
       syncService.triggerAutoBackup();
       return id;
@@ -222,10 +222,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   updateTopic: async (id, changes) => {
     try {
-      const updatedChanges = { ...changes, updatedAt: Date.now() };
-      await db.topics.update(id, updatedChanges);
+      const updatedAt = Date.now();
+      await db.topics.update(id, { ...changes, updatedAt });
       set((state) => ({
-        topics: state.topics.map(t => t.id === id ? { ...t, ...updatedChanges } : t)
+        topics: state.topics.map(t => t.id === id ? { ...t, ...changes, updatedAt } : t)
       }));
       syncService.triggerAutoBackup();
     } catch (error) {

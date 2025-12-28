@@ -53,6 +53,7 @@ export interface StudyLog {
   type: StudyType;
   timestamp: number;
   userId?: string; // Partition for guest vs account data
+  updatedAt?: number; // timestamp for sync conflict resolution
 }
 
 export interface TimetableSlot {
@@ -64,6 +65,8 @@ export interface TimetableSlot {
   title?: string;
   color?: string;
   recurring: boolean;
+  userId?: string; // Partition for guest vs account data
+  updatedAt?: number; // timestamp for sync conflict resolution
 }
 
 export interface Streak {
@@ -77,4 +80,5 @@ export interface Settings {
   key: string;
   value: any;
   userId?: string; // Partition for guest vs account data
+  updatedAt?: number; // timestamp for sync conflict resolution
 }

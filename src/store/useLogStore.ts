@@ -38,7 +38,8 @@ export const useLogStore = create<LogState>((set, get) => ({
   addLog: async (log) => {
     try {
       const userId = getCurrentUserId();
-      await db.logs.add({ ...log, userId } as StudyLog);
+      const updatedAt = Date.now();
+      await db.logs.add({ ...log, userId, updatedAt } as StudyLog);
       
       // Calculate XP: 10 XP per 15 minutes (900 seconds)
       const xpEarned = Math.max(10, Math.floor(log.durationSeconds / 900) * 10);

@@ -10,6 +10,7 @@ import { useTimerStore } from '../store/useTimerStore';
 import { useSubjectStore } from '../store/useSubjectStore';
 import { useLogStore } from '../store/useLogStore';
 import { useTimetableStore } from '../store/useTimetableStore';
+import { useSyncStore } from '../store/useSyncStore';
 import api from './api';
 
 const getCurrentUserId = () => {
@@ -21,6 +22,7 @@ export const syncService = {
   // Sync state management
   _isSyncing: false,
   _isPaused: false,
+  _isInitialized: false, // New: guard against backup before first load
   _lastLocalUpdate: 0,
 
   pauseSync() {
@@ -31,6 +33,11 @@ export const syncService = {
   resumeSync() {
     this._isPaused = false;
     console.log('Sync service: RESUMED');
+  },
+
+  markInitialized() {
+    this._isInitialized = true;
+    console.log('Sync service: INITIALIZED (Backup permitted)');
   },
 
   async getAllLocalData() {
@@ -72,11 +79,25 @@ export const syncService = {
         xp: gamification.xp,
         level: gamification.level,
         unlockedBadges: gamification.unlockedBadges,
+        updatedAt: gamification.updatedAt || 0,
       },
-      achievements: achievements.unlockedAchievements,
+      achievements: {
+        unlockedAchievements: achievements.unlockedAchievements,
+        updatedAt: achievements.updatedAt || 0,
+        // Include stats for mirroring
+        stats: {
+            currentStreak: achievements.currentStreak,
+            totalTopicsCompleted: achievements.totalTopicsCompleted,
+            subjectsFullyCompleted: achievements.subjectsFullyCompleted,
+            totalStudyHours: achievements.totalStudyHours,
+            totalSubjects: achievements.totalSubjects,
+            longestSessionMinutes: achievements.longestSessionMinutes,
+        }
+      },
       writingChecker: {
         drafts: writingChecker.drafts,
         preferences: writingChecker.preferences,
+        updatedAt: writingChecker.updatedAt || 0,
       },
       englishProgress: {
         wordsLearned: english.wordsLearned,
@@ -88,6 +109,7 @@ export const syncService = {
         dailyStreak: english.dailyStreak,
         lastStudyDate: english.lastStudyDate,
         wordsRead: english.wordsRead,
+        updatedAt: english.updatedAt || 0,
       },
       user: {
         name: user.name,
@@ -95,9 +117,10 @@ export const syncService = {
         dailyGoalMinutes: user.dailyGoalMinutes
       },
       timer: {
-        todayStats: timer.todayStats,
-        sessionHistory: timer.sessionHistory,
-        config: timer.config
+        todayStats: timer.todayStats as any,
+        sessionHistory: timer.sessionHistory as any,
+        config: timer.config as any,
+        updatedAt: timer.updatedAt || 0,
       },
       lastResetAt: parseInt(localStorage.getItem('last_reset_at') || '0'),
       syllabus_version: localStorage.getItem('syllabus_version')
@@ -105,16 +128,27 @@ export const syncService = {
   },
 
   async backup() {
-    if (this._isSyncing || this._isPaused) return;
     try {
       this._isSyncing = true;
+      useSyncStore.getState().setSyncing(true);
       const data = await this.getAllLocalData();
+      
+      // SAFETY GUARD: Prevent backing up an empty state if we haven't loaded yet.
+      // If we have 0 subjects but we aren't marked as "initialized" by the store, skip backup.
+      if (!this._isInitialized && (!data.subjects || data.subjects.length === 0)) {
+          console.warn('Sync service: Skipping backup - App not fully initialized and local data is empty.');
+          return;
+      }
+
       await api.post('/sync/backup', data);
+      useSyncStore.getState().setLastSyncTime(Date.now());
       console.log('Sync service: BACKUP SUCCESS');
     } catch (err) {
+      useSyncStore.getState().setError('Backup failed');
       console.error('Sync service: BACKUP FAILED', err);
     } finally {
       this._isSyncing = false;
+      useSyncStore.getState().setSyncing(false);
     }
   },
 
@@ -131,6 +165,7 @@ export const syncService = {
 
     try {
       this._isSyncing = true;
+      useSyncStore.getState().setSyncing(true);
       const response = await api.get('/sync/restore');
       const remoteData = response.data;
 
@@ -141,75 +176,76 @@ export const syncService = {
       const remoteLastReset = remoteData.lastResetAt || 0;
 
       if (remoteLastReset > localLastReset) {
-        // SAFETY: If localLastReset is 0, this is a fresh login or first sync of this session.
-        // We should just adopt the remote timestamp without wiping the local bucket,
-        // because the bootstrapper just initialized fresh presets we want to KEEP.
-        if (localLastReset === 0) {
-            console.log('Sync: Adopting remote reset timestamp:', remoteLastReset);
-            localStorage.setItem('last_reset_at', remoteLastReset.toString());
-        } else {
-            console.warn('Sync: Remote reset detected. Wiping local bucket for:', userId);
-            const versionKey = `syllabus_version_${userId}`;
-            localStorage.setItem('last_reset_at', remoteLastReset.toString());
-            localStorage.removeItem(versionKey);
-            
-            await syncService.wipeUserBucket(userId);
-            
-            // Softer reload: just trigger storage event to re-bootstrap or rely on next update
-            window.dispatchEvent(new Event('storage'));
-            console.log('Sync: Reset applied. Re-initialization will trigger on next bootstrap.');
+        console.warn('Sync: Remote reset detected. Enforcing full wipe/sync for:', userId);
+        
+        // 0.1 Update local reset timestamp IMMEDIATELY
+        localStorage.setItem('last_reset_at', remoteLastReset.toString());
+        
+        // 0.2 Remove syllabus version to force re-initialization of presets if needed
+        const versionKey = `syllabus_version_${userId}`;
+        localStorage.removeItem(versionKey);
+        
+        // 0.3 Wipe local bucket for this user
+        await syncService.wipeUserBucket(userId);
+        
+        // 0.4 Notify UI to re-load components
+        window.dispatchEvent(new Event('storage'));
+        
+        // If the remote payload is just a reset signal (all arrays empty), we stop here after wiping.
+        // This ensures a "Reset Account" on Device A results in a "Clean Slate" on Device B.
+        const isActuallyEmpty = !remoteData.subjects?.length && !remoteData.topics?.length;
+        if (isActuallyEmpty) {
+            console.log('Sync: Reset applied. Cloud is empty.');
             return;
         }
       }
 
-      // 1. Sync Dexie Tables with smart merge
+      // 1. Sync Dexie Tables with strict timestamp-based merge
       await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
         const syncTable = async (table: any, remoteItems: any[]) => {
             const currentUserId = getCurrentUserId();
-            // Fetch local items for this user
             const localItems = await table.where('userId').equals(currentUserId).toArray();
             
-            // SAFETY: If remote is empty but we have local data, do NOT delete local data yet.
-            // This prevents a fresh account (empty cloud) from wiping newly initialized presets.
-            // We only proceed with deletion if the remote payload actually has data to sync.
-            const hasRemoteData = remoteItems && remoteItems.length > 0;
-            const hasLocalData = localItems && localItems.length > 0;
-            const shouldSkipWipe = !hasRemoteData && hasLocalData;
-
-            if (!remoteItems) return;
-            
             const localMap = new Map(localItems.map((i: any) => [i.id, i]));
-            const localNameMap = new Map(localItems.filter((i: any) => i.isPreset).map((i: any) => [`${i.parentId || 0}-${normalizeName(i.name)}`, i]));
+            // Also map by name for presets to handle ID shifts across devices
+            const localPresetMap = new Map(
+                localItems
+                    .filter((i: any) => i.isPreset)
+                    .map((i: any) => [`${i.parentId || 0}-${normalizeName(i.name)}`, i])
+            );
             
             const toUpdate: any[] = [];
-            
+            const remoteIdsFoundInLocal = new Set<number>();
+            const remotePresetKeysFoundInLocal = new Set<string>();
+
             for (const remoteItem of remoteItems) {
                 let localItem = localMap.get(remoteItem.id) as any;
-                if (!localItem && remoteItem.isPreset) {
-                    localItem = localNameMap.get(`${remoteItem.parentId || 0}-${normalizeName(remoteItem.name)}`);
+                const presetKey = remoteItem.isPreset ? `${remoteItem.parentId || 0}-${normalizeName(remoteItem.name)}` : null;
+                
+                if (!localItem && presetKey) {
+                    localItem = localPresetMap.get(presetKey);
                 }
                 
                 if (!localItem) {
+                    // Item exists in cloud but not locally -> Add it
                     toUpdate.push({ ...remoteItem, userId: currentUserId });
                 } else {
+                    // Conflict Resolution: Latest updatedAt wins
                     const remoteUpdated = (remoteItem as any).updatedAt || 0;
                     const localUpdated = (localItem as any).updatedAt || 0;
-                    const mergedIsCompleted = localItem.isCompleted || remoteItem.isCompleted;
                     
                     if (remoteUpdated > localUpdated) {
+                        // Cloud is newer -> Pull update
                         toUpdate.push({
                             ...remoteItem,
-                            id: localItem.id,
-                            userId: currentUserId,
-                            isCompleted: mergedIsCompleted 
-                        });
-                    } else if (mergedIsCompleted && !localItem.isCompleted) {
-                        toUpdate.push({
-                            ...localItem,
-                            isCompleted: true,
-                            updatedAt: Date.now() 
+                            id: localItem.id, // Keep local ID if it was matched by name
+                            userId: currentUserId
                         });
                     }
+                    
+                    // Track that this item exists in both
+                    if (localItem.id) remoteIdsFoundInLocal.add(localItem.id);
+                    if (presetKey) remotePresetKeysFoundInLocal.add(presetKey);
                 }
             }
 
@@ -217,23 +253,20 @@ export const syncService = {
                 await table.bulkPut(toUpdate);
             }
             
-            // Deletion logic - skipped if we have local data but empty remote (safety lock)
-            if (!shouldSkipWipe) {
-                const remoteIds = new Set(remoteItems.map((i: any) => i.id));
-                const remoteNameKeys = new Set(remoteItems.filter((i: any) => i.isPreset).map((i: any) => `${i.parentId || 0}-${normalizeName(i.name)}`));
-                
+            // Deletion: If it exists locally for this user but NOT in the cloud payload, 
+            // and the cloud payload is NOT empty (meaning this isn't a partial sync error), delete it.
+            // Note: We already handled the "Reset" case above which handles true empty states.
+            if (remoteItems.length > 0 || remoteLastReset > localLastReset) {
                 const toDelete = localItems
                     .filter((item: any) => {
-                        if (item.isPreset) return !remoteNameKeys.has(`${item.parentId || 0}-${normalizeName(item.name)}`);
-                        return !remoteIds.has(item.id);
+                        if (item.isPreset) return !remotePresetKeysFoundInLocal.has(`${item.parentId || 0}-${normalizeName(item.name)}`);
+                        return !remoteIdsFoundInLocal.has(item.id);
                     })
                     .map((item: any) => item.id);
 
                 if (toDelete.length > 0) {
                     await table.bulkDelete(toDelete);
                 }
-            } else {
-                console.log(`Sync: Skipping wipe for ${table.name} to protect local data from empty remote payload.`);
             }
         };
 
@@ -245,56 +278,84 @@ export const syncService = {
         await syncTable(db.resources, remoteData.resources || []);
       });
 
-      // Restore Zustand stores...
+      // 2. Restore Zustand stores with Deterministic Merger (Latest Wins)
       if (remoteData.gamification) {
-        const currentGamification = useGamificationStore.getState();
-        useGamificationStore.setState({
-          xp: Math.max(currentGamification.xp, remoteData.gamification.xp),
-          level: Math.max(currentGamification.level, remoteData.gamification.level),
-          unlockedBadges: Array.from(new Set([...currentGamification.unlockedBadges, ...(remoteData.gamification.unlockedBadges || [])])),
-        });
+        const local = useGamificationStore.getState();
+        const remote = remoteData.gamification;
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useGamificationStore.setState({
+                xp: remote.xp,
+                level: remote.level,
+                unlockedBadges: remote.unlockedBadges || [],
+                updatedAt: remote.updatedAt
+            });
+        }
       }
-
+      
       if (remoteData.achievements) {
-        const currentAchievements = useAchievementsStore.getState().unlockedAchievements;
-        useAchievementsStore.setState({ 
-          unlockedAchievements: Array.from(new Set([...currentAchievements, ...(remoteData.achievements || [])]))
-        });
+        const local = useAchievementsStore.getState();
+        const remote = remoteData.achievements; // This matches the new payload structure
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useAchievementsStore.setState({ 
+              unlockedAchievements: remote.unlockedAchievements || [],
+              updatedAt: remote.updatedAt,
+              ...(remote.stats || {}) // Mirror stats too
+            });
+        }
       }
 
       if (remoteData.writingChecker) {
-        useWritingCheckerStore.setState({
-          drafts: remoteData.writingChecker.drafts || [],
-          preferences: remoteData.writingChecker.preferences || { targetDailyWords: 500 },
-        });
+        const local = useWritingCheckerStore.getState();
+        const remote = remoteData.writingChecker;
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useWritingCheckerStore.setState({
+                drafts: remote.drafts || [],
+                preferences: remote.preferences || local.preferences,
+                updatedAt: remote.updatedAt
+            });
+        }
       }
-
+ 
       if (remoteData.englishProgress) {
-        useEnglishStore.setState({ ...remoteData.englishProgress });
+        const local = useEnglishStore.getState();
+        const remote = remoteData.englishProgress;
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useEnglishStore.setState({ ...remote });
+        }
       }
       
       if (remoteData.user) {
-        useUserStore.setState({
-          name: remoteData.user.name,
-          avatar: remoteData.user.avatar,
-          dailyGoalMinutes: remoteData.user.dailyGoalMinutes
-        });
-        
-        const auth = useAuthStore.getState();
-        if (auth.isAuthenticated) {
-          auth.updateUser({
-            name: remoteData.user.name,
-            avatar: remoteData.user.avatar
-          });
+        const local = useUserStore.getState();
+        const remote = remoteData.user;
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useUserStore.setState({
+                name: remote.name,
+                avatar: remote.avatar,
+                dailyGoalMinutes: remote.dailyGoalMinutes,
+                updatedAt: remote.updatedAt
+            });
+            
+            const auth = useAuthStore.getState();
+            if (auth.isAuthenticated) {
+              auth.updateUser({
+                name: remote.name,
+                avatar: remote.avatar
+              });
+            }
         }
       }
 
       if (remoteData.timer) {
-        useTimerStore.setState({
-          todayStats: remoteData.timer.todayStats,
-          sessionHistory: remoteData.timer.sessionHistory,
-          config: remoteData.timer.config
-        });
+        const local = useTimerStore.getState();
+        const remote = remoteData.timer;
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useTimerStore.setState({
+                todayStats: remote.todayStats,
+                sessionHistory: remote.sessionHistory,
+                config: remote.config,
+                updatedAt: remote.updatedAt
+            });
+        }
       }
 
       if (remoteData.quiz) {
@@ -317,8 +378,10 @@ export const syncService = {
       await useLogStore.getState().loadAllLogs();
       await useTimetableStore.getState().loadTimetable();
 
+      useSyncStore.getState().setLastSyncTime(Date.now());
       console.log('Restore successful');
     } catch (err: any) {
+      useSyncStore.getState().setError('Restore failed');
       if (err.response?.status === 404) {
         console.log('No backup found in cloud, skipping restore');
         return;
@@ -327,6 +390,7 @@ export const syncService = {
       throw err;
     } finally {
       this._isSyncing = false;
+      useSyncStore.getState().setSyncing(false);
     }
   },
 
@@ -463,6 +527,6 @@ export const syncService = {
       if (isAuthenticated && !this._isPaused) {
         this.backup().catch(console.error);
       }
-    }, 2000);
+    }, 1000); // Reduced to 1 second for "Mirror" effect
   }
 };

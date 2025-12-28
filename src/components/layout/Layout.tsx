@@ -11,8 +11,11 @@ import {
   PlusCircle,
   Heart,
   GraduationCap,
-  LogIn
+  LogIn,
+  Cloud,
+  RefreshCw
 } from 'lucide-react';
+import { useSyncStore } from '../../store/useSyncStore';
 import { LogSessionModal } from '../dashboard/LogSessionModal';
 import { LoginModal } from '../auth/LoginModal';
 import { FocusModeIndicator } from '../dashboard/FocusModeIndicator';
@@ -223,6 +226,7 @@ export const Layout: React.FC = () => {
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { isAuthenticated, user } = useAuthStore();
+  const { status: syncStatus } = useSyncStore();
 
   const location = useLocation();
 
@@ -301,9 +305,25 @@ export const Layout: React.FC = () => {
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-800" />
                </div>
-               <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm text-slate-800 dark:text-white truncate">{user?.name || 'Explorer'}</p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Online</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Online</p>
+                    <span className="text-slate-300 dark:text-slate-600">•</span>
+                    <div className="flex items-center gap-1">
+                        {syncStatus.isSyncing ? (
+                            <>
+                                <RefreshCw size={8} className="text-indigo-500 animate-spin" />
+                                <span className="text-[9px] text-indigo-500 font-black uppercase tracking-widest">Mirroring</span>
+                            </>
+                        ) : (
+                            <>
+                                <Cloud size={8} className="text-emerald-500" />
+                                <span className="text-[9px] text-emerald-500 font-black uppercase tracking-widest">Synched</span>
+                            </>
+                        )}
+                    </div>
+                  </div>
                </div>
             </div>
           )}

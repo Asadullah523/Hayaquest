@@ -71,4 +71,5 @@ export interface UserProgress {
   vocabularySessionId: string;
   wordsRead: string[];
   wordConfidence: Record<string, number>; // Map of word ID to confidence level (1-5)
+  updatedAt?: number;
 }

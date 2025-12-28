@@ -24,6 +24,7 @@ interface GamificationState {
   xp: number;
   level: number;
   unlockedBadges: string[]; // IDs of unlocked badges
+  updatedAt?: number;
   
   addXp: (amount: number) => void;
   checkBadges: () => void;
@@ -36,6 +37,7 @@ export const useGamificationStore = create<GamificationState>()(
       xp: 0,
       level: 1,
       unlockedBadges: [],
+      updatedAt: 0,
 
       addXp: (amount) => {
         const { xp } = get();
@@ -46,7 +48,7 @@ export const useGamificationStore = create<GamificationState>()(
             if (newLevel > state.level) {
                 console.log(`Level Up! ${state.level} -> ${newLevel}`);
             }
-            return { xp: newXp, level: newLevel };
+            return { xp: newXp, level: newLevel, updatedAt: Date.now() };
         });
         
         get().checkBadges();
@@ -73,7 +75,7 @@ export const useGamificationStore = create<GamificationState>()(
       unlockBadge: (badgeId) => {
           set(state => {
               if (state.unlockedBadges.includes(badgeId)) return state;
-              return { unlockedBadges: [...state.unlockedBadges, badgeId] };
+              return { unlockedBadges: [...state.unlockedBadges, badgeId], updatedAt: Date.now() };
           });
           syncService.triggerAutoBackup();
       }
