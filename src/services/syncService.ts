@@ -166,6 +166,10 @@ export const syncService = {
         config: timer.config as any,
         updatedAt: timer.updatedAt || 0,
       },
+      timetableStore: {
+          completedSlots: useTimetableStore.getState().completedSlots,
+          updatedAt: Date.now()
+      },
       lastResetAt: parseInt(localStorage.getItem('last_reset_at') || '0'),
       syllabus_version: localStorage.getItem('syllabus_version')
     };
@@ -582,6 +586,36 @@ export const syncService = {
       await useLogStore.getState().loadAllLogs();
       await useTimetableStore.getState().loadTimetable();
 
+      // Restore Timetable Completions (ID Remapping Required)
+      if (remoteData.timetableStore && remoteData.timetableStore.completedSlots) {
+          const remoteCompleted = remoteData.timetableStore.completedSlots; // { "2023-12-01": [5, 6] }
+          const localTimetable = await db.timetable.where('userId').equals(userId).toArray(); // Contains current local IDs and syncIds
+          const remoteTimetable = remoteData.timetable || []; // Contains remote IDs and syncIds
+
+          const mappedCompletedSlots: Record<string, number[]> = {};
+
+          Object.entries(remoteCompleted).forEach(([date, slotIds]) => {
+              const mappedIds = (slotIds as number[]).map(remoteId => {
+                  // 1. Find Remote ID -> Sync ID
+                  const remoteSlot = remoteTimetable.find((s: any) => s.id === remoteId);
+                  if (!remoteSlot || !remoteSlot.syncId) return null;
+
+                  // 2. Find Sync ID -> Local ID
+                  const localSlot = localTimetable.find(s => s.syncId === remoteSlot.syncId);
+                  return localSlot ? localSlot.id : null;
+              }).filter(id => id !== null) as number[];
+
+              if (mappedIds.length > 0) {
+                  mappedCompletedSlots[date] = mappedIds;
+              }
+          });
+          
+          useTimetableStore.setState({ 
+              completedSlots: mappedCompletedSlots
+              // We don't overwrite other state like startHour/endHour unless we want to sync settings too
+          });
+      }
+
       useSyncStore.getState().setLastSyncTime(Date.now());
       console.log('Restore successful');
     } catch (err: any) {
@@ -741,16 +775,16 @@ export const syncService = {
     console.log('🤝 Guest data merged successfully (quiz progress preserved in cloud).');
   },
 
-  initAutoSync(intervalSeconds = 15) {
+  initAutoSync(intervalSeconds = 5) {
     const interval = intervalSeconds * 1000;
     setInterval(async () => {
       const { isAuthenticated } = useAuthStore.getState();
       if (isAuthenticated && !this._isSyncing && !this._isPaused) {
         try {
-          await this.backup();
-          // After backup, we restore to keep in sync with other devices
-          // But we don't want to restore if we just backed up the same data.
-          // However, the restore logic handles updatedAt correctly.
+          // PULL-ONLY LOOP: We only fetch updates.
+          // We rely on triggerAutoBackup() to PUSH changes when they happen.
+          // This prevents the "stale overwrite" bug where an idle browser pushes old data 
+          // before receiving new data.
           await this.restore();
         } catch (err) {
           console.error('Auto-sync failed', err);
