@@ -19,11 +19,12 @@ const dataBackupSchema = new mongoose.Schema({
         settings: Array,
         resources: Array,
         gamification: Object,
-        achievements: mongoose.Schema.Types.Mixed, // Supports Object payload with stats
+        achievements: Object, // Supports Object payload with stats
         writingChecker: Object,
         englishProgress: Object,
-        user: Object,
-        timer: Object,
+        user: Object, // Added
+        timer: Object, // Added
+        timetableStore: Object, // Added for completedSlots sync
         quiz: Object,
         lastResetAt: Number
     },

@@ -15,10 +15,13 @@ const dataBackupSchema = new mongoose.Schema({
         settings: Array,
         resources: Array,
         gamification: Object,
-        achievements: Array,
+        achievements: Object, // Changed from Array to Object to support stats + unlockedAchievements
         writingChecker: Object,
         englishProgress: Object,
         quiz: Object,
+        user: Object, // Added
+        timer: Object, // Added
+        timetableStore: Object, // Added for completedSlots sync
         lastResetAt: Number
     },
     lastSynced: {

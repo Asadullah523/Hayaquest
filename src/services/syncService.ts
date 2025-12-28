@@ -589,6 +589,8 @@ export const syncService = {
       // Restore Timetable Completions (ID Remapping Required)
       if (remoteData.timetableStore && remoteData.timetableStore.completedSlots) {
           const remoteCompleted = remoteData.timetableStore.completedSlots; // { "2023-12-01": [5, 6] }
+          console.log('🔄 Restore: Found remote completed slots:', remoteCompleted);
+          
           const localTimetable = await db.timetable.where('userId').equals(userId).toArray(); // Contains current local IDs and syncIds
           const remoteTimetable = remoteData.timetable || []; // Contains remote IDs and syncIds
 
@@ -598,11 +600,25 @@ export const syncService = {
               const mappedIds = (slotIds as number[]).map(remoteId => {
                   // 1. Find Remote ID -> Sync ID
                   const remoteSlot = remoteTimetable.find((s: any) => s.id === remoteId);
-                  if (!remoteSlot || !remoteSlot.syncId) return null;
+                  
+                  if (!remoteSlot) {
+                      console.warn(`⚠️ Restore: Remote slot ${remoteId} not found in remote timetable.`);
+                      return null;
+                  }
+                  if (!remoteSlot.syncId) {
+                      console.warn(`⚠️ Restore: Remote slot ${remoteId} has no SyncID.`);
+                      return null;
+                  }
 
                   // 2. Find Sync ID -> Local ID
                   const localSlot = localTimetable.find(s => s.syncId === remoteSlot.syncId);
-                  return localSlot ? localSlot.id : null;
+                  
+                  if (!localSlot) {
+                      console.warn(`⚠️ Restore: Local slot with SyncID ${remoteSlot.syncId} not found.`);
+                      return null;
+                  }
+
+                  return localSlot.id;
               }).filter(id => id !== null) as number[];
 
               if (mappedIds.length > 0) {
@@ -610,10 +626,14 @@ export const syncService = {
               }
           });
           
+          console.log('✅ Restore: Mapped completed slots:', mappedCompletedSlots);
+          
           useTimetableStore.setState({ 
               completedSlots: mappedCompletedSlots
               // We don't overwrite other state like startHour/endHour unless we want to sync settings too
           });
+      } else {
+          console.log('ℹ️ Restore: No completedSlots found in remote backup.');
       }
 
       useSyncStore.getState().setLastSyncTime(Date.now());
