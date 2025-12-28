@@ -897,9 +897,64 @@ export const subjectPracticePapers: PastPaper[] = [
         category: "Practice",
         subject: "Chemistry",
         description: "100 High-yield Chemistry MCQs (Questions 501-600). Shuffled options.",
-        questions: imatChemistryMCQs.slice(500, 600),
+        questions: imatChemistryMCQs.slice(500, 600) as Question[],
         durationMinutes: 100,
         totalMarks: 150
+    },
+    {
+        id: 3007,
+        title: "Chemistry Practice - Set 7",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 601-700). Shuffled options.",
+        questions: imatChemistryMCQs.slice(600, 700) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3008,
+        title: "Chemistry Practice - Set 8",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 701-800). Shuffled options.",
+        questions: imatChemistryMCQs.slice(700, 800) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3009,
+        title: "Chemistry Practice - Set 9",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 801-900). Shuffled options.",
+        questions: imatChemistryMCQs.slice(800, 900) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3010,
+        title: "Chemistry Practice - Set 10",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "100 High-yield Chemistry MCQs (Questions 901-1000). Shuffled options.",
+        questions: imatChemistryMCQs.slice(900, 1000) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
+    },
+    {
+        id: 3011,
+        title: "Chemistry Practice - Set 11",
+        year: "Practice",
+        category: "Practice",
+        subject: "Chemistry",
+        description: "15 High-yield Chemistry MCQs (Questions 1001-1015). Shuffled options.",
+        questions: imatChemistryMCQs.slice(1000, 1015) as Question[],
+        durationMinutes: 15,
+        totalMarks: 22.5
     },
     // Math & Physics Practice
     {
@@ -1085,10 +1140,10 @@ export const subjectPracticePapers: PastPaper[] = [
         year: "Practice",
         category: "Practice",
         subject: "Biology",
-        description: "88 High-yield Biology MCQs (Questions 1001-1088). Shuffled options.",
-        questions: imatBiologyMCQs.slice(1000, 1088) as Question[],
-        durationMinutes: 90,
-        totalMarks: 132
+        description: "100 High-yield Biology MCQs (Questions 1001-1100). Shuffled options.",
+        questions: imatBiologyMCQs.slice(1000, 1100) as Question[],
+        durationMinutes: 100,
+        totalMarks: 150
     }
 ];
 

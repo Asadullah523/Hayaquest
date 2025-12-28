@@ -90,12 +90,13 @@ export const Dashboard: React.FC = () => {
           
           const totalPracticeQuestions = subjectPracticePapers.reduce((acc, paper) => acc + paper.questions.length, 0);
           
-          // Weighted Calculation (same as ImatDashboard)
-          const TOPIC_WEIGHT = 10;
-          const totalPoints = (totalTopics * TOPIC_WEIGHT) + totalPracticeQuestions;
-          const completedPoints = (completedTopics * TOPIC_WEIGHT) + completedPracticeQuestions;
+          // NEW WEIGHTED CALCULATION (70% Papers, 30% Topics)
+          const topicProgress = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0;
+          const practiceProgress = totalPracticeQuestions > 0 
+            ? (completedPracticeQuestions / totalPracticeQuestions) * 100 
+            : 0;
           
-          const newProgress = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
+          const newProgress = Math.round((topicProgress * 0.3) + (practiceProgress * 0.7));
           setImatProgress(newProgress);
       });
     };

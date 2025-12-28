@@ -13,7 +13,7 @@ import { generateDeterministicSyncId } from './syncUtils';
 
 const IMAT_PARENT_NAME = 'IMAT Prep';
 const MDCAT_PARENT_NAME = 'MDCAT Prep';
-const SYLLABUS_VERSION = 'v3.3'; // Forced increment for global syncId alignment
+const SYLLABUS_VERSION = 'v3.4'; // Forced cleanup for 75-subjects bug
 
 let isInitializing = false;
 
@@ -39,11 +39,14 @@ export async function initializePresetSubjects(): Promise<void> {
   // Also check if critical data exists for THIS user
   const imatParent = await db.subjects
     .where('userId').equals(userId)
-    .and(s => s.name === IMAT_PARENT_NAME && !s.parentId)
+    .and(s => s.name === IMAT_PARENT_NAME && (s.parentId === 0 || !s.parentId))
     .first();
   
   const imatChildren = imatParent ? await db.subjects.where('parentId').equals(imatParent.id!).toArray() : [];
-  const needsReinit = !imatParent || imatChildren.length === 0;
+  
+  // MINIMUM EXPECTED CHILDREN: Mathematics, Biology, Chemistry, Physics = at least 4
+  const hasCriticalChildren = imatChildren.length >= 4;
+  const needsReinit = !imatParent || !hasCriticalChildren;
 
   if (currentVersion === SYLLABUS_VERSION && !needsReinit) {
     console.log(`⚡️ Syllabus for [${userId}] up to date.`);
@@ -134,7 +137,7 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
         createdAt: Date.now(),
         updatedAt: 1,
         isPreset: true,
-        parentId: parentId,
+        parentId: parentId || 0,
         archived: false,
         userId,
         syncId
@@ -311,40 +314,54 @@ async function deduplicateParent(name: string, icon: string, color: string, user
 }
 
 async function nuclearCleanup(userId: string) {
-    console.log(`🧹 Nuclear Cleanup: Starting check for [${userId}]`);
-    const allSubjects = await db.subjects.where('userId').equals(userId).toArray();
-    console.log(`🧹 Nuclear Cleanup: Found ${allSubjects.length} subjects to check.`);
-    const seen = new Map<string, number>(); // key: parentId-normalizedName, value: id
+    console.log(`🧹 Nuclear Cleanup: Starting deep scan for [${userId}]`);
+    let passCount = 0;
+    let totalMerged = 0;
     
-    for (const s of allSubjects) {
-        // Use 0 as a consistent baseline for missing parentId
-        const pid = s.parentId || 0;
-        const key = `${pid}-${normalizeName(s.name)}`;
-        const existingId = seen.get(key);
+    // Run up to 3 passes to handle merging parents and then merging their stranded children
+    while (passCount < 3) {
+        let mergedInThisPass = 0;
+        const allSubjects = await db.subjects.where('userId').equals(userId).toArray();
+        const seen = new Map<string, number>(); // key: parentId-normalizedName, value: id
         
-        if (existingId && existingId !== s.id) {
-            console.warn(`Explanation: Detailed log for subject merge.`);
-            console.warn(`🧹 Nuclear Cleanup: Found duplicate subject [${s.name}] (ID: ${s.id}). Merging into (ID: ${existingId})...`);
-            try {
-                // Move any topics/logs from this duplicate to the original
-                await db.topics.where('subjectId').equals(s.id!).modify({ subjectId: existingId });
-                await db.logs.where('subjectId').equals(s.id!).modify({ subjectId: existingId });
-                await db.subjects.where('parentId').equals(s.id!).modify({ parentId: existingId });
-                
-                // Delete the duplicate
-                await db.subjects.delete(s.id!);
-                console.log(`🧹 Nuclear Cleanup: Deleted duplicate subject [${s.id}].`);
-                
-                // IMMEDIATELY deduplicate topics for the target subject
-                await deduplicateAllTopics(userId);
-            } catch (err) {
-                console.error(`🧹 Nuclear Cleanup: Failed to merge duplicate [${s.id}]:`, err);
+        for (const s of allSubjects) {
+            const pid = s.parentId || 0;
+            const key = `${pid}-${normalizeName(s.name)}`;
+            const existingId = seen.get(key);
+            
+            if (existingId && existingId !== s.id) {
+                try {
+                    // 1. Move everything to the master
+                    await db.topics.where('subjectId').equals(s.id!).modify({ subjectId: existingId });
+                    await db.logs.where('subjectId').equals(s.id!).modify({ subjectId: existingId });
+                    await db.subjects.where('parentId').equals(s.id!).modify({ parentId: existingId });
+                    
+                    // 2. Delete the duplicate
+                    await db.subjects.delete(s.id!);
+                    mergedInThisPass++;
+                } catch (err) {
+                    console.error(`🧹 Nuclear Cleanup: Failed to merge [${s.id}]:`, err);
+                }
+            } else {
+                seen.set(key, s.id!);
+                // Backfill parentId 0 for roots to ensure consistency
+                if (!s.parentId && s.parentId !== 0) {
+                    await db.subjects.update(s.id!, { parentId: 0 });
+                }
             }
-        } else {
-            seen.set(key, s.id!);
         }
+        
+        if (mergedInThisPass === 0) break;
+        totalMerged += mergedInThisPass;
+        passCount++;
     }
-    console.log(`🧹 Nuclear Cleanup: Check complete.`);
+    
+    // Final deduplication of topics
+    if (totalMerged > 0) {
+        await deduplicateAllTopics(userId);
+    }
+    
+    console.log(`🧹 Nuclear Cleanup: Finished. Merged ${totalMerged} subjects across ${passCount} passes.`);
 }
 
 async function deduplicateAllTopics(userId: string) {

@@ -25,21 +25,35 @@ export const Settings: React.FC = () => {
   const [showMergeConfirm, setShowMergeConfirm] = useState(false);
   const [guestStats, setGuestStats] = useState({ subjects: 0, topics: 0, logs: 0 });
 
+  // Detect guest data for merging
   React.useEffect(() => {
     const checkGuestData = async () => {
-        const subjects = await db.subjects.where('userId').equals('guest').toArray();
-        const topics = await db.topics.where('userId').equals('guest').toArray();
-        const logs = await db.logs.where('userId').equals('guest').toArray();
-        
-        setHasGuestData(subjects.length > 0);
-        setGuestStats({
-            subjects: subjects.length,
-            topics: topics.length,
-            logs: logs.length
-        });
+        try {
+            const allSubjects = await db.subjects.where('userId').equals('guest').toArray();
+            // Count custom subjects OR preset subjects with non-zero progress/logs
+            const topics = await db.topics.where('userId').equals('guest').toArray();
+            const logs = await db.logs.where('userId').equals('guest').toArray();
+            
+            const hasData = allSubjects.length > 0 || topics.length > 0 || logs.length > 0;
+            
+            if (hasData) {
+                setHasGuestData(true);
+                setGuestStats({
+                    subjects: allSubjects.filter(s => !s.isPreset).length,
+                    topics: topics.length,
+                    logs: logs.length
+                });
+            } else {
+                setHasGuestData(false);
+            }
+        } catch (err) {
+            console.error('Error checking guest data:', err);
+        }
     };
-    checkGuestData();
-  }, []);
+    if (isAuthenticated) {
+        checkGuestData();
+    }
+  }, [isAuthenticated]);
 
   const avatars = [
     { id: 'fox', name: 'Fox Scholar', path: '/avatars/fox.png' },
@@ -132,6 +146,14 @@ export const Settings: React.FC = () => {
             details: [...details] 
           });
           
+          // 5. Proactively re-initialize preset subjects so they exist on next load
+          try {
+              const { initializePresetSubjects } = await import('../../utils/initializePresetSubjects');
+              await initializePresetSubjects();
+          } catch (err) {
+              console.error('Proactive re-init failed:', err);
+          }
+          
           // Reload to re-initialize stores with empty data
           setTimeout(() => window.location.reload(), 3000); // Increased delay to read details
       } catch (e: any) {
@@ -146,6 +168,11 @@ export const Settings: React.FC = () => {
     setStatus({ type: 'loading', message: 'Merging local data into account...' });
     try {
         await syncService.mergeGuestData();
+        
+        // CRITICAL: Re-initialize preset subjects for logged-in user
+        const { initializePresetSubjects } = await import('../../utils/initializePresetSubjects');
+        await initializePresetSubjects();
+        
         setHasGuestData(false);
         setStatus({ type: 'success', message: 'Local progress merged successfully!' });
         setTimeout(() => window.location.reload(), 2000);
@@ -811,18 +838,18 @@ export const Settings: React.FC = () => {
                   </div>
 
                   {isAuthenticated && hasGuestData && (
-                    <div className="mt-8 relative group overflow-hidden bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-3xl p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 transition-all hover:shadow-2xl hover:shadow-amber-500/10">
+                    <div className="mt-8 relative group overflow-hidden bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-3xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all hover:shadow-2xl hover:shadow-amber-500/10">
                         <div className="absolute top-0 right-0 p-8 opacity-[0.05] group-hover:rotate-12 transition-transform pointer-events-none">
                             <RefreshCw size={120} />
                         </div>
                         
-                        <div className="flex items-center gap-4 sm:gap-6 relative z-10 w-full md:w-auto text-left">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 shrink-0 shadow-lg shadow-amber-500/20 border border-amber-500/30 group-hover:scale-110 transition-transform">
-                                <RefreshCw size={28} className="sm:w-8 sm:h-8" />
+                        <div className="flex items-center gap-4 relative z-10 w-full md:w-auto text-left">
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 shrink-0 shadow-lg shadow-amber-500/20 border border-amber-500/30 group-hover:scale-110 transition-transform">
+                                <RefreshCw size={24} className="sm:w-7 sm:h-7" />
                             </div>
                             <div className="text-left flex-1 min-w-0">
-                                <h3 className="text-lg sm:text-xl font-black text-amber-200 tracking-tight leading-none mb-1.5 sm:mb-2 text-left">Merge Local Progress</h3>
-                                <p className="text-[11px] sm:text-sm text-amber-400/80 font-medium max-w-xs leading-relaxed truncate-2-lines sm:truncate-none text-left">
+                                <h3 className="text-base sm:text-lg font-black text-amber-200 tracking-tight leading-none mb-1 sm:mb-1.5 text-left">Merge Local Progress</h3>
+                                <p className="text-[11px] sm:text-xs text-amber-400/80 font-medium max-w-xs leading-relaxed truncate-2-lines sm:truncate-none text-left">
                                     Offline progress detected. Merge now to sync across devices.
                                 </p>
                             </div>
@@ -831,9 +858,9 @@ export const Settings: React.FC = () => {
                         <button
                           onClick={() => setShowMergeConfirm(true)}
                           disabled={syncStatus.isSyncing}
-                          className="w-full md:w-auto px-8 py-3.5 bg-amber-500 hover:bg-amber-400 text-white font-black rounded-2xl shadow-xl shadow-amber-500/30 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 relative z-10 flex items-center justify-center gap-2"
+                          className="w-full md:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-white font-black text-sm rounded-2xl shadow-xl shadow-amber-500/30 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 relative z-10 flex items-center justify-center gap-2"
                         >
-                            <RefreshCw size={18} />
+                            <RefreshCw size={16} />
                             Merge Now
                         </button>
                     </div>

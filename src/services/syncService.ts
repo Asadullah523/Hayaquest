@@ -48,22 +48,47 @@ export const syncService = {
         for (const item of toUpdate) {
             let syncId: string;
             if (type === 'subject' && item.isPreset) {
-                // Try to reconstruct deterministic ID
-                const prefixes = ['imat', 'mdcat', 'biology', 'chemistry', 'physics'];
-                const prefix = prefixes.find(p => item.id && item.parentId === 0 && item.name.toLowerCase().includes(p)) || 'custom';
-                syncId = generateDeterministicSyncId('subject', prefix === 'custom' ? `legacy:${item.name}` : prefix);
+                // Hierarchical reconstruction for Presets
+                if (!item.parentId || item.parentId === 0) {
+                    const name = item.name.toLowerCase();
+                    const prefix = name.includes('imat') ? 'imat' : 
+                                 name.includes('mdcat') ? 'mdcat' : 
+                                 name.includes('biology') ? 'biology' :
+                                 name.includes('chemistry') ? 'chemistry' :
+                                 name.includes('physics') ? 'physics' : 'custom';
+                    syncId = generateDeterministicSyncId('subject', prefix);
+                } else {
+                    // It's a child. Try to find the parent to build the path
+                    const parent = items.find(s => s.id === item.parentId);
+                    if (parent && parent.syncId) {
+                        const parentPath = parent.syncId.split(':')[1];
+                        syncId = generateDeterministicSyncId('subject', `${parentPath}:${item.name.toLowerCase().replace(/ /g, '_')}`);
+                    } else {
+                        syncId = generateRandomSyncId();
+                    }
+                }
             } else {
                 syncId = generateRandomSyncId();
             }
             item.syncId = syncId;
-            await table.update(item.id, { syncId });
+            await table.update(item.id, { syncId, updatedAt: Date.now() });
         }
         return items;
     };
 
     // Get data from Dexie filtered by userId and ensure syncIds exist
-    const subjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray(), 'subject');
-    const topics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray(), 'topic');
+    const allSubjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray(), 'subject');
+    const allTopics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray(), 'topic');
+    
+    // CRITICAL FIX: Exclude preset subjects and topics from cloud backup
+    // Preset subjects are structural data that should be initialized locally, not synced
+    const subjects = allSubjects.filter(s => !s.isPreset);
+    const topics = allTopics.filter(t => {
+      // Only include topics that belong to user-created subjects (non-preset)
+      const subject = allSubjects.find(s => s.id === t.subjectId);
+      return subject && !subject.isPreset;
+    });
+    
     const logs = await ensureSyncId(db.logs, await db.logs.where('userId').equals(userId).toArray());
     const timetable = await ensureSyncId(db.timetable, await db.timetable.where('userId').equals(userId).toArray());
     const settings = await ensureSyncId(db.settings, await db.settings.where('userId').equals(userId).toArray());
@@ -85,6 +110,10 @@ export const syncService = {
             quizData[key] = localStorage.getItem(key) || '';
         }
     }
+
+    
+    console.log(`📦 Backup: ${allSubjects.length} total subjects (${subjects.length} user-created, ${allSubjects.length - subjects.length} preset skipped)`);
+    console.log(`📦 Backup: ${allTopics.length} total topics (${topics.length} user-created, ${allTopics.length - topics.length} preset skipped)`);
 
     return {
       subjects,
@@ -162,7 +191,7 @@ export const syncService = {
 
       await api.post('/sync/backup', data);
       useSyncStore.getState().setLastSyncTime(Date.now());
-      console.log('Sync service: BACKUP SUCCESS');
+      console.log(`✅ Sync service: BACKUP SUCCESS (${data.subjects.length} user subjects, ${data.topics.length} user topics)`);
     } catch (err) {
       useSyncStore.getState().setError('Backup failed');
       console.error('Sync service: BACKUP FAILED', err);
@@ -191,7 +220,29 @@ export const syncService = {
 
       if (!remoteData) return;
 
-      // 0. CHECK FOR CROSS-DEVICE RESET
+      // 0. MIGRATION: Clean preset subjects from cloud backup
+      // This fixes existing users who have preset subjects in their cloud data
+      if (remoteData.subjects && remoteData.subjects.length > 0) {
+        const preCleanCount = remoteData.subjects.length;
+        remoteData.subjects = remoteData.subjects.filter((s: any) => !s.isPreset);
+        
+        // Also filter out topics that belong to preset subjects
+        if (remoteData.topics && remoteData.topics.length > 0) {
+          const presetSubjectIds = new Set(
+            (await db.subjects.where('userId').equals(userId).toArray())
+              .filter(s => s.isPreset)
+              .map(s => s.id)
+          );
+          remoteData.topics = remoteData.topics.filter((t: any) => !presetSubjectIds.has(t.subjectId));
+        }
+        
+        const postCleanCount = remoteData.subjects.length;
+        if (preCleanCount !== postCleanCount) {
+          console.log(`🧹 Cloud Migration: Removed ${preCleanCount - postCleanCount} preset subjects from remote data`);
+        }
+      }
+
+      // 1. CHECK FOR CROSS-DEVICE RESET
       const localLastReset = parseInt(localStorage.getItem('last_reset_at') || '0');
       const remoteLastReset = remoteData.lastResetAt || 0;
 
@@ -220,11 +271,11 @@ export const syncService = {
         }
       }
 
-      // 1. Sync Dexie Tables with Global SyncID matching
+      // 2. Sync Dexie Tables with Global SyncID matching
       await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
         const currentUserId = getCurrentUserId();
         
-        // 1.1 SUBJECTS FIRST (Hierarchy anchor)
+        // 2.1 SUBJECTS FIRST (Hierarchy anchor)
         const localSubjects = await db.subjects.where('userId').equals(currentUserId).toArray();
         const remoteSubjects = remoteData.subjects || [];
         const syncIdToLocalSubjectId = new Map<string, number>();
@@ -237,6 +288,13 @@ export const syncService = {
         const legacyLocalSubjectMap = new Map(localSubjects.map(s => [getLegacySubjectKey(s), s]));
 
         for (const remote of remoteSubjects) {
+            // CRITICAL: Skip preset subjects - they're defined in code, not cloud
+            // This prevents cloud data from overwriting IMAT Prep, Mathematics, etc.
+            if (remote.isPreset) {
+                console.log(`⏭️  Skipping preset subject from cloud: ${remote.name}`);
+                continue;
+            }
+            
             const localIdBySyncId = remote.syncId ? syncIdToLocalSubjectId.get(remote.syncId) : null;
             const localByLegacy = legacyLocalSubjectMap.get(getLegacySubjectKey(remote));
             const local = localIdBySyncId || localByLegacy?.id;
@@ -244,7 +302,7 @@ export const syncService = {
             if (!local) {
                 // ADD: Discard remote local ID
                 const { id, parentId, ...clean } = remote;
-                const newId = await db.subjects.add({ ...clean, userId: currentUserId }) as number;
+                const newId = await db.subjects.add({ ...clean, parentId: 0, userId: currentUserId }) as number;
                 if (remote.syncId) syncIdToLocalSubjectId.set(remote.syncId, newId);
             } else {
                 // MERGE: Latest wins
@@ -277,10 +335,13 @@ export const syncService = {
                 if (localParentId) {
                     await db.subjects.update(localId, { parentId: localParentId });
                 }
+            } else if (localId) {
+                // Ensure roots are 0
+                await db.subjects.update(localId, { parentId: 0 });
             }
         }
 
-        // 1.3 TOPICS (Link to Subject by syncId or legacy mapping)
+        // 2.3 TOPICS (Link to Subject by syncId or legacy mapping)
         const localTopics = await db.topics.where('userId').equals(currentUserId).toArray();
         const remoteTopics = remoteData.topics || [];
         const syncIdToLocalTopicId = new Map<string, number>();
@@ -319,7 +380,7 @@ export const syncService = {
             }
         }
 
-        // 1.4 OTHER TABLES (Simple syncId match)
+        // 2.4 OTHER TABLES (Simple syncId match)
         const syncSimpleTable = async (table: any, remoteItems: any[], localItems: any[]) => {
             const localMap = new Map<string, number>();
             localItems.forEach(i => { if (i.syncId) localMap.set(i.syncId, i.id!); });
@@ -345,7 +406,7 @@ export const syncService = {
         await syncSimpleTable(db.settings, remoteData.settings || [], await db.settings.where('userId').equals(currentUserId).toArray());
         await syncSimpleTable(db.resources, remoteData.resources || [], await db.resources.where('userId').equals(currentUserId).toArray());
 
-        // 1.5 DELETIONS (SyncId based - EXTRA CAREFUL)
+        // 2.5 DELETIONS (SyncId based - EXTRA CAREFUL)
         const cleanupDeleted = async (table: any, localItems: any[], remoteItems: any[]) => {
             // Safety: Never delete if remote is empty unless it's a confirmed reset
             if (remoteItems.length === 0 && remoteLastReset <= localLastReset) return;
@@ -355,7 +416,12 @@ export const syncService = {
             if (!remoteHasSyncIds) return;
 
             const remoteSyncIds = new Set(remoteItems.map(i => i.syncId).filter(Boolean));
-            const toDelete = localItems.filter(i => i.syncId && !remoteSyncIds.has(i.syncId)).map(i => i.id);
+            
+            // 🚨 CRITICAL FIX: Never delete preset items, even if missing from cloud
+            const toDelete = localItems
+                .filter(i => i.syncId && !i.isPreset && !remoteSyncIds.has(i.syncId))
+                .map(i => i.id);
+                
             if (toDelete.length > 0) {
                 console.log(`Sync Cleanup: Deleting ${toDelete.length} items from ${table.name}`);
                 await table.bulkDelete(toDelete);
@@ -370,7 +436,7 @@ export const syncService = {
         await cleanupDeleted(db.resources, await db.resources.where('userId').equals(currentUserId).toArray(), remoteData.resources || []);
       });
 
-      // 2. Restore Zustand stores with Deterministic Merger (Latest Wins)
+      // 3. Restore Zustand stores with Deterministic Merger (Latest Wins)
       if (remoteData.gamification) {
         const local = useGamificationStore.getState();
         const remote = remoteData.gamification;
@@ -517,29 +583,38 @@ export const syncService = {
     console.log(`🤝 Merging guest data into [${userId}]...`);
 
     await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
-        // 1. SUBJECTS (Complex Merge)
+        // 1. SUBJECTS (Complex Merge) - SKIP PRESET SUBJECTS
         const guestSubjects = await db.subjects.where('userId').equals(guestId).toArray();
         const userSubjects = await db.subjects.where('userId').equals(userId).toArray();
+        
+        // Filter out preset subjects from guest - they should exist on both sides already
+        const guestCustomSubjects = guestSubjects.filter(s => !s.isPreset);
         
         const subjectMap = new Map<string, number>(); // key: parentId-name, value: userId-id
         userSubjects.forEach(s => subjectMap.set(`${s.parentId || 0}-${normalizeName(s.name)}`, s.id!));
 
         const guestToUserSubjectIdMap = new Map<number, number>();
+        
+        if (guestCustomSubjects.length === 0) {
+            console.log('🤝 Merge: No custom guest subjects to merge. Skipping subject merge.');
+        } else {
+            console.log(`🤝 Merge: Found ${guestCustomSubjects.length} custom guest subjects to merge.`);
 
-        for (const gs of guestSubjects) {
-            const key = `${gs.parentId || 0}-${normalizeName(gs.name)}`;
-            const existingId = subjectMap.get(key);
-            
-            if (existingId) {
-                console.log(`🤝 Merge: Subject [${gs.name}] already exists. Mapping ID ${gs.id} -> ${existingId}`);
-                guestToUserSubjectIdMap.set(gs.id!, existingId);
-                // Update local update time to ensure it syncs
-                await db.subjects.update(existingId, { updatedAt: Date.now() });
-            } else {
-                const { id: oldId, ...data } = gs;
-                const newId = await db.subjects.add({ ...data, userId, updatedAt: Date.now() }) as number;
-                guestToUserSubjectIdMap.set(oldId!, newId);
-                subjectMap.set(key, newId);
+            for (const gs of guestCustomSubjects) {
+                const key = `${gs.parentId || 0}-${normalizeName(gs.name)}`;
+                const existingId = subjectMap.get(key);
+                
+                if (existingId) {
+                    console.log(`🤝 Merge: Subject [${gs.name}] already exists. Mapping ID ${gs.id} -> ${existingId}`);
+                    guestToUserSubjectIdMap.set(gs.id!, existingId);
+                    // Update local update time to ensure it syncs
+                    await db.subjects.update(existingId, { updatedAt: Date.now() });
+                } else {
+                    const { id: oldId, ...data } = gs;
+                    const newId = await db.subjects.add({ ...data, userId, updatedAt: Date.now() }) as number;
+                    guestToUserSubjectIdMap.set(oldId!, newId);
+                    subjectMap.set(key, newId);
+                }
             }
         }
 
@@ -587,12 +662,40 @@ export const syncService = {
             }
         }
 
-        // 4. CLEANUP GUEST DATA
-        await this.wipeUserBucket(guestId);
+        // REMOVED: Wipe guest bucket
+        // We now PRESERVE guest data after merge so users can:
+        // 1. Continue using guest mode if needed
+        // 2. Avoid data loss if something goes wrong
+        // Guest and logged-in data are separate buckets anyway
     });
 
-    console.log('🤝 Guest data merged and cleaned up.');
+    // 4. MERGE localStorage quiz progress with MAX strategy
+    // Quiz completion is stored in localStorage (GLOBAL, not user-specific):
+    // - quiz_completed_{paperId}: Paper fully completed flag  
+    // - quiz_progress_{paperId}: Current progress (JSON with score, answers, etc.)
+    //
+    // CRITICAL: localStorage is SHARED between guest and logged-in user!
+    // When user logs in, the quiz data is still there from guest mode.
+    // We just need to ensure it's backed up to cloud.
+    
+    console.log('🔄 Preserving quiz progress in cloud backup...');
+    
+    // Count quiz items in localStorage
+    let quizItemCount = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('quiz_completed_') || key.startsWith('quiz_progress_'))) {
+            quizItemCount++;
+        }
+    }
+    
+    console.log(`✅ Found ${quizItemCount} quiz items to preserve.`);
+    
+    // Since localStorage is already shared, all guest quiz data is available
+    // to the logged-in user. We just need to back it up to cloud.
     await this.backup();
+
+    console.log('🤝 Guest data merged successfully (quiz progress preserved in cloud).');
   },
 
   initAutoSync(intervalSeconds = 15) {
@@ -602,6 +705,9 @@ export const syncService = {
       if (isAuthenticated && !this._isSyncing && !this._isPaused) {
         try {
           await this.backup();
+          // After backup, we restore to keep in sync with other devices
+          // But we don't want to restore if we just backed up the same data.
+          // However, the restore logic handles updatedAt correctly.
           await this.restore();
         } catch (err) {
           console.error('Auto-sync failed', err);

@@ -1,4 +1,6 @@
-export const imatMathPhysicsMCQs = [
+import type { Question } from './pastPapers';
+
+export const imatMathPhysicsMCQs: Question[] = [
   {
     "text": "For what value of k does k\u221a49\u00b3 = \u221a7?",
     "options": [

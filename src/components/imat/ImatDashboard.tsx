@@ -118,7 +118,7 @@ export const ImatDashboard: React.FC = () => {
         return subjects.filter(s => !s.parentId && ['Biology', 'Chemistry', 'Physics', 'Mathematics', 'Math', 'Logic', 'General Knowledge'].some(n => s.name === n));
     }, [subjects]);
 
-    // Calculate Overall Progress (Topics Completion)
+    // Calculate Overall Progress with Weighted Formula
     const overallStats = useMemo(() => {
         // Get all subject IDs
         const subjectIds = imatSubjects.map(s => s.id).filter(Boolean);
@@ -138,15 +138,16 @@ export const ImatDashboard: React.FC = () => {
         const totalTopics = relevantTopics.length;
         const completedTopics = relevantTopics.filter(t => t.isCompleted).length;
         
-        // Weighted Calculation
-        // 1 Topic = 10 Points
-        // 1 Practice Question = 1 Point
-        const TOPIC_WEIGHT = 10;
+        // NEW WEIGHTED CALCULATION
+        // 30% from Topics Progress
+        // 70% from Practice Papers Progress
+        const topicProgress = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0;
+        const practiceProgress = totalPracticeQuestions > 0 
+            ? (completedPracticeQuestions / totalPracticeQuestions) * 100 
+            : 0;
         
-        const totalPoints = (totalTopics * TOPIC_WEIGHT) + totalPracticeQuestions;
-        const completedPoints = (completedTopics * TOPIC_WEIGHT) + completedPracticeQuestions;
-        
-        const percentage = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
+        // Final Weighted Percentage
+        const percentage = Math.round((topicProgress * 0.3) + (practiceProgress * 0.7));
         
         // For display counts, we still show items (Topics + Papers)
         const totalItems = totalTopics + totalPractice;
