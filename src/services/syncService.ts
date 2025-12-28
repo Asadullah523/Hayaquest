@@ -114,7 +114,8 @@ export const syncService = {
       user: {
         name: user.name,
         avatar: user.avatar,
-        dailyGoalMinutes: user.dailyGoalMinutes
+        dailyGoalMinutes: user.dailyGoalMinutes,
+        updatedAt: user.updatedAt || 0
       },
       timer: {
         todayStats: timer.todayStats as any,
@@ -155,8 +156,8 @@ export const syncService = {
   async restore() {
     if (this._isSyncing || this._isPaused) return;
     
-    // Don't restore if we just had a local update (within 5 seconds) 
-    if (Date.now() - this._lastLocalUpdate < 5000) {
+    // Don't restore if we just had a local update (within 2 seconds) 
+    if (Date.now() - this._lastLocalUpdate < 2000) {
       return;
     }
 

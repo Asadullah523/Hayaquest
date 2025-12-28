@@ -65,10 +65,9 @@ export async function initializePresetSubjects(): Promise<void> {
     await syncHierarchicalRoot(rootChemistryId, chemistrySyllabus, userId);
     await syncHierarchicalRoot(rootPhysicsId, physicsSyllabus, userId);
 
-    // 3. NUCLEAR WIPE OF IMAT/MDCAT CHILDREN (Hard Reset)
-    // Only wipe if we are actually running the sync
-    await wipeAllChildren(imatParentId, userId);
-    await wipeAllChildren(mdcatParentId, userId);
+    // 3. NUCLEAR WIPE REMOVED
+    // We no longer wipe children because it deletes local progress.
+    // Instead, processSyllabusAtomic will now update or add missing items.
 
     // 4. SEQUENTIAL RE-INITIALIZATION (Supports Chapters & Flat Topics)
     await processSyllabusAtomic(imatSyllabus, imatParentId, userId);
@@ -91,15 +90,7 @@ export async function initializePresetSubjects(): Promise<void> {
   }
 }
 
-async function wipeAllChildren(parentId: number, userId: string) {
-    const children = await db.subjects
-        .where('parentId').equals(parentId)
-        .and(s => s.userId === userId)
-        .toArray();
-    for (const child of children) {
-        await deleteSubjectTree(child.id!, userId);
-    }
-}
+// wipeAllChildren removed to protect localized data
 
 async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: string) {
   for (const data of syllabus) {
