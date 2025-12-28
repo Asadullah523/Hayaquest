@@ -386,14 +386,21 @@ export const useSubjectStore = create<SubjectState>((set) => ({
       
       // Add today if not already completed
       if (!completionDates.includes(today)) {
+        const newCompletionDates = [...completionDates, today];
+        
         await db.topics.update(topicId, {
-          completionDates: [...completionDates, today],
+          completionDates: newCompletionDates,
           lastCompletedDate: today
         });
         
-        // Refresh topics in state
-        const updatedTopics = await db.topics.where('subjectId').equals(topic.subjectId).toArray();
-        set({ topics: updatedTopics });
+        // Update state immutably without destroying other topics
+        set((state) => ({
+          topics: state.topics.map(t => 
+            t.id === topicId 
+              ? { ...t, completionDates: newCompletionDates, lastCompletedDate: today } 
+              : t
+          )
+        }));
         
         syncService.triggerAutoBackup();
 
