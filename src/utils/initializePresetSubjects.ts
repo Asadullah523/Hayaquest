@@ -9,19 +9,17 @@ import { physicsSyllabus } from '../data/physicsSyllabus';
 import { normalizeName } from '../utils/stringUtils';
 import { useAuthStore } from '../store/useAuthStore';
 
+import { generateDeterministicSyncId } from './syncUtils';
+
 const IMAT_PARENT_NAME = 'IMAT Prep';
 const MDCAT_PARENT_NAME = 'MDCAT Prep';
-const SYLLABUS_VERSION = 'v3.2'; // Forced increment for syncId backfill
+const SYLLABUS_VERSION = 'v3.3'; // Forced increment for global syncId alignment
 
 let isInitializing = false;
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
   return isAuthenticated && user ? user.email : 'guest';
-};
-
-const generateSyncId = (type: 'subject' | 'topic', path: string) => {
-    return `${type}:${path.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
 };
 
 export async function initializePresetSubjects(): Promise<void> {
@@ -99,7 +97,7 @@ export async function initializePresetSubjects(): Promise<void> {
 async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: string, pathPrefix: string) {
   for (const data of syllabus) {
     const currentPath = `${pathPrefix}:${data.name.toLowerCase().replace(/ /g, '_')}`;
-    const syncId = generateSyncId('subject', currentPath);
+    const syncId = generateDeterministicSyncId('subject', currentPath);
 
     // 1. DEDUPLICATE SUBJECT
     let subjectId: number;
@@ -147,7 +145,7 @@ async function processSyllabusAtomic(syllabus: any[], parentId: number, userId: 
     if (data.chapters && data.chapters.length > 0) {
       for (const chapter of data.chapters) {
         const chapterPath = `${currentPath}:${chapter.title.toLowerCase().replace(/ /g, '_')}`;
-        const chapterSyncId = generateSyncId('subject', chapterPath);
+        const chapterSyncId = generateDeterministicSyncId('subject', chapterPath);
         
         let chapterId: number;
         const subSubjects = await db.subjects.where('parentId').equals(subjectId).toArray();
@@ -199,7 +197,7 @@ async function syncTopicsByName(subjectId: number, topicNames: string[], userId:
         .toArray();
     
     for (const name of topicNames) {
-        const syncId = generateSyncId('topic', `${pathPrefix}:${name.toLowerCase().replace(/ /g, '_')}`);
+        const syncId = generateDeterministicSyncId('topic', `${pathPrefix}:${name.toLowerCase().replace(/ /g, '_')}`);
         let existing = existingTopics.find(t => t.syncId === syncId);
         if (!existing) {
             existing = existingTopics.find(t => normalizeName(t.name) === normalizeName(name));
@@ -238,7 +236,7 @@ async function syncHierarchicalRoot(parentId: number, syllabus: any[], userId: s
     // 2. Sync existing/new chapters
     for (const chapter of syllabus) {
         const currentPath = `${pathPrefix}:${chapter.title.toLowerCase().replace(/ /g, '_')}`;
-        const syncId = generateSyncId('subject', currentPath);
+        const syncId = generateDeterministicSyncId('subject', currentPath);
         
         let chapterId: number;
         const currentChildren = await db.subjects.where('parentId').equals(parentId).toArray();
@@ -287,7 +285,7 @@ async function deleteSubjectTree(id: number, userId: string) {
 }
 
 async function deduplicateParent(name: string, icon: string, color: string, userId: string, pathPrefix: string): Promise<number> {
-    const syncId = generateSyncId('subject', pathPrefix);
+    const syncId = generateDeterministicSyncId('subject', pathPrefix);
     const allSubjects = await db.subjects.where('userId').equals(userId).toArray();
     
     // Find by syncId or name

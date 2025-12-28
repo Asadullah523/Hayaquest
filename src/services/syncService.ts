@@ -11,6 +11,7 @@ import { useSubjectStore } from '../store/useSubjectStore';
 import { useLogStore } from '../store/useLogStore';
 import { useTimetableStore } from '../store/useTimetableStore';
 import { useSyncStore } from '../store/useSyncStore';
+import { generateDeterministicSyncId, generateRandomSyncId, getLegacySubjectKey, getLegacyTopicKey } from '../utils/syncUtils';
 import api from './api';
 
 const getCurrentUserId = () => {
@@ -42,18 +43,27 @@ export const syncService = {
 
   async getAllLocalData() {
     const userId = getCurrentUserId();
-    const ensureSyncId = async (table: any, items: any[]) => {
+    const ensureSyncId = async (table: any, items: any[], type: 'subject' | 'topic' | 'other' = 'other') => {
         const toUpdate = items.filter(i => !i.syncId);
         for (const item of toUpdate) {
-            item.syncId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            await table.update(item.id, { syncId: item.syncId });
+            let syncId: string;
+            if (type === 'subject' && item.isPreset) {
+                // Try to reconstruct deterministic ID
+                const prefixes = ['imat', 'mdcat', 'biology', 'chemistry', 'physics'];
+                const prefix = prefixes.find(p => item.id && item.parentId === 0 && item.name.toLowerCase().includes(p)) || 'custom';
+                syncId = generateDeterministicSyncId('subject', prefix === 'custom' ? `legacy:${item.name}` : prefix);
+            } else {
+                syncId = generateRandomSyncId();
+            }
+            item.syncId = syncId;
+            await table.update(item.id, { syncId });
         }
         return items;
     };
 
     // Get data from Dexie filtered by userId and ensure syncIds exist
-    const subjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray());
-    const topics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray());
+    const subjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray(), 'subject');
+    const topics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray(), 'topic');
     const logs = await ensureSyncId(db.logs, await db.logs.where('userId').equals(userId).toArray());
     const timetable = await ensureSyncId(db.timetable, await db.timetable.where('userId').equals(userId).toArray());
     const settings = await ensureSyncId(db.settings, await db.settings.where('userId').equals(userId).toArray());
@@ -221,25 +231,33 @@ export const syncService = {
         
         const remoteSyncIdsFound = new Set<string>();
 
-        // Build existing map
-        localSubjects.forEach(s => { if (s.syncId) syncIdToLocalSubjectId.set(s.syncId, s.id!); });
+        // Build existing map and legacy map
+        localSubjects.forEach(s => { 
+            if (s.syncId) syncIdToLocalSubjectId.set(s.syncId, s.id!); 
+        });
+        const legacyLocalSubjectMap = new Map(localSubjects.map(s => [getLegacySubjectKey(s), s]));
 
         for (const remote of remoteSubjects) {
-            if (!remote.syncId) continue;
-            remoteSyncIdsFound.add(remote.syncId);
-            const local = syncIdToLocalSubjectId.get(remote.syncId);
+            const localIdBySyncId = remote.syncId ? syncIdToLocalSubjectId.get(remote.syncId) : null;
+            const localByLegacy = legacyLocalSubjectMap.get(getLegacySubjectKey(remote));
+            const local = localIdBySyncId || localByLegacy?.id;
             
             if (!local) {
-                // ADD: Discard remote local ID, wait to set parentId in second pass
+                // ADD: Discard remote local ID
                 const { id, parentId, ...clean } = remote;
                 const newId = await db.subjects.add({ ...clean, userId: currentUserId }) as number;
-                syncIdToLocalSubjectId.set(remote.syncId, newId);
+                if (remote.syncId) syncIdToLocalSubjectId.set(remote.syncId, newId);
             } else {
                 // MERGE: Latest wins
-                const localData = localSubjects.find(s => s.id === local);
+                const localData = localByLegacy || localSubjects.find(s => s.id === local);
                 if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
                     const { id, parentId, ...clean } = remote;
                     await db.subjects.update(local, { ...clean, userId: currentUserId });
+                }
+                // Backfill syncId if missing locally
+                if (remote.syncId) {
+                    syncIdToLocalSubjectId.set(remote.syncId, local);
+                    if (!localData?.syncId) await db.subjects.update(local, { syncId: remote.syncId });
                 }
             }
         }
@@ -263,16 +281,21 @@ export const syncService = {
             }
         }
 
-        // 1.3 TOPICS (Link to Subject by syncId)
+        // 1.3 TOPICS (Link to Subject by syncId or legacy mapping)
         const localTopics = await db.topics.where('userId').equals(currentUserId).toArray();
         const remoteTopics = remoteData.topics || [];
         const syncIdToLocalTopicId = new Map<string, number>();
         localTopics.forEach(t => { if (t.syncId) syncIdToLocalTopicId.set(t.syncId, t.id!); });
+        
+        const legacyLocalTopicMap = new Map(localTopics.map(t => [getLegacyTopicKey(t), t]));
 
         for (const remote of remoteTopics) {
-            if (!remote.syncId) continue;
-            const localId = syncIdToLocalTopicId.get(remote.syncId);
-            const remoteSubjectSyncId = remoteSubjects.find((s: any) => s.id === remote.subjectId)?.syncId;
+            const localIdBySyncId = remote.syncId ? syncIdToLocalTopicId.get(remote.syncId) : null;
+            const localByLegacy = legacyLocalTopicMap.get(getLegacyTopicKey(remote));
+            const localId = localIdBySyncId || localByLegacy?.id;
+
+            const remoteSubject = remoteSubjects.find((s: any) => s.id === remote.subjectId);
+            const remoteSubjectSyncId = remoteSubject?.syncId;
             const localSubjectId = remoteSubjectSyncId ? syncIdToLocalSubjectId.get(remoteSubjectSyncId) : null;
 
             if (!localId) {
@@ -283,7 +306,7 @@ export const syncService = {
                     userId: currentUserId 
                 });
             } else {
-                const localData = localTopics.find(t => t.id === localId);
+                const localData = localByLegacy || localTopics.find(t => t.id === localId);
                 if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
                     const { id, subjectId, ...clean } = remote;
                     await db.topics.update(localId, { 
@@ -292,6 +315,8 @@ export const syncService = {
                         userId: currentUserId 
                     });
                 }
+                // Backfill syncId if missing
+                if (remote.syncId && !localData?.syncId) await db.topics.update(localId, { syncId: remote.syncId });
             }
         }
 
@@ -321,12 +346,21 @@ export const syncService = {
         await syncSimpleTable(db.settings, remoteData.settings || [], await db.settings.where('userId').equals(currentUserId).toArray());
         await syncSimpleTable(db.resources, remoteData.resources || [], await db.resources.where('userId').equals(currentUserId).toArray());
 
-        // 1.5 DELETIONS (SyncId based)
+        // 1.5 DELETIONS (SyncId based - EXTRA CAREFUL)
         const cleanupDeleted = async (table: any, localItems: any[], remoteItems: any[]) => {
+            // Safety: Never delete if remote is empty unless it's a confirmed reset
             if (remoteItems.length === 0 && remoteLastReset <= localLastReset) return;
-            const remoteSyncIds = new Set(remoteItems.map(i => i.syncId));
+            
+            // Safety: If remote has NO syncIds, it's an old payload. Don't delete new local items.
+            const remoteHasSyncIds = remoteItems.some(i => i.syncId);
+            if (!remoteHasSyncIds) return;
+
+            const remoteSyncIds = new Set(remoteItems.map(i => i.syncId).filter(Boolean));
             const toDelete = localItems.filter(i => i.syncId && !remoteSyncIds.has(i.syncId)).map(i => i.id);
-            if (toDelete.length > 0) await table.bulkDelete(toDelete);
+            if (toDelete.length > 0) {
+                console.log(`Sync Cleanup: Deleting ${toDelete.length} items from ${table.name}`);
+                await table.bulkDelete(toDelete);
+            }
         };
 
         await cleanupDeleted(db.subjects, localSubjects, remoteSubjects);
