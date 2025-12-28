@@ -39,7 +39,20 @@ export const ImatDashboard: React.FC = () => {
     const totalPractice = subjectPracticePapers.length;
 
     useEffect(() => {
-        loadSubjects();
+        const init = async () => {
+            await loadSubjects();
+            // Safety check: if subjects are empty but user is logged in, try a re-init
+            const imatParent = useSubjectStore.getState().subjects.find(s => s.name === 'IMAT Prep');
+            const imatChildren = imatParent ? useSubjectStore.getState().subjects.filter(s => s.parentId === imatParent.id) : [];
+            
+            if (!imatParent || imatChildren.length < 4) {
+                console.log('🛡️ Dashboard: Subjects missing or incomplete. Triggering recovery...');
+                const { initializePresetSubjects } = await import('../../utils/initializePresetSubjects');
+                await initializePresetSubjects();
+                await loadSubjects();
+            }
+        };
+        init();
     }, [loadSubjects]);
 
     useEffect(() => {

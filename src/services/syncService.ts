@@ -355,7 +355,7 @@ export const syncService = {
             }
         }
 
-        // 2.4 OTHER TABLES (Simple syncId match)
+        // 2.4 OTHER TABLES (Simple & Relational Sync)
         const syncSimpleTable = async (table: any, remoteItems: any[], localItems: any[]) => {
             const localMap = new Map<string, number>();
             localItems.forEach(i => { if (i.syncId) localMap.set(i.syncId, i.id!); });
@@ -376,8 +376,61 @@ export const syncService = {
             }
         };
 
-        await syncSimpleTable(db.logs, remoteData.logs || [], await db.logs.where('userId').equals(currentUserId).toArray());
-        await syncSimpleTable(db.timetable, remoteData.timetable || [], await db.timetable.where('userId').equals(currentUserId).toArray());
+        const syncTableWithSubjectMapping = async (table: any, remoteItems: any[], localItems: any[], type: 'timetable' | 'log') => {
+            const localMap = new Map<string, number>();
+            localItems.forEach(i => { if (i.syncId) localMap.set(i.syncId, i.id!); });
+
+            for (const remote of remoteItems) {
+                if (!remote.syncId) continue;
+
+                // Resolve Local Subject ID
+                let localSubjectId = 0;
+                if (remote.subjectId) {
+                    const remoteSubject = remoteSubjects.find((s: any) => s.id === remote.subjectId);
+                    if (remoteSubject && remoteSubject.syncId) {
+                        const mappedId = syncIdToLocalSubjectId.get(remoteSubject.syncId);
+                        if (mappedId) localSubjectId = mappedId;
+                    }
+                }
+
+                // Resolve Local Topic ID (for logs)
+                let localTopicId = 0;
+                if (type === 'log' && remote.topicId) {
+                    const remoteTopic = remoteTopics.find((t: any) => t.id === remote.topicId);
+                    if (remoteTopic && remoteTopic.syncId) {
+                        const mappedId = syncIdToLocalTopicId.get(remoteTopic.syncId);
+                        if (mappedId) localTopicId = mappedId;
+                    }
+                }
+
+                const localId = localMap.get(remote.syncId);
+                const { id, ...clean } = remote;
+                const payload = { 
+                    ...clean, 
+                    userId: currentUserId,
+                    subjectId: localSubjectId || clean.subjectId // Fallback to original if map fail
+                };
+
+                if (type === 'log' && localTopicId) {
+                    payload.topicId = localTopicId;
+                }
+
+                if (!localId) {
+                    await table.add(payload);
+                } else {
+                    const localData = localItems.find(i => i.id === localId);
+                    if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
+                        await table.update(localId, payload);
+                    }
+                }
+            }
+        };
+
+        // Sync Logs and Timetable with mapping
+        await syncTableWithSubjectMapping(db.logs, remoteData.logs || [], await db.logs.where('userId').equals(currentUserId).toArray(), 'log');
+        await syncTableWithSubjectMapping(db.timetable, remoteData.timetable || [], await db.timetable.where('userId').equals(currentUserId).toArray(), 'timetable');
+        
+        // Settings and Resources are simple
         await syncSimpleTable(db.settings, remoteData.settings || [], await db.settings.where('userId').equals(currentUserId).toArray());
         await syncSimpleTable(db.resources, remoteData.resources || [], await db.resources.where('userId').equals(currentUserId).toArray());
 
@@ -392,9 +445,13 @@ export const syncService = {
 
             const remoteSyncIds = new Set(remoteItems.map(i => i.syncId).filter(Boolean));
             
-            // 🚨 CRITICAL FIX: Never delete preset items, even if missing from cloud
+            // 🚨 CRITICAL FIX: Never delete preset items or core syllabus roots, even if missing from cloud
+            const protectedNames = ['IMAT Prep', 'MDCAT Prep', 'Biology', 'Chemistry', 'Physics', 'Mathematics', 'Math'];
             const toDelete = localItems
-                .filter(i => i.syncId && !i.isPreset && !remoteSyncIds.has(i.syncId))
+                .filter(i => {
+                    const isProtected = i.isPreset || (table.name === 'subjects' && protectedNames.some(pn => normalizeName(i.name) === normalizeName(pn)));
+                    return i.syncId && !isProtected && !remoteSyncIds.has(i.syncId);
+                })
                 .map(i => i.id);
                 
             if (toDelete.length > 0) {
@@ -507,7 +564,21 @@ export const syncService = {
       }
 
       await useSubjectStore.getState().loadSubjects();
-      await useSubjectStore.getState().loadAllTopics();
+      
+      // CRITICAL: Ensure structural integrity after restore
+      // If any preset subjects were lost or have invalid parentIds, this recreates them
+      try {
+          const { initializePresetSubjects } = await import('../utils/initializePresetSubjects');
+          await initializePresetSubjects();
+          // Reload stores after structural fix
+          await Promise.all([
+              useSubjectStore.getState().loadSubjects(),
+              useSubjectStore.getState().loadAllTopics()
+          ]);
+      } catch (err) {
+          console.error('Post-restore re-initialization failed:', err);
+      }
+
       await useLogStore.getState().loadAllLogs();
       await useTimetableStore.getState().loadTimetable();
 

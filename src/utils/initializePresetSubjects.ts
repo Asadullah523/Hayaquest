@@ -13,7 +13,7 @@ import { generateDeterministicSyncId } from './syncUtils';
 
 const IMAT_PARENT_NAME = 'IMAT Prep';
 const MDCAT_PARENT_NAME = 'MDCAT Prep';
-const SYLLABUS_VERSION = 'v3.4'; // Forced cleanup for 75-subjects bug
+const SYLLABUS_VERSION = 'v3.5'; // Forced cleanup for sync-id parent mapping fix
 
 let isInitializing = false;
 
