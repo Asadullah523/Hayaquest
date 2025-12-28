@@ -2,29 +2,31 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout/Layout'; // Layout is kept eager for perceived performance
 import { GlobalLoader } from './components/layout/GlobalLoader';
 import { BackButtonHandler } from './components/navigation/BackButtonHandler';
-import { Suspense, lazy, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { initializePresetSubjects } from './utils/initializePresetSubjects';
 import { useSubjectStore } from './store/useSubjectStore';
 import { syncService } from './services/syncService';
 import { useAuthStore } from './store/useAuthStore';
 
+import { lazyWithRetry } from './utils/lazyWithRetry';
+
 // Lazy load pages for better performance
-const Dashboard = lazy(() => import('./components/dashboard/Dashboard').then(module => ({ default: module.Dashboard })));
-const SubjectList = lazy(() => import('./components/subjects/SubjectList').then(module => ({ default: module.SubjectList })));
-const SubjectDetail = lazy(() => import('./components/subjects/SubjectDetail').then(module => ({ default: module.SubjectDetail })));
-const Timetable = lazy(() => import('./components/timetable/Timetable').then(module => ({ default: module.Timetable })));
-const ImatDashboard = lazy(() => import('./components/imat/ImatDashboard').then(module => ({ default: module.ImatDashboard })));
-const MdcatDashboard = lazy(() => import('./components/mdcat/MdcatDashboard').then(module => ({ default: module.MdcatDashboard })));
-const Achievements = lazy(() => import('./components/achievements/Achievements').then(module => ({ default: module.Achievements })));
-const Analytics = lazy(() => import('./components/analytics/Analytics').then(module => ({ default: module.Analytics })));
-const EnglishDashboard = lazy(() => import('./components/english/EnglishDashboard').then(module => ({ default: module.EnglishDashboard })));
-const Dictionary = lazy(() => import('./components/english/Dictionary').then(module => ({ default: module.Dictionary })));
-const VocabularyBuilder = lazy(() => import('./components/english/VocabularyBuilder').then(module => ({ default: module.VocabularyBuilder })));
-const Stories = lazy(() => import('./components/english/Stories').then(module => ({ default: module.Stories })));
-const Grammar = lazy(() => import('./components/english/Grammar').then(module => ({ default: module.Grammar })));
-const MyCollection = lazy(() => import('./components/english/MyCollection').then(module => ({ default: module.MyCollection })));
-const WritingChecker = lazy(() => import('./components/english/WritingChecker').then(module => ({ default: module.WritingChecker })));
-const Settings = lazy(() => import('./components/settings/Settings').then(module => ({ default: module.Settings })));
+const Dashboard = lazyWithRetry(() => import('./components/dashboard/Dashboard').then(module => ({ default: module.Dashboard })));
+const SubjectList = lazyWithRetry(() => import('./components/subjects/SubjectList').then(module => ({ default: module.SubjectList })));
+const SubjectDetail = lazyWithRetry(() => import('./components/subjects/SubjectDetail').then(module => ({ default: module.SubjectDetail })));
+const Timetable = lazyWithRetry(() => import('./components/timetable/Timetable').then(module => ({ default: module.Timetable })));
+const ImatDashboard = lazyWithRetry(() => import('./components/imat/ImatDashboard').then(module => ({ default: module.ImatDashboard })));
+const MdcatDashboard = lazyWithRetry(() => import('./components/mdcat/MdcatDashboard').then(module => ({ default: module.MdcatDashboard })));
+const Achievements = lazyWithRetry(() => import('./components/achievements/Achievements').then(module => ({ default: module.Achievements })));
+const Analytics = lazyWithRetry(() => import('./components/analytics/Analytics').then(module => ({ default: module.Analytics })));
+const EnglishDashboard = lazyWithRetry(() => import('./components/english/EnglishDashboard').then(module => ({ default: module.EnglishDashboard })));
+const Dictionary = lazyWithRetry(() => import('./components/english/Dictionary').then(module => ({ default: module.Dictionary })));
+const VocabularyBuilder = lazyWithRetry(() => import('./components/english/VocabularyBuilder').then(module => ({ default: module.VocabularyBuilder })));
+const Stories = lazyWithRetry(() => import('./components/english/Stories').then(module => ({ default: module.Stories })));
+const Grammar = lazyWithRetry(() => import('./components/english/Grammar').then(module => ({ default: module.Grammar })));
+const MyCollection = lazyWithRetry(() => import('./components/english/MyCollection').then(module => ({ default: module.MyCollection })));
+const WritingChecker = lazyWithRetry(() => import('./components/english/WritingChecker').then(module => ({ default: module.WritingChecker })));
+const Settings = lazyWithRetry(() => import('./components/settings/Settings').then(module => ({ default: module.Settings })));
 
 // Simple loading spinner for Suspense fallback (internal navigations)
 const LoadingFallback = () => (

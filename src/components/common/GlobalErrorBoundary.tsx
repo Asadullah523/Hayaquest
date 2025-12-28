@@ -54,6 +54,12 @@ export class GlobalErrorBoundary extends Component<Props, State> {
               </p>
             </div>
 
+            {this.state.error?.message?.toLowerCase().includes('fetch') && (
+              <p className="text-xs text-indigo-500 font-bold mb-4 animate-pulse">
+                New version detected! Please reload to continue.
+              </p>
+            )}
+
             <div className="space-y-3">
               <button
                 onClick={this.handleReload}
