@@ -75,7 +75,6 @@ const App = () => {
 
         // 3. Initialize Auto-sync (every 15 seconds) if not already done
         syncService.initAutoSync(15);
-        syncService.markInitialized();
 
         // 4. Cloud Restore on Login
         if (isAuthenticated) {
