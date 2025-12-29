@@ -25,6 +25,7 @@ const dataBackupSchema = new mongoose.Schema({
         user: Object,
         timer: Object,
         quiz: Object,
+        timetableStore: Object, // Added for completedSlots sync
         lastResetAt: Number
     },
     lastSynced: {
