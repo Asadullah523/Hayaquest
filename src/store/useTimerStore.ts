@@ -61,7 +61,6 @@ interface TimerState {
   stopSound: () => void;
   startSession: (subjectId?: number) => void;
   completeSession: () => void;
-  completeTimer: () => void;
   getTodayStats: () => { totalFocusTime: number; totalBreakTime: number; sessionsCompleted: number };
 }
 
@@ -486,9 +485,6 @@ export const useTimerStore = create<TimerState>()(
           timeLeftWhenStarted: get().timeLeft,
           updatedAt: Date.now()
         });
-        
-        // SYNC: Trigger backup when starting to ensure active state is saved
-        syncService.triggerAutoBackup();
 
         // Schedule Native Notification
         const endTime = new Date(Date.now() + get().timeLeft * 1000);
@@ -539,9 +535,6 @@ export const useTimerStore = create<TimerState>()(
         
         stopSound();
         LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
-        
-        // SYNC: Trigger backup immediately on pause to save progress
-        syncService.triggerAutoBackup();
       },
       
       reset: () => {
@@ -566,9 +559,6 @@ export const useTimerStore = create<TimerState>()(
           timeLeftWhenStarted: duration,
           updatedAt: Date.now()
         });
-        
-        // SYNC: Trigger backup on reset
-        syncService.triggerAutoBackup();
       },
 
       tick: () => {
@@ -726,9 +716,6 @@ export const useTimerStore = create<TimerState>()(
         stopSound();
         LocalNotifications.cancel({ notifications: [{ id: 1001 }] }).catch(console.error);
         set({ mode, timeLeft: duration, isActive: false, activeSession: null, updatedAt: Date.now() });
-        
-        // SYNC: Trigger backup on mode change
-        syncService.triggerAutoBackup();
       },
 
       updateConfig: (newConfig) => {
@@ -749,9 +736,6 @@ export const useTimerStore = create<TimerState>()(
 
           return { config, timeLeft, updatedAt: Date.now() };
         });
-        
-        // SYNC: Trigger backup on config change
-        syncService.triggerAutoBackup();
       },
 
       playNotificationSound: (type: 'focus' | 'break') => {
@@ -814,27 +798,59 @@ export const useTimerStore = create<TimerState>()(
 
         // Persist to Database for Analytics
         if (sessionType === 'focus' && duration > 5) {
-         }
+            import('./useLogStore').then(({ useLogStore }) => {
+                const store = useLogStore.getState();
+                const dist = activeSession.subjectDist;
+                
+                // If we have a distribution, log per subject
+                if (Object.keys(dist).length > 0) {
+                    Object.entries(dist).forEach(([sid, seconds]) => {
+                        if (seconds > 0) {
+                            store.addLog({
+                                date: endTime,
+                                subjectId: parseInt(sid),
+                                durationSeconds: seconds,
+                                type: 'learning',
+                                timestamp: endTime,
+                                notes: 'Timer Session'
+                            });
+                        }
+                    });
+                } else if (activeSession.subjectId) {
+                    // Fallback to the main subjectId if dist is empty for some reason
+                    store.addLog({
+                        date: endTime,
+                        subjectId: activeSession.subjectId,
+                        durationSeconds: duration,
+                        type: 'learning',
+                        timestamp: endTime,
+                        notes: 'Timer Session'
+                    });
+                }
+            }).catch(console.error);
 
+            // Access Timetable Store to auto-complete agenda slots
+            if (activeSession.subjectId) {
+                import('./useTimetableStore').then(({ useTimetableStore }) => {
+                    useTimetableStore.getState().autoMarkSlotComplete(activeSession.subjectId!);
+                }).catch(console.error);
+            }
+        }
+
+        // Update today's stats
         const newStats = { ...todayStats };
-        // Stats are already updated in tick(), but let's ensure session count is up
-        // We only increment sessionsCompleted if it's a focus session and decent length
-        if (sessionType === 'focus' && duration > 60) {
-            newStats.sessionsCompleted += 1;
+        // Increment sessionsCompleted only for focus sessions that reached natural completion (0:00)
+        if (sessionType === 'focus' && get().timeLeft === 0) {
+          newStats.sessionsCompleted += 1;
         }
 
         set({
-            activeSession: null,
-            sessionHistory: [newSession, ...sessionHistory].slice(0, 50),
-            todayStats: newStats,
-            isActive: false,
-            timeLeft: get().config.focusDuration, 
-            updatedAt: Date.now()
+          sessionHistory: [newSession, ...sessionHistory].slice(0, 50), // Keep last 50 sessions
+          todayStats: newStats,
+          activeSession: null,
         });
-        
-        get().completeTimer(); 
-        
-        // SYNC: Important trigger - session finished
+
+        // Trigger cloud backup
         syncService.triggerAutoBackup();
       },
 

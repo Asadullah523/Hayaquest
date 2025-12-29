@@ -7,7 +7,6 @@ import { useWritingCheckerStore } from '../store/useWritingCheckerStore';
 import { useEnglishStore } from '../store/useEnglishStore';
 import { useUserStore } from '../store/useUserStore';
 import { useTimerStore } from '../store/useTimerStore';
-import { useImatStore } from '../store/useImatStore';
 import { useSubjectStore } from '../store/useSubjectStore';
 import { useLogStore } from '../store/useLogStore';
 import { useTimetableStore } from '../store/useTimetableStore';
@@ -55,9 +54,12 @@ export const syncService = {
             if (type === 'subject' && item.isPreset) {
                 // Hierarchical reconstruction for Presets
                 if (!item.parentId || item.parentId === 0) {
-                    // FIX: Use dynamic name instead of hardcoded list to prevent collisions
-                    // e.g. "Mathematics" -> "mathematics", "Logic" -> "logic"
-                    const prefix = normalizeName(item.name).replace(/ /g, '_');
+                    const name = item.name.toLowerCase();
+                    const prefix = name.includes('imat') ? 'imat' : 
+                                 name.includes('mdcat') ? 'mdcat' : 
+                                 name.includes('biology') ? 'biology' :
+                                 name.includes('chemistry') ? 'chemistry' :
+                                 name.includes('physics') ? 'physics' : 'custom';
                     syncId = generateDeterministicSyncId('subject', prefix);
                 } else {
                     // It's a child. Try to find the parent to build the path
@@ -98,7 +100,6 @@ export const syncService = {
     const english = useEnglishStore.getState();
     const user = useUserStore.getState();
     const timer = useTimerStore.getState();
-    const imat = useImatStore.getState();
 
     // Get quiz data from localStorage
     const quizData: Record<string, string> = {};
@@ -138,12 +139,6 @@ export const syncService = {
             totalStudyHours: achievements.totalStudyHours,
             totalSubjects: achievements.totalSubjects,
             longestSessionMinutes: achievements.longestSessionMinutes,
-            totalSubjectsCreated: achievements.totalSubjectsCreated,
-            highPriorityCompleted: achievements.highPriorityCompleted,
-            subjectsWithHighMastery: achievements.subjectsWithHighMastery,
-            totalFocusSessions: achievements.totalFocusSessions,
-            earlyMorningSessions: achievements.earlyMorningSessions,
-            lateNightSessions: achievements.lateNightSessions,
         }
       },
       writingChecker: {
@@ -178,10 +173,6 @@ export const syncService = {
       timetableStore: {
           completedSlots: useTimetableStore.getState().completedSlots,
           updatedAt: Date.now()
-      },
-      imat: {
-        subjects: imat.subjects,
-        updatedAt: imat.updatedAt || 0,
       },
       lastResetAt: parseInt(localStorage.getItem('last_reset_at') || '0'),
       syllabus_version: localStorage.getItem('syllabus_version')
@@ -343,9 +334,6 @@ export const syncService = {
         }
 
         // 2.3 TOPICS (Link to Subject by syncId or legacy mapping)
-        // RE-FETCH SUBJECTS: Crucial because we might have just added them in step 2.1
-        const updatedLocalSubjects = await db.subjects.where('userId').equals(currentUserId).toArray(); // Renamed to avoid const re-assignment error if localSubjects is const
-        
         const localTopics = await db.topics.where('userId').equals(currentUserId).toArray();
         const remoteTopics = remoteData.topics || [];
         const syncIdToLocalTopicId = new Map<string, number>();
@@ -360,40 +348,7 @@ export const syncService = {
 
             const remoteSubject = remoteSubjects.find((s: any) => s.id === remote.subjectId);
             const remoteSubjectSyncId = remoteSubject?.syncId;
-            let localSubjectId = remoteSubjectSyncId ? syncIdToLocalSubjectId.get(remoteSubjectSyncId) : null;
-
-            // CRITICAL FIX: Fallback lookup by subject name if syncId mapping fails
-            // This ensures preset topic progress syncs even if subject IDs mismatch
-            // CRITICAL FIX: Fallback lookup by subject name if syncId mapping fails
-            // This ensures preset topic progress syncs even if subject IDs mismatch
-            if (!localSubjectId && remoteSubject) {
-                // Disambiguation Logic: Handle duplicate subjects (e.g. Root Biology vs IMAT Biology)
-                const candidates = updatedLocalSubjects.filter(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
-                let localSubject = candidates[0];
-
-                if (candidates.length > 1) {
-                    const remoteParent = remoteSubjects.find((p: any) => p.id === remoteSubject.parentId);
-                    if (remoteParent) {
-                        // Remote is a Child (e.g. IMAT > Biology). Look for Local Child with matching Parent Name.
-                        localSubject = candidates.find(c => {
-                             if (!c.parentId) return false;
-                             const localParent = updatedLocalSubjects.find(p => p.id === c.parentId);
-                             return localParent && normalizeName(localParent.name) === normalizeName(remoteParent.name);
-                        }) || localSubject;
-                    } else {
-                         // Remote is Root. Prefer Local Root.
-                         localSubject = candidates.find(c => !c.parentId) || localSubject;
-                    }
-                }
-
-                if (localSubject) {
-                    localSubjectId = localSubject.id || null;
-                    // Also backfill the mapping for future use
-                    if (remoteSubjectSyncId && localSubject.id) {
-                        syncIdToLocalSubjectId.set(remoteSubjectSyncId, localSubject.id);
-                    }
-                }
-            }
+            const localSubjectId = remoteSubjectSyncId ? syncIdToLocalSubjectId.get(remoteSubjectSyncId) : null;
 
             if (!localId) {
                 const { id, subjectId, ...clean } = remote;
@@ -404,14 +359,7 @@ export const syncService = {
                 });
             } else {
                 const localData = localByLegacy || localTopics.find(t => t.id === localId);
-                
-                // Allow overwrite if:
-                // 1. Remote is strictly newer
-                // 2. Local is a "Fresh/Default" preset (not started) and Remote has progress (fixes "Older Web Data vs Fresh Install" rejection)
-                const isLocalDefault = localData?.isPreset && localData?.status === 'not-started' && !localData.isCompleted && (localData.learningProgress || 0) === 0;
-                const isRemoteMeaningful = remote.isCompleted || (remote.learningProgress || 0) > 0 || remote.status === 'completed';
-
-                if ((remote.updatedAt || 0) > (localData?.updatedAt || 0) || (isLocalDefault && isRemoteMeaningful)) {
+                if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
                     const { id, subjectId, ...clean } = remote;
                     await db.topics.update(localId, { 
                         ...clean, 
@@ -613,45 +561,12 @@ export const syncService = {
       if (remoteData.timer) {
         const local = useTimerStore.getState();
         const remote = remoteData.timer;
-        
-        // Smart Merge for Today Stats
-        let mergedStats = remote.todayStats;
-        if (local.todayStats.lastUpdatedDate === remote.todayStats.lastUpdatedDate) {
-            if (local.todayStats.totalFocusTime > remote.todayStats.totalFocusTime) {
-                mergedStats = local.todayStats;
-            }
-        }
-        
-        // If remote is newer OR remote has more progress on same day
-        if ((remote.updatedAt || 0) > (local.updatedAt || 0) || 
-           (remote.todayStats.lastUpdatedDate === local.todayStats.lastUpdatedDate && 
-            remote.todayStats.totalFocusTime > local.todayStats.totalFocusTime)) {
-            
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
             useTimerStore.setState({
-                todayStats: mergedStats,
-                sessionHistory: remote.sessionHistory, // History is harder to merge, sticking to latest for list
-                config: remote.config, // Prefer latest config
-                updatedAt: Math.max(remote.updatedAt || 0, Date.now())
-            });
-        }
-      }
-
-      if (remoteData.imat) {
-        const local = useImatStore.getState();
-        const remote = remoteData.imat;
-        
-        // Helper to check progress
-        const hasProgress = (subjects: any[]) => subjects.some((s: any) => s.topics.some((t: any) => t.isCompleted));
-        const localHasProgress = hasProgress(local.subjects || []);
-        const remoteHasProgress = hasProgress(remote.subjects || []);
-
-        // Allow overwrite if:
-        // 1. Remote is strictly newer
-        // 2. Local is "Fresh" (0 progress) and Remote has data (Fixes 0% progress bug)
-        if ((remote.updatedAt || 0) > (local.updatedAt || 0) || (!localHasProgress && remoteHasProgress)) {
-            useImatStore.setState({
-                subjects: remote.subjects || [],
-                updatedAt: Math.max(remote.updatedAt || 0, Date.now()) // Ensure local matches
+                todayStats: remote.todayStats,
+                sessionHistory: remote.sessionHistory,
+                config: remote.config,
+                updatedAt: remote.updatedAt
             });
         }
       }
@@ -1007,7 +922,7 @@ export const syncService = {
     console.log('🤝 Guest data merged successfully.');
   },
 
-  initAutoSync(intervalSeconds = 8) {
+  initAutoSync(intervalSeconds = 15) {
     if (this._autoSyncInterval) clearInterval(this._autoSyncInterval);
     
     console.log(`🔄 Sync service: Auto-sync started (Interval: ${intervalSeconds}s)`);
@@ -1055,7 +970,7 @@ export const syncService = {
   triggerAutoBackup() {
       if (!this._isPaused && !this._isSyncing) {
           // Debounce slightly to avoid hammering and PROTECT against immediate restore overwrites
-          if (this._lastLocalUpdate && Date.now() - this._lastLocalUpdate < 2000) return;
+          if (this._lastLocalUpdate && Date.now() - this._lastLocalUpdate < 10000) return;
           
           this._lastLocalUpdate = Date.now();
           console.log('⚡ Triggering auto-backup...');
