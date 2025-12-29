@@ -26,6 +26,9 @@ export const syncService = {
   _isPaused: false,
   _isInitialized: false, // New: guard against backup before first load
   _lastLocalUpdate: 0,
+  _lastRestoreTime: 0, // Track the last time we successfully synced with cloud
+  _autoSyncInterval: null as any,
+
 
   pauseSync() {
     this._isPaused = true;
@@ -190,7 +193,9 @@ export const syncService = {
       }
 
       await api.post('/sync/backup', data);
-      useSyncStore.getState().setLastSyncTime(Date.now());
+      const now = Date.now();
+      this._lastRestoreTime = now;
+      useSyncStore.getState().setLastSyncTime(now);
       console.log(`✅ Sync service: BACKUP SUCCESS (${data.subjects.length} user subjects, ${data.topics.length} user topics)`);
     } catch (err) {
       useSyncStore.getState().setError('Backup failed');
@@ -644,7 +649,9 @@ export const syncService = {
           console.log('ℹ️ Restore: No completedSlots found in remote backup.');
       }
 
-      useSyncStore.getState().setLastSyncTime(Date.now());
+      const now = Date.now();
+      this._lastRestoreTime = now;
+      useSyncStore.getState().setLastSyncTime(now);
       console.log('Restore successful');
     } catch (err: any) {
       useSyncStore.getState().setError('Restore failed');
@@ -909,22 +916,50 @@ export const syncService = {
     console.log('🤝 Guest data merged successfully.');
   },
 
-  initAutoSync(intervalSeconds = 5) {
-    const interval = intervalSeconds * 1000;
-    setInterval(async () => {
-      const { isAuthenticated, user } = useAuthStore.getState();
-      if (isAuthenticated && user && !this._isPaused) {
-        if (!document.hidden) {
-            // PULL FIRST strategy: Always restore before assuming local state is authority
-            await this.restore();
-            // We removed automatic backup() from here to prevent stale overwrites.
-            // Backup is now trigger-based (on interactions).
-        }
+  initAutoSync(intervalSeconds = 15) {
+    if (this._autoSyncInterval) clearInterval(this._autoSyncInterval);
+    
+    console.log(`🔄 Sync service: Auto-sync started (Interval: ${intervalSeconds}s)`);
+    this._autoSyncInterval = setInterval(async () => {
+      const auth = useAuthStore.getState();
+      if (!auth.isAuthenticated || this._isPaused) return;
+
+      try {
+          // 1. Check for remote changes (Polling every cycle)
+          await this.checkAndRestore();
+
+          // 2. Backup if we had local updates
+          if (this._lastLocalUpdate && Date.now() - this._lastLocalUpdate < 20000) {
+              // Only backup if we haven't backed up recently
+              const lastSync = useSyncStore.getState().status.lastSyncTime || 0;
+              if (Date.now() - lastSync > 30000) {
+                  await this.backup();
+              }
+          }
+      } catch (err) {
+          console.error('Auto-sync cycle failed', err);
       }
-    }, interval);
-    console.log(`Sync service: Auto-sync started (${intervalSeconds}s interval, PULL-FIRST)`);
+    }, intervalSeconds * 1000);
   },
-  
+
+  async checkAndRestore() {
+    if (this._isSyncing || this._isPaused) return;
+    
+    try {
+        const response = await api.get('/sync/status');
+        const remoteLastSynced = new Date(response.data.lastSynced).getTime();
+        
+        // If remote is newer than our last restore/backup, trigger restore
+        if (remoteLastSynced > this._lastRestoreTime + 1000) { // 1s buffer
+            console.log(`🔔 Remote changes detected (Remote: ${remoteLastSynced}, Local: ${this._lastRestoreTime}). Triggering restore...`);
+            await this.restore();
+        }
+    } catch (err: any) {
+        if (err.response?.status === 404) return; // No backup yet
+        console.error('Failed to check sync status', err);
+    }
+  },
+
   // Public method to force a backup (e.g. after critical user action)
   triggerAutoBackup() {
       if (!this._isPaused && !this._isSyncing) {

@@ -7,6 +7,7 @@ import { initializePresetSubjects } from './utils/initializePresetSubjects';
 import { useSubjectStore } from './store/useSubjectStore';
 import { syncService } from './services/syncService';
 import { useAuthStore } from './store/useAuthStore';
+import { App as CapacitorApp } from '@capacitor/app';
 
 import { lazyWithRetry } from './utils/lazyWithRetry';
 
@@ -93,7 +94,19 @@ const App = () => {
           window.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') handleFocus();
           });
-          focusListener = handleFocus;
+          
+          // 5.1 Capacitor Foreground Listener (Mobile specific)
+          const appStateListener = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+            if (isActive) {
+              console.log('App returned to foreground - Triggering sync');
+              handleFocus();
+            }
+          });
+
+          focusListener = () => {
+            handleFocus();
+            appStateListener.then(l => l.remove());
+          };
         }
       } catch (error) {
         console.error("Failed to bootstrap application:", error);

@@ -36,6 +36,16 @@ router.post('/backup', auth, async (req, res) => {
     }
 });
 
+router.get('/status', auth, async (req, res) => {
+    try {
+        const backup = await DataBackup.findOne({ userId: req.userId }, { lastSynced: 1 });
+        if (!backup) return res.status(404).json({ message: 'No backup found' });
+        res.json({ lastSynced: backup.lastSynced });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+});
+
 router.get('/restore', auth, async (req, res) => {
     try {
         const backup = await DataBackup.findOne({ userId: req.userId });
