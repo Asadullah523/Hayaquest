@@ -11,7 +11,7 @@ import { useSubjectStore } from '../store/useSubjectStore';
 import { useLogStore } from '../store/useLogStore';
 import { useTimetableStore } from '../store/useTimetableStore';
 import { useSyncStore } from '../store/useSyncStore';
-import { generateDeterministicSyncId, generateRandomSyncId, getLegacySubjectKey, getLegacyTopicKey } from '../utils/syncUtils';
+import { generateDeterministicSyncId, generateRandomSyncId, getLegacyTopicKey } from '../utils/syncUtils';
 import { initializePresetSubjects } from '../utils/initializePresetSubjects';
 import api from './api';
 
@@ -47,52 +47,82 @@ export const syncService = {
 
   async ensureAllSyncIds() {
     const userId = getCurrentUserId();
-    const helper = async (table: any, items: any[], type: 'subject' | 'topic' | 'other' = 'other') => {
-        const toUpdate = items.filter(i => !i.syncId);
-        for (const item of toUpdate) {
-            let syncId: string;
-            if (type === 'subject' && item.isPreset) {
-                // Hierarchical reconstruction for Presets
-                if (!item.parentId || item.parentId === 0) {
-                    const name = item.name.toLowerCase();
-                    const prefix = name.includes('imat') ? 'imat' : 
-                                 name.includes('mdcat') ? 'mdcat' : 
-                                 name.includes('biology') ? 'biology' :
-                                 name.includes('chemistry') ? 'chemistry' :
-                                 name.includes('physics') ? 'physics' : 
-                                 name.includes('math') ? 'math' : 'custom';
-                    syncId = generateDeterministicSyncId('subject', prefix);
-                } else {
-                    // It's a child. Try to find the parent to build the path
-                    const parent = items.find(s => s.id === item.parentId);
-                    if (parent && parent.syncId) {
-                        const parentPath = parent.syncId.split(':')[1];
-                        syncId = generateDeterministicSyncId('subject', `${parentPath}:${item.name.toLowerCase().replace(/ /g, '_')}`);
+    
+    const subjects = await db.subjects.where('userId').equals(userId).toArray();
+    const topics = await db.topics.where('userId').equals(userId).toArray();
+    
+    // 1. Process Subjects Hierarchically (Roots first)
+    const processSubjects = async (parentId: number = 0, pathPrefix: string = '') => {
+        const children = subjects.filter(s => (s.parentId || 0) === parentId);
+        for (const s of children) {
+            if (!s.syncId) {
+                let syncId: string;
+                if (s.isPreset) {
+                    const namePart = s.name.toLowerCase().replace(/ /g, '_');
+                    const cleanPath = pathPrefix ? `${pathPrefix}:${namePart}` : namePart;
+                    
+                    // Root presets logic
+                    if (parentId === 0) {
+                        const name = s.name.toLowerCase();
+                        let rootPrefix = 'custom';
+                        if (name.includes('imat')) rootPrefix = 'imat';
+                        else if (name.includes('mdcat')) rootPrefix = 'mdcat';
+                        else if (name.includes('biology')) rootPrefix = 'biology';
+                        else if (name.includes('chemistry')) rootPrefix = 'chemistry';
+                        else if (name.includes('physics')) rootPrefix = 'physics';
+                        else if (name.includes('math')) rootPrefix = 'math';
+                        syncId = generateDeterministicSyncId('subject', rootPrefix);
                     } else {
-                        syncId = generateRandomSyncId();
+                        syncId = generateDeterministicSyncId('subject', cleanPath);
                     }
+                } else {
+                    syncId = generateRandomSyncId();
                 }
-            } else {
-                syncId = generateRandomSyncId();
+                s.syncId = syncId;
+                await db.subjects.update(s.id!, { syncId, updatedAt: Date.now() });
             }
-            item.syncId = syncId;
-            await table.update(item.id, { syncId, updatedAt: Date.now() });
+            // Recurse to children
+            await processSubjects(s.id!, s.syncId!.split(':')[1]);
         }
     };
 
-    const subjects = await db.subjects.where('userId').equals(userId).toArray();
-    const topics = await db.topics.where('userId').equals(userId).toArray();
+    await processSubjects(0, '');
+
+    // 2. Process Topics
+    for (const t of topics) {
+        if (!t.syncId) {
+            const subject = subjects.find(s => s.id === t.subjectId);
+            let syncId: string;
+            if (t.isPreset && subject?.syncId) {
+                const parentPath = subject.syncId.split(':')[1];
+                syncId = generateDeterministicSyncId('topic', `${parentPath}:${t.name.toLowerCase().replace(/ /g, '_')}`);
+            } else {
+                syncId = generateRandomSyncId();
+            }
+            t.syncId = syncId;
+            await db.topics.update(t.id!, { syncId, updatedAt: Date.now() });
+        }
+    }
+
     const logs = await db.logs.where('userId').equals(userId).toArray();
     const timetable = await db.timetable.where('userId').equals(userId).toArray();
     const settings = await db.settings.where('userId').equals(userId).toArray();
     const resources = await db.resources.where('userId').equals(userId).toArray();
 
-    await helper(db.subjects, subjects, 'subject');
-    await helper(db.topics, topics, 'topic');
-    await helper(db.logs, logs);
-    await helper(db.timetable, timetable);
-    await helper(db.settings, settings);
-    await helper(db.resources, resources);
+    const ensureSimpleSyncId = async (table: any, items: any[]) => {
+        for (const i of items) {
+            if (!i.syncId) {
+                const syncId = generateRandomSyncId();
+                i.syncId = syncId;
+                await table.update(i.id!, { syncId, updatedAt: Date.now() });
+            }
+        }
+    };
+
+    await ensureSimpleSyncId(db.logs, logs);
+    await ensureSimpleSyncId(db.timetable, timetable);
+    await ensureSimpleSyncId(db.settings, settings);
+    await ensureSimpleSyncId(db.resources, resources);
     
     return { subjects, topics, logs, timetable, settings, resources };
   },
@@ -293,64 +323,71 @@ export const syncService = {
         const localSubjects = await db.subjects.where('userId').equals(currentUserId).toArray();
         const remoteSubjects = remoteData.subjects || [];
         const syncIdToLocalSubjectId = new Map<string, number>();
+        const remoteIdToLocalId = new Map<number, number>();
         
-        // Build existing map and legacy map
+        // Match existing subjects first to build the ID maps
         localSubjects.forEach(s => { 
             if (s.syncId) syncIdToLocalSubjectId.set(s.syncId, s.id!); 
         });
-        const legacyLocalSubjectMap = new Map(localSubjects.map(s => [getLegacySubjectKey(s), s]));
 
-        for (const remote of remoteSubjects) {
-            // CRITICAL: Skip preset subjects - they're defined in code, not cloud
-            // This prevents cloud data from overwriting IMAT Prep, Mathematics, etc.
+        // 2.1 Process subjects in order (Roots first) to build hierarchy
+        const sortedRemoteSubjects = [...remoteSubjects].sort((a, b) => (a.parentId || 0) - (b.parentId || 0));
+
+        for (const remote of sortedRemoteSubjects) {
+            const localIdBySyncId = remote.syncId ? syncIdToLocalSubjectId.get(remote.syncId) : null;
+            
+            // BETTER FALLBACK: Match by name + parent mapping
+            let localByLegacyId: number | null = null;
+            if (!localIdBySyncId) {
+                const remoteParent = remoteSubjects.find((ps: any) => ps.id === remote.parentId);
+                const localParentId = remoteParent ? remoteIdToLocalId.get(remoteParent.id) : 0;
+                
+                const match = localSubjects.find((ls: any) => 
+                    normalizeName(ls.name) === normalizeName(remote.name) && 
+                    (ls.parentId || 0) === (localParentId || 0)
+                );
+                if (match) localByLegacyId = match.id!;
+            }
+
+            const localId = localIdBySyncId || localByLegacyId;
+
             if (remote.isPreset) {
-                console.log(`⏭️  Skipping preset subject from cloud: ${remote.name}`);
+                if (localId) {
+                    syncIdToLocalSubjectId.set(remote.syncId, localId);
+                    remoteIdToLocalId.set(remote.id, localId);
+                }
                 continue;
             }
-            
-            const localIdBySyncId = remote.syncId ? syncIdToLocalSubjectId.get(remote.syncId) : null;
-            const localByLegacy = legacyLocalSubjectMap.get(getLegacySubjectKey(remote));
-            const local = localIdBySyncId || (localByLegacy ? localByLegacy.id : null);
-            
-            if (!local) {
-                // ADD: Discard remote local ID
+
+            if (!localId) {
+                // ADD
+                const remoteParent = remoteSubjects.find((ps: any) => ps.id === remote.parentId);
+                const localParentId = remoteParent ? remoteIdToLocalId.get(remoteParent.id) : 0;
+                
                 const { id, parentId, ...clean } = remote;
-                const newId = await db.subjects.add({ ...clean, parentId: 0, userId: currentUserId }) as number;
+                const newId = await db.subjects.add({ 
+                    ...clean, 
+                    parentId: localParentId || 0, 
+                    userId: currentUserId 
+                }) as number;
+                
                 if (remote.syncId) syncIdToLocalSubjectId.set(remote.syncId, newId);
+                remoteIdToLocalId.set(remote.id, newId);
             } else {
-                // MERGE: Latest wins
-                const localData = localByLegacy || localSubjects.find(s => s.id === local);
+                // UPDATE
+                const remoteParent = remoteSubjects.find((ps: any) => ps.id === remote.parentId);
+                const localParentId = remoteParent ? remoteIdToLocalId.get(remoteParent.id) : 0;
+                
+                const localData = localSubjects.find((ls: any) => ls.id === localId);
                 if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
                     const { id, parentId, ...clean } = remote;
-                    await db.subjects.update(local, { ...clean, userId: currentUserId });
+                    await db.subjects.update(localId, { 
+                        ...clean, 
+                        parentId: localParentId || 0,
+                        userId: currentUserId 
+                    });
                 }
-                // Backfill syncId if missing locally
-                if (remote.syncId) {
-                    syncIdToLocalSubjectId.set(remote.syncId, local);
-                    if (!localData?.syncId) await db.subjects.update(local, { syncId: remote.syncId });
-                }
-            }
-        }
-
-        const remoteSyncIdToParentSyncIdEntries: [string, string | undefined][] = remoteSubjects.map((s: any) => {
-            const parent = remoteSubjects.find((ps: any) => ps.id === s.parentId);
-            return [s.syncId, parent?.syncId] as [string, string | undefined];
-        });
-        const remoteSyncIdToParentSyncId = new Map(remoteSyncIdToParentSyncIdEntries);
-        
-        for (const remote of remoteSubjects) {
-            if (!remote.syncId) continue;
-            const localId = syncIdToLocalSubjectId.get(remote.syncId);
-            const parentSyncId = remoteSyncIdToParentSyncId.get(remote.syncId);
-            
-            if (localId && parentSyncId) {
-                const localParentId = syncIdToLocalSubjectId.get(parentSyncId);
-                if (localParentId) {
-                    await db.subjects.update(localId, { parentId: localParentId });
-                }
-            } else if (localId) {
-                // Ensure roots are 0
-                await db.subjects.update(localId, { parentId: 0 });
+                remoteIdToLocalId.set(remote.id, localId);
             }
         }
 
