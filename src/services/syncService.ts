@@ -55,34 +55,33 @@ export const syncService = {
     const processSubjects = async (parentId: number = 0, pathPrefix: string = '') => {
         const children = subjects.filter(s => (s.parentId || 0) === parentId);
         for (const s of children) {
-            if (!s.syncId) {
-                let syncId: string;
-                if (s.isPreset) {
-                    const namePart = s.name.toLowerCase().replace(/ /g, '_');
-                    const cleanPath = pathPrefix ? `${pathPrefix}:${namePart}` : namePart;
-                    
-                    // Root presets logic
-                    if (parentId === 0) {
-                        const name = s.name.toLowerCase();
-                        let rootPrefix = 'custom';
-                        if (name.includes('imat')) rootPrefix = 'imat';
-                        else if (name.includes('mdcat')) rootPrefix = 'mdcat';
-                        else if (name.includes('biology')) rootPrefix = 'biology';
-                        else if (name.includes('chemistry')) rootPrefix = 'chemistry';
-                        else if (name.includes('physics')) rootPrefix = 'physics';
-                        else if (name.includes('math')) rootPrefix = 'math';
-                        syncId = generateDeterministicSyncId('subject', rootPrefix);
-                    } else {
-                        syncId = generateDeterministicSyncId('subject', cleanPath);
-                    }
+            let expectedSyncId = s.syncId;
+            if (s.isPreset) {
+                if (parentId === 0) {
+                    const name = s.name.toLowerCase();
+                    let rootPrefix = 'custom';
+                    if (name.includes('imat')) rootPrefix = 'imat';
+                    else if (name.includes('mdcat')) rootPrefix = 'mdcat';
+                    else if (name.includes('biology')) rootPrefix = 'biology';
+                    else if (name.includes('chemistry')) rootPrefix = 'chemistry';
+                    else if (name.includes('physics')) rootPrefix = 'physics';
+                    else if (name.includes('math')) rootPrefix = 'math';
+                    expectedSyncId = generateDeterministicSyncId('subject', rootPrefix);
                 } else {
-                    syncId = generateRandomSyncId();
+                    const cleanPath = `${pathPrefix}:${s.name.toLowerCase().replace(/ /g, '_')}`;
+                    expectedSyncId = generateDeterministicSyncId('subject', cleanPath);
                 }
+            }
+
+            if (!s.syncId || (s.isPreset && s.syncId !== expectedSyncId)) {
+                const syncId = expectedSyncId || generateRandomSyncId();
                 s.syncId = syncId;
                 await db.subjects.update(s.id!, { syncId, updatedAt: Date.now() });
             }
+            
             // Recurse to children
-            await processSubjects(s.id!, s.syncId!.split(':')[1]);
+            const getPath = (sid: string) => sid.substring(sid.indexOf(':') + 1);
+            await processSubjects(s.id!, getPath(s.syncId!));
         }
     };
 
@@ -90,15 +89,15 @@ export const syncService = {
 
     // 2. Process Topics
     for (const t of topics) {
-        if (!t.syncId) {
-            const subject = subjects.find(s => s.id === t.subjectId);
-            let syncId: string;
-            if (t.isPreset && subject?.syncId) {
-                const parentPath = subject.syncId.split(':')[1];
-                syncId = generateDeterministicSyncId('topic', `${parentPath}:${t.name.toLowerCase().replace(/ /g, '_')}`);
-            } else {
-                syncId = generateRandomSyncId();
-            }
+        const subject = subjects.find(s => s.id === t.subjectId);
+        let expectedSyncId = t.syncId;
+        if (t.isPreset && subject?.syncId) {
+            const parentPath = subject.syncId.substring(subject.syncId.indexOf(':') + 1);
+            expectedSyncId = generateDeterministicSyncId('topic', `${parentPath}:${t.name.toLowerCase().replace(/ /g, '_')}`);
+        }
+
+        if (!t.syncId || (t.isPreset && t.syncId !== expectedSyncId)) {
+            const syncId = expectedSyncId || generateRandomSyncId();
             t.syncId = syncId;
             await db.topics.update(t.id!, { syncId, updatedAt: Date.now() });
         }
@@ -301,7 +300,7 @@ export const syncService = {
         localStorage.removeItem(versionKey);
         
         // 0.3 Wipe local bucket for this user
-        await syncService.wipeUserBucket(userId);
+        await this.wipeUserBucket(userId);
         
         // 0.4 Notify UI to re-load components
         window.dispatchEvent(new Event('storage'));
@@ -352,9 +351,17 @@ export const syncService = {
             const localId = localIdBySyncId || localByLegacyId;
 
             if (remote.isPreset) {
+                // For presets, we MUST build the mapping even if we don't update fields
+                // This ensures topics/logs correctly link to the local preset ID
                 if (localId) {
                     syncIdToLocalSubjectId.set(remote.syncId, localId);
                     remoteIdToLocalId.set(remote.id, localId);
+                    
+                    // Optional: Update updatedAt if remote is newer to sync "last studied" or other metadata if we ever add it to Subject
+                    const localData = localSubjects.find((ls: any) => ls.id === localId);
+                    if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
+                        await db.subjects.update(localId, { updatedAt: remote.updatedAt });
+                    }
                 }
                 continue;
             }
@@ -397,7 +404,7 @@ export const syncService = {
         const syncIdToLocalTopicId = new Map<string, number>();
         localTopics.forEach(t => { if (t.syncId) syncIdToLocalTopicId.set(t.syncId, t.id!); });
         
-        const legacyLocalTopicMap = new Map(localTopics.map(t => [getLegacyTopicKey(t), t]));
+        const legacyLocalTopicMap = new Map<string, any>(localTopics.map(t => [getLegacyTopicKey(t), t]));
 
         for (const remote of remoteTopics) {
             const localIdBySyncId = remote.syncId ? syncIdToLocalTopicId.get(remote.syncId) : null;
@@ -410,11 +417,12 @@ export const syncService = {
 
             if (!localId) {
                 const { id, subjectId, ...clean } = remote;
-                await db.topics.add({ 
+                const newId = await db.topics.add({ 
                     ...clean, 
                     subjectId: localSubjectId || 0, 
                     userId: currentUserId 
-                });
+                }) as number;
+                if (remote.syncId) syncIdToLocalTopicId.set(remote.syncId, newId);
             } else {
                 const localData = localByLegacy || localTopics.find(t => t.id === localId);
                 if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
@@ -425,8 +433,10 @@ export const syncService = {
                         userId: currentUserId 
                     });
                 }
-                // Backfill syncId if missing
-                if (remote.syncId && !localData?.syncId) await db.topics.update(localId, { syncId: remote.syncId });
+                // Backfill syncId if missing locally
+                if (remote.syncId && !localData?.syncId) {
+                    await db.topics.update(localId, { syncId: remote.syncId });
+                }
             }
         }
 
