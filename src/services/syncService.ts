@@ -364,8 +364,28 @@ export const syncService = {
 
             // CRITICAL FIX: Fallback lookup by subject name if syncId mapping fails
             // This ensures preset topic progress syncs even if subject IDs mismatch
+            // CRITICAL FIX: Fallback lookup by subject name if syncId mapping fails
+            // This ensures preset topic progress syncs even if subject IDs mismatch
             if (!localSubjectId && remoteSubject) {
-                const localSubject = updatedLocalSubjects.find(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
+                // Disambiguation Logic: Handle duplicate subjects (e.g. Root Biology vs IMAT Biology)
+                const candidates = updatedLocalSubjects.filter(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
+                let localSubject = candidates[0];
+
+                if (candidates.length > 1) {
+                    const remoteParent = remoteSubjects.find((p: any) => p.id === remoteSubject.parentId);
+                    if (remoteParent) {
+                        // Remote is a Child (e.g. IMAT > Biology). Look for Local Child with matching Parent Name.
+                        localSubject = candidates.find(c => {
+                             if (!c.parentId) return false;
+                             const localParent = updatedLocalSubjects.find(p => p.id === c.parentId);
+                             return localParent && normalizeName(localParent.name) === normalizeName(remoteParent.name);
+                        }) || localSubject;
+                    } else {
+                         // Remote is Root. Prefer Local Root.
+                         localSubject = candidates.find(c => !c.parentId) || localSubject;
+                    }
+                }
+
                 if (localSubject) {
                     localSubjectId = localSubject.id || null;
                     // Also backfill the mapping for future use
