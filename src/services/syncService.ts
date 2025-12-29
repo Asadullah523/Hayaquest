@@ -274,16 +274,22 @@ export const syncService = {
         const legacyLocalSubjectMap = new Map(localSubjects.map(s => [getLegacySubjectKey(s), s]));
 
         for (const remote of remoteSubjects) {
-            // CRITICAL: Skip preset subjects - they're defined in code, not cloud
-            // This prevents cloud data from overwriting IMAT Prep, Mathematics, etc.
-            if (remote.isPreset) {
-                console.log(`⏭️  Skipping preset subject from cloud: ${remote.name}`);
-                continue;
-            }
-            
             const localIdBySyncId = remote.syncId ? syncIdToLocalSubjectId.get(remote.syncId) : null;
             const localByLegacy = legacyLocalSubjectMap.get(getLegacySubjectKey(remote));
             const local = localIdBySyncId || localByLegacy?.id;
+            
+            // For preset subjects, build the ID mapping but don't overwrite structure
+            if (remote.isPreset) {
+                if (local) {
+                    syncIdToLocalSubjectId.set(remote.syncId, local);
+                    // Sync updatedAt to track "last studied" for presets
+                    const localData = localSubjects.find(s => s.id === local);
+                    if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
+                        await db.subjects.update(local, { updatedAt: remote.updatedAt });
+                    }
+                }
+                continue;
+            }
             
             if (!local) {
                 // ADD: Discard remote local ID
