@@ -17,7 +17,7 @@ import api from './api';
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
-  return isAuthenticated && user ? user.email : 'guest';
+  return isAuthenticated && user ? user.email.toLowerCase() : 'guest';
 };
 
 export const syncService = {
@@ -201,12 +201,12 @@ export const syncService = {
     }
   },
 
-  async restore() {
+  async restore(force = false) {
     if (this._isSyncing || this._isPaused) return;
     
     // Don't restore if we just had a local update (within 10 seconds)
-    // This gives the backup enough time to propagation
-    if (Date.now() - this._lastLocalUpdate < 10000) {
+    // UNLESS it's a forced restore (e.g. app startup)
+    if (!force && Date.now() - this._lastLocalUpdate < 10000) {
       console.log('Sync: Skipping restore (Recent local update)');
       return;
     }

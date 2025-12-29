@@ -78,7 +78,7 @@ const App = () => {
         // 4. Cloud Restore on Login
         if (isAuthenticated) {
           try {
-            await syncService.restore();
+            await syncService.restore(true);
           } catch (err) {
             console.error('Initial restore failed:', err);
           }

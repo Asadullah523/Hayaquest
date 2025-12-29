@@ -3,6 +3,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useUserStore } from '../../store/useUserStore';
 import api from '../../services/api';
 import { syncService } from '../../services/syncService';
+import { Capacitor } from '@capacitor/core';
 import { X, Mail, Lock, User, Sparkles, Loader2, ArrowRight, Eye, EyeOff, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -45,14 +46,18 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
 
       // Perform sync in the background/quietly
       try {
-        if (isLogin) {
-          await syncService.restore();
+        const isNative = Capacitor.isNativePlatform();
+        if (isNative) {
+          console.log('Native platform detected: Auto-merging guest data...');
+          await syncService.mergeGuestData();
+        } else {
+          if (isLogin) {
+            await syncService.restore();
+          }
+          await syncService.backup();
         }
-        await syncService.backup();
       } catch (syncErr) {
-        console.error('Initial sync failed after login:', syncErr);
-        // We don't show an error to the user here because they ARE logged in.
-        // The auto-sync or manual sync will handle it later.
+        console.error('Initial sync/merge failed after login:', syncErr);
       }
     } catch (err: any) {
       if (!err.response) {

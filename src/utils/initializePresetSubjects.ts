@@ -81,10 +81,6 @@ export async function initializePresetSubjects(): Promise<void> {
     // 5. GLOBAL TOPIC CLEANUP
     await deduplicateAllTopics(userId);
     
-    // 6. PROTECT DATA: Set a local change timestamp to prevent immediate auto-sync overwrite
-    const { syncService } = await import('../services/syncService');
-    syncService.triggerAutoBackup();
-
     // Success! Mark as initialized for this version
     localStorage.setItem(versionKey, SYLLABUS_VERSION);
     console.log('✅ SYNC COMPLETE: Hierarchical order restored.');
