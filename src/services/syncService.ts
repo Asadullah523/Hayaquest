@@ -45,9 +45,9 @@ export const syncService = {
     console.log('Sync service: INITIALIZED (Backup permitted)');
   },
 
-  async getAllLocalData() {
+  async ensureAllSyncIds() {
     const userId = getCurrentUserId();
-    const ensureSyncId = async (table: any, items: any[], type: 'subject' | 'topic' | 'other' = 'other') => {
+    const helper = async (table: any, items: any[], type: 'subject' | 'topic' | 'other' = 'other') => {
         const toUpdate = items.filter(i => !i.syncId);
         for (const item of toUpdate) {
             let syncId: string;
@@ -59,7 +59,8 @@ export const syncService = {
                                  name.includes('mdcat') ? 'mdcat' : 
                                  name.includes('biology') ? 'biology' :
                                  name.includes('chemistry') ? 'chemistry' :
-                                 name.includes('physics') ? 'physics' : 'custom';
+                                 name.includes('physics') ? 'physics' : 
+                                 name.includes('math') ? 'math' : 'custom';
                     syncId = generateDeterministicSyncId('subject', prefix);
                 } else {
                     // It's a child. Try to find the parent to build the path
@@ -77,21 +78,42 @@ export const syncService = {
             item.syncId = syncId;
             await table.update(item.id, { syncId, updatedAt: Date.now() });
         }
-        return items;
     };
 
-    // Get data from Dexie filtered by userId and ensure syncIds exist
-    const subjects = await ensureSyncId(db.subjects, await db.subjects.where('userId').equals(userId).toArray(), 'subject');
-    const topics = await ensureSyncId(db.topics, await db.topics.where('userId').equals(userId).toArray(), 'topic');
+    const subjects = await db.subjects.where('userId').equals(userId).toArray();
+    const topics = await db.topics.where('userId').equals(userId).toArray();
+    const logs = await db.logs.where('userId').equals(userId).toArray();
+    const timetable = await db.timetable.where('userId').equals(userId).toArray();
+    const settings = await db.settings.where('userId').equals(userId).toArray();
+    const resources = await db.resources.where('userId').equals(userId).toArray();
+
+    await helper(db.subjects, subjects, 'subject');
+    await helper(db.topics, topics, 'topic');
+    await helper(db.logs, logs);
+    await helper(db.timetable, timetable);
+    await helper(db.settings, settings);
+    await helper(db.resources, resources);
+    
+    return { subjects, topics, logs, timetable, settings, resources };
+  },
+
+  async getAllLocalData() {
+    const userId = getCurrentUserId();
+    // Ensure all local items have IDs before backup
+    await this.ensureAllSyncIds();
+
+    const subjects = await db.subjects.where('userId').equals(userId).toArray();
+    const topics = await db.topics.where('userId').equals(userId).toArray();
+    const logs = await db.logs.where('userId').equals(userId).toArray();
+    const timetable = await db.timetable.where('userId').equals(userId).toArray();
+    const settings = await db.settings.where('userId').equals(userId).toArray();
+    const resources = await db.resources.where('userId').equals(userId).toArray();
     
     // We no longer filter out presets here. 
     // This ensures that topic completion (progress) for IMAT/MDCAT is uploaded to cloud.
     // The restore() logic will safely handle structural vs progress updates.
     
-    const logs = await ensureSyncId(db.logs, await db.logs.where('userId').equals(userId).toArray());
-    const timetable = await ensureSyncId(db.timetable, await db.timetable.where('userId').equals(userId).toArray());
-    const settings = await ensureSyncId(db.settings, await db.settings.where('userId').equals(userId).toArray());
-    const resources = await ensureSyncId(db.resources, await db.resources.where('userId').equals(userId).toArray());
+    // Data is now ready with syncIds
 
     // Get data from Zustand stores
     const gamification = useGamificationStore.getState();
@@ -227,6 +249,11 @@ export const syncService = {
 
       if (!remoteData) return;
 
+      // 0. ENSURE LOCAL INTEGRITY
+      // Before restore, ensure local presets have their deterministic IDs for mapping
+      await this.ensureAllSyncIds();
+
+
       // Migration phase removed: Presets are now part of the global cloud state to sync progress.
 
       // 1. CHECK FOR CROSS-DEVICE RESET
@@ -283,7 +310,7 @@ export const syncService = {
             
             const localIdBySyncId = remote.syncId ? syncIdToLocalSubjectId.get(remote.syncId) : null;
             const localByLegacy = legacyLocalSubjectMap.get(getLegacySubjectKey(remote));
-            const local = localIdBySyncId || localByLegacy?.id;
+            const local = localIdBySyncId || (localByLegacy ? localByLegacy.id : null);
             
             if (!local) {
                 // ADD: Discard remote local ID
@@ -394,13 +421,20 @@ export const syncService = {
             for (const remote of remoteItems) {
                 if (!remote.syncId) continue;
 
-                // Resolve Local Subject ID
+                // 2. Resolve Subject ID mapping
                 let localSubjectId = 0;
                 if (remote.subjectId) {
                     const remoteSubject = remoteSubjects.find((s: any) => s.id === remote.subjectId);
-                    if (remoteSubject && remoteSubject.syncId) {
-                        const mappedId = syncIdToLocalSubjectId.get(remoteSubject.syncId);
-                        if (mappedId) localSubjectId = mappedId;
+                    if (remoteSubject) {
+                        if (remoteSubject.syncId) {
+                            localSubjectId = syncIdToLocalSubjectId.get(remoteSubject.syncId) || 0;
+                        }
+                        
+                        // FALLBACK: Match by name
+                        if (!localSubjectId) {
+                            const localMatch = localSubjects.find(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
+                            if (localMatch) localSubjectId = localMatch.id || 0;
+                        }
                     }
                 }
 
@@ -419,7 +453,7 @@ export const syncService = {
                 const payload = { 
                     ...clean, 
                     userId: currentUserId,
-                    subjectId: localSubjectId || clean.subjectId // Fallback to original if map fail
+                    subjectId: localSubjectId // Use mapped ID, default 0
                 };
 
                 if (type === 'log' && localTopicId) {
