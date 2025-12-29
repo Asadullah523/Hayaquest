@@ -384,7 +384,14 @@ export const syncService = {
                 });
             } else {
                 const localData = localByLegacy || localTopics.find(t => t.id === localId);
-                if ((remote.updatedAt || 0) > (localData?.updatedAt || 0)) {
+                
+                // Allow overwrite if:
+                // 1. Remote is strictly newer
+                // 2. Local is a "Fresh/Default" preset (not started) and Remote has progress (fixes "Older Web Data vs Fresh Install" rejection)
+                const isLocalDefault = localData?.isPreset && localData?.status === 'not-started' && !localData.isCompleted && (localData.learningProgress || 0) === 0;
+                const isRemoteMeaningful = remote.isCompleted || (remote.learningProgress || 0) > 0 || remote.status === 'completed';
+
+                if ((remote.updatedAt || 0) > (localData?.updatedAt || 0) || (isLocalDefault && isRemoteMeaningful)) {
                     const { id, subjectId, ...clean } = remote;
                     await db.topics.update(localId, { 
                         ...clean, 
