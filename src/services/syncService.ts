@@ -348,7 +348,20 @@ export const syncService = {
 
             const remoteSubject = remoteSubjects.find((s: any) => s.id === remote.subjectId);
             const remoteSubjectSyncId = remoteSubject?.syncId;
-            const localSubjectId = remoteSubjectSyncId ? syncIdToLocalSubjectId.get(remoteSubjectSyncId) : null;
+            let localSubjectId = remoteSubjectSyncId ? syncIdToLocalSubjectId.get(remoteSubjectSyncId) : null;
+
+            // CRITICAL FIX: Fallback lookup by subject name if syncId mapping fails
+            // This ensures preset topic progress syncs even if subject IDs mismatch
+            if (!localSubjectId && remoteSubject) {
+                const localSubject = localSubjects.find(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
+                if (localSubject) {
+                    localSubjectId = localSubject.id || null;
+                    // Also backfill the mapping for future use
+                    if (remoteSubjectSyncId && localSubject.id) {
+                        syncIdToLocalSubjectId.set(remoteSubjectSyncId, localSubject.id);
+                    }
+                }
+            }
 
             if (!localId) {
                 const { id, subjectId, ...clean } = remote;
