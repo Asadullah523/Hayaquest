@@ -281,7 +281,10 @@ export const useSubjectStore = create<SubjectState>((set) => ({
         const completedDays = subject.completedDays || [];
         if (!completedDays.includes(dayNumber)) {
           const newCompletedDays = [...completedDays, dayNumber];
-          await db.subjects.update(subjectId, { completedDays: newCompletedDays });
+          await db.subjects.update(subjectId, { 
+            completedDays: newCompletedDays,
+            updatedAt: Date.now() // SYNC: Vital for "Latest Wins" 
+          });
           
           set((state) => ({
             subjects: state.subjects.map(s =>
@@ -396,7 +399,8 @@ export const useSubjectStore = create<SubjectState>((set) => ({
         
         await db.topics.update(topicId, {
           completionDates: newCompletionDates,
-          lastCompletedDate: today
+          lastCompletedDate: today,
+          updatedAt: Date.now() // SYNC: Vital for "Latest Wins" resolution
         });
         
         // Update state immutably without destroying other topics

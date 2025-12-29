@@ -955,7 +955,7 @@ export const syncService = {
     console.log('🤝 Guest data merged successfully.');
   },
 
-  initAutoSync(intervalSeconds = 15) {
+  initAutoSync(intervalSeconds = 8) {
     if (this._autoSyncInterval) clearInterval(this._autoSyncInterval);
     
     console.log(`🔄 Sync service: Auto-sync started (Interval: ${intervalSeconds}s)`);
@@ -1003,7 +1003,7 @@ export const syncService = {
   triggerAutoBackup() {
       if (!this._isPaused && !this._isSyncing) {
           // Debounce slightly to avoid hammering and PROTECT against immediate restore overwrites
-          if (this._lastLocalUpdate && Date.now() - this._lastLocalUpdate < 10000) return;
+          if (this._lastLocalUpdate && Date.now() - this._lastLocalUpdate < 2000) return;
           
           this._lastLocalUpdate = Date.now();
           console.log('⚡ Triggering auto-backup...');
