@@ -639,10 +639,19 @@ export const syncService = {
       if (remoteData.imat) {
         const local = useImatStore.getState();
         const remote = remoteData.imat;
-        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+        
+        // Helper to check progress
+        const hasProgress = (subjects: any[]) => subjects.some((s: any) => s.topics.some((t: any) => t.isCompleted));
+        const localHasProgress = hasProgress(local.subjects || []);
+        const remoteHasProgress = hasProgress(remote.subjects || []);
+
+        // Allow overwrite if:
+        // 1. Remote is strictly newer
+        // 2. Local is "Fresh" (0 progress) and Remote has data (Fixes 0% progress bug)
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0) || (!localHasProgress && remoteHasProgress)) {
             useImatStore.setState({
                 subjects: remote.subjects || [],
-                updatedAt: remote.updatedAt
+                updatedAt: Math.max(remote.updatedAt || 0, Date.now()) // Ensure local matches
             });
         }
       }
