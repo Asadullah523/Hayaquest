@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { syncService } from '../services/syncService';
 
 export interface ImatTopic {
   id: string;
@@ -17,6 +18,7 @@ export interface ImatSubject {
 
 interface ImatState {
   subjects: ImatSubject[];
+  updatedAt: number;
   
   addTopic: (subjectId: string, topicName: string) => void;
   toggleTopic: (subjectId: string, topicId: string) => void;
@@ -95,57 +97,74 @@ export const useImatStore = create<ImatState>()(
   persist(
     (set) => ({
       subjects: INITIAL_SUBJECTS,
+      updatedAt: 0,
 
-      addTopic: (subjectId, topicName) => set((state) => ({
-        subjects: state.subjects.map(subject => 
-          subject.id === subjectId 
-            ? { 
-                ...subject, 
-                topics: [
-                  ...subject.topics, 
-                  { id: crypto.randomUUID(), name: topicName, isCompleted: false }
-                ] 
-              }
-            : subject
-        )
-      })),
+      addTopic: (subjectId, topicName) => {
+        set((state) => ({
+          subjects: state.subjects.map(subject => 
+            subject.id === subjectId 
+              ? { 
+                  ...subject, 
+                  topics: [
+                    ...subject.topics, 
+                    { id: crypto.randomUUID(), name: topicName, isCompleted: false }
+                  ] 
+                }
+              : subject
+          ),
+          updatedAt: Date.now()
+        }));
+        syncService.triggerAutoBackup();
+      },
 
-      toggleTopic: (subjectId, topicId) => set((state) => ({
-        subjects: state.subjects.map(subject => 
-          subject.id === subjectId
-            ? {
-                ...subject,
-                topics: subject.topics.map(topic => 
-                  topic.id === topicId 
-                    ? { ...topic, isCompleted: !topic.isCompleted }
-                    : topic
-                )
-              }
-            : subject
-        )
-      })),
+      toggleTopic: (subjectId, topicId) => {
+        set((state) => ({
+          subjects: state.subjects.map(subject => 
+            subject.id === subjectId
+              ? {
+                  ...subject,
+                  topics: subject.topics.map(topic => 
+                    topic.id === topicId 
+                      ? { ...topic, isCompleted: !topic.isCompleted }
+                      : topic
+                  )
+                }
+              : subject
+          ),
+          updatedAt: Date.now()
+        }));
+        syncService.triggerAutoBackup();
+      },
 
-      deleteTopic: (subjectId, topicId) => set((state) => ({
-        subjects: state.subjects.map(subject => 
-          subject.id === subjectId
-            ? {
-                ...subject,
-                topics: subject.topics.filter(topic => topic.id !== topicId)
-              }
-            : subject
-        )
-      })),
+      deleteTopic: (subjectId, topicId) => {
+        set((state) => ({
+          subjects: state.subjects.map(subject => 
+            subject.id === subjectId
+              ? {
+                  ...subject,
+                  topics: subject.topics.filter(topic => topic.id !== topicId)
+                }
+              : subject
+          ),
+          updatedAt: Date.now()
+        }));
+        syncService.triggerAutoBackup();
+      },
 
-      resetProgress: (subjectId) => set((state) => ({
-        subjects: state.subjects.map(subject => 
-          subject.id === subjectId
-            ? {
-                ...subject,
-                topics: subject.topics.map(topic => ({ ...topic, isCompleted: false }))
-              }
-            : subject
-        )
-      })),
+      resetProgress: (subjectId) => {
+        set((state) => ({
+          subjects: state.subjects.map(subject => 
+            subject.id === subjectId
+              ? {
+                  ...subject,
+                  topics: subject.topics.map(topic => ({ ...topic, isCompleted: false }))
+                }
+              : subject
+          ),
+          updatedAt: Date.now()
+        }));
+        syncService.triggerAutoBackup();
+      },
     }),
     {
       name: 'imat-storage',

@@ -160,7 +160,7 @@ export const DailyTasksWidget: React.FC = () => {
           return (
             <div 
               key={`slot-${slot.id}`}
-              className={`relative flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-300 border ${
+              className={`relative flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-300 border min-h-[58px] sm:min-h-[68px] ${
                 isCompleted
                     ? 'bg-emerald-50/50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-900/20' 
                     : isNow

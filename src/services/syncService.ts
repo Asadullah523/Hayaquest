@@ -7,6 +7,7 @@ import { useWritingCheckerStore } from '../store/useWritingCheckerStore';
 import { useEnglishStore } from '../store/useEnglishStore';
 import { useUserStore } from '../store/useUserStore';
 import { useTimerStore } from '../store/useTimerStore';
+import { useImatStore } from '../store/useImatStore';
 import { useSubjectStore } from '../store/useSubjectStore';
 import { useLogStore } from '../store/useLogStore';
 import { useTimetableStore } from '../store/useTimetableStore';
@@ -100,6 +101,7 @@ export const syncService = {
     const english = useEnglishStore.getState();
     const user = useUserStore.getState();
     const timer = useTimerStore.getState();
+    const imat = useImatStore.getState();
 
     // Get quiz data from localStorage
     const quizData: Record<string, string> = {};
@@ -139,6 +141,12 @@ export const syncService = {
             totalStudyHours: achievements.totalStudyHours,
             totalSubjects: achievements.totalSubjects,
             longestSessionMinutes: achievements.longestSessionMinutes,
+            totalSubjectsCreated: achievements.totalSubjectsCreated,
+            highPriorityCompleted: achievements.highPriorityCompleted,
+            subjectsWithHighMastery: achievements.subjectsWithHighMastery,
+            totalFocusSessions: achievements.totalFocusSessions,
+            earlyMorningSessions: achievements.earlyMorningSessions,
+            lateNightSessions: achievements.lateNightSessions,
         }
       },
       writingChecker: {
@@ -173,6 +181,10 @@ export const syncService = {
       timetableStore: {
           completedSlots: useTimetableStore.getState().completedSlots,
           updatedAt: Date.now()
+      },
+      imat: {
+        subjects: imat.subjects,
+        updatedAt: imat.updatedAt || 0,
       },
       lastResetAt: parseInt(localStorage.getItem('last_reset_at') || '0'),
       syllabus_version: localStorage.getItem('syllabus_version')
@@ -579,6 +591,17 @@ export const syncService = {
                 todayStats: remote.todayStats,
                 sessionHistory: remote.sessionHistory,
                 config: remote.config,
+                updatedAt: remote.updatedAt
+            });
+        }
+      }
+
+      if (remoteData.imat) {
+        const local = useImatStore.getState();
+        const remote = remoteData.imat;
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+            useImatStore.setState({
+                subjects: remote.subjects || [],
                 updatedAt: remote.updatedAt
             });
         }
