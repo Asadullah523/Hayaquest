@@ -343,6 +343,9 @@ export const syncService = {
         }
 
         // 2.3 TOPICS (Link to Subject by syncId or legacy mapping)
+        // RE-FETCH SUBJECTS: Crucial because we might have just added them in step 2.1
+        const updatedLocalSubjects = await db.subjects.where('userId').equals(currentUserId).toArray(); // Renamed to avoid const re-assignment error if localSubjects is const
+        
         const localTopics = await db.topics.where('userId').equals(currentUserId).toArray();
         const remoteTopics = remoteData.topics || [];
         const syncIdToLocalTopicId = new Map<string, number>();
@@ -362,7 +365,7 @@ export const syncService = {
             // CRITICAL FIX: Fallback lookup by subject name if syncId mapping fails
             // This ensures preset topic progress syncs even if subject IDs mismatch
             if (!localSubjectId && remoteSubject) {
-                const localSubject = localSubjects.find(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
+                const localSubject = updatedLocalSubjects.find(s => normalizeName(s.name) === normalizeName(remoteSubject.name));
                 if (localSubject) {
                     localSubjectId = localSubject.id || null;
                     // Also backfill the mapping for future use
@@ -583,12 +586,25 @@ export const syncService = {
       if (remoteData.timer) {
         const local = useTimerStore.getState();
         const remote = remoteData.timer;
-        if ((remote.updatedAt || 0) > (local.updatedAt || 0)) {
+        
+        // Smart Merge for Today Stats
+        let mergedStats = remote.todayStats;
+        if (local.todayStats.lastUpdatedDate === remote.todayStats.lastUpdatedDate) {
+            if (local.todayStats.totalFocusTime > remote.todayStats.totalFocusTime) {
+                mergedStats = local.todayStats;
+            }
+        }
+        
+        // If remote is newer OR remote has more progress on same day
+        if ((remote.updatedAt || 0) > (local.updatedAt || 0) || 
+           (remote.todayStats.lastUpdatedDate === local.todayStats.lastUpdatedDate && 
+            remote.todayStats.totalFocusTime > local.todayStats.totalFocusTime)) {
+            
             useTimerStore.setState({
-                todayStats: remote.todayStats,
-                sessionHistory: remote.sessionHistory,
-                config: remote.config,
-                updatedAt: remote.updatedAt
+                todayStats: mergedStats,
+                sessionHistory: remote.sessionHistory, // History is harder to merge, sticking to latest for list
+                config: remote.config, // Prefer latest config
+                updatedAt: Math.max(remote.updatedAt || 0, Date.now())
             });
         }
       }
