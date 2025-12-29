@@ -14,6 +14,8 @@ import { useSyncStore } from '../store/useSyncStore';
 import { generateDeterministicSyncId, generateRandomSyncId, getLegacySubjectKey, getLegacyTopicKey } from '../utils/syncUtils';
 import { initializePresetSubjects } from '../utils/initializePresetSubjects';
 import api from './api';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
@@ -189,7 +191,7 @@ export const syncService = {
           return;
       }
 
-      await api.post('/sync/backup', data);
+      await api.post('sync/backup', data);
       useSyncStore.getState().setLastSyncTime(Date.now());
       console.log(`✅ Sync service: BACKUP SUCCESS (${data.subjects.length} user subjects, ${data.topics.length} user topics)`);
     } catch (err) {
@@ -217,7 +219,7 @@ export const syncService = {
     try {
       this._isSyncing = true;
       useSyncStore.getState().setSyncing(true);
-      const response = await api.get('/sync/restore');
+      const response = await api.get('sync/restore');
       const remoteData = response.data;
 
       if (!remoteData) return;
@@ -911,6 +913,25 @@ export const syncService = {
 
   initAutoSync(intervalSeconds = 5) {
     const interval = intervalSeconds * 1000;
+    
+    // Web: Visibility and Focus listeners
+    if (!Capacitor.isNativePlatform()) {
+        window.addEventListener('focus', () => this.restore());
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') this.restore();
+        });
+    }
+
+    // Native: Capacitor App Lifecycle listeners
+    if (Capacitor.isNativePlatform()) {
+        App.addListener('appStateChange', ({ isActive }) => {
+            if (isActive) {
+                console.log('📱 App resumed: Triggering mobile sync');
+                this.restore();
+            }
+        });
+    }
+
     setInterval(async () => {
       const { isAuthenticated, user } = useAuthStore.getState();
       if (isAuthenticated && user && !this._isPaused) {
