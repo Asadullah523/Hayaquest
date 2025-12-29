@@ -19,7 +19,9 @@ import { Capacitor } from '@capacitor/core';
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
-  return isAuthenticated && user ? user.email : 'guest';
+  if (!isAuthenticated || !user || !user.email) return 'guest';
+  // CRITICAL: Dexie queries are case-sensitive. Ensure consistency.
+  return user.email.toLowerCase().trim();
 };
 
 export const syncService = {
@@ -193,9 +195,11 @@ export const syncService = {
 
       await api.post('sync/backup', data);
       useSyncStore.getState().setLastSyncTime(Date.now());
+      useSyncStore.getState().setError(null); // Clear errors
       console.log(`✅ Sync service: BACKUP SUCCESS (${data.subjects.length} user subjects, ${data.topics.length} user topics)`);
-    } catch (err) {
-      useSyncStore.getState().setError('Backup failed');
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.message || 'Backup failed';
+      useSyncStore.getState().setError(`Backup failed: ${msg}`);
       console.error('Sync service: BACKUP FAILED', err);
     } finally {
       this._isSyncing = false;
@@ -203,26 +207,49 @@ export const syncService = {
     }
   },
 
-  async restore() {
+  async restore(force = false) {
     if (this._isSyncing || this._isPaused) return;
     
     // Don't restore if we just had a local update (within 10 seconds)
-    // This gives the backup enough time to propagation
-    if (Date.now() - this._lastLocalUpdate < 10000) {
+    // UNLESS it's a forced restore (like initial app load or manual sync)
+    if (!force && Date.now() - this._lastLocalUpdate < 10000) {
       console.log('Sync: Skipping restore (Recent local update)');
       return;
     }
 
     const userId = getCurrentUserId();
-    if (userId === 'guest') return; // Don't cloud sync guests
+    if (userId === 'guest') {
+      console.log('Sync: Skipping restore (Guest user)');
+      return;
+    }
+
+    console.log(`🔄 Sync: Starting restore for ${userId} (force=${force})`);
 
     try {
       this._isSyncing = true;
       useSyncStore.getState().setSyncing(true);
+      
       const response = await api.get('sync/restore');
       const remoteData = response.data;
 
-      if (!remoteData) return;
+      if (!remoteData) {
+        console.log('Sync: No remote data found');
+        useSyncStore.getState().setError('No cloud data found');
+        return;
+      }
+
+      // Check for account mismatch if payload has a record
+      if (remoteData.user?.email && remoteData.user.email.toLowerCase() !== userId) {
+          console.warn('Sync: account mismatch!', { remote: remoteData.user.email, local: userId });
+          useSyncStore.getState().setError('Account mismatch between devices');
+          return;
+      }
+
+      console.log('Sync: Remote data received:', {
+        subjects: remoteData.subjects?.length || 0,
+        topics: remoteData.topics?.length || 0,
+        logs: remoteData.logs?.length || 0
+      });
 
       // Migration phase removed: Presets are now part of the global cloud state to sync progress.
 
@@ -582,19 +609,21 @@ export const syncService = {
       // CRITICAL: Ensure structural integrity after restore
       // If any preset subjects were lost or have invalid parentIds, this recreates them
       try {
+          console.log('Sync: Running post-restore structural check...');
           const { initializePresetSubjects } = await import('../utils/initializePresetSubjects');
           await initializePresetSubjects();
-          // Reload stores after structural fix
+          
+          // Reload stores after structural fix to ensure UI has mapped IDs
           await Promise.all([
               useSubjectStore.getState().loadSubjects(),
-              useSubjectStore.getState().loadAllTopics()
+              useSubjectStore.getState().loadAllTopics(),
+              useLogStore.getState().loadAllLogs(),
+              useTimetableStore.getState().loadTimetable()
           ]);
+          console.log('Sync: Restore and mapping completed successfully');
       } catch (err) {
           console.error('Post-restore re-initialization failed:', err);
       }
-
-      await useLogStore.getState().loadAllLogs();
-      await useTimetableStore.getState().loadTimetable();
 
       // Restore Timetable Completions (ID Remapping Required)
       if (remoteData.timetableStore && remoteData.timetableStore.completedSlots) {
@@ -646,16 +675,18 @@ export const syncService = {
           console.log('ℹ️ Restore: No completedSlots found in remote backup.');
       }
 
+      useSyncStore.getState().setError(null);
       useSyncStore.getState().setLastSyncTime(Date.now());
-      console.log('Restore successful');
+      console.log('Sync: Restore successful');
     } catch (err: any) {
-      useSyncStore.getState().setError('Restore failed');
       if (err.response?.status === 404) {
         console.log('No backup found in cloud, skipping restore');
+        useSyncStore.getState().setError('No cloud data found');
         return;
       }
+      const msg = err.response?.data?.message || err.message || 'Restore failed';
+      useSyncStore.getState().setError(`Restore failed: ${msg}`);
       console.error('Restore failed', err);
-      throw err;
     } finally {
       this._isSyncing = false;
       useSyncStore.getState().setSyncing(false);
