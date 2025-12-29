@@ -7,17 +7,14 @@ const isNative = Capacitor.isNativePlatform();
 // Allow user to override the API URL (stored in localStorage)
 const getBaseUrl = () => {
     const custom = localStorage.getItem('custom_api_url');
-    const cleanCustom = custom ? custom.replace(/\/$/, "") : null;
-    if (cleanCustom) return `${cleanCustom}/api`;
+    if (custom) return `${custom}/api`;
     
     // Default fallback
     // For Native App: Connect directly to the Vercel Backend
-    // CRITICAL: Ensure this matches the standardized pathing without duplicate slashes
     const PROD_CLOUD_URL = 'https://hayaquest.vercel.app/api'; 
     
     // For Web: Use relative path (handled by Vercel/Vite proxy)
-    const baseUrl = isNative ? PROD_CLOUD_URL : '/api';
-    return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+    return isNative ? PROD_CLOUD_URL : '/api';
 };
 
 const api = axios.create({

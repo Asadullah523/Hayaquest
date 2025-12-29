@@ -33,9 +33,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     try {
       let res;
       if (isLogin) {
-        res = await api.post('auth/login', { email, password });
+        res = await api.post('/auth/login', { email, password });
       } else {
-        res = await api.post('auth/signup', { email, password, name });
+        res = await api.post('/auth/signup', { email, password, name });
       }
 
       // If we got here, auth was successful

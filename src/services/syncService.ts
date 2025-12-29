@@ -14,8 +14,6 @@ import { useSyncStore } from '../store/useSyncStore';
 import { generateDeterministicSyncId, generateRandomSyncId, getLegacySubjectKey, getLegacyTopicKey } from '../utils/syncUtils';
 import { initializePresetSubjects } from '../utils/initializePresetSubjects';
 import api from './api';
-import { App } from '@capacitor/app';
-import { Capacitor } from '@capacitor/core';
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
@@ -191,13 +189,11 @@ export const syncService = {
           return;
       }
 
-      await api.post('sync/backup', data);
+      await api.post('/sync/backup', data);
       useSyncStore.getState().setLastSyncTime(Date.now());
-      useSyncStore.getState().setError(null); // Clear errors
       console.log(`✅ Sync service: BACKUP SUCCESS (${data.subjects.length} user subjects, ${data.topics.length} user topics)`);
-    } catch (err: any) {
-      const msg = err.response?.data?.message || err.message || 'Backup failed';
-      useSyncStore.getState().setError(`Backup failed: ${msg}`);
+    } catch (err) {
+      useSyncStore.getState().setError('Backup failed');
       console.error('Sync service: BACKUP FAILED', err);
     } finally {
       this._isSyncing = false;
@@ -205,52 +201,26 @@ export const syncService = {
     }
   },
 
-  async restore(force = false) {
+  async restore() {
     if (this._isSyncing || this._isPaused) return;
     
     // Don't restore if we just had a local update (within 10 seconds)
-    // UNLESS it's a forced restore (like initial app load or manual sync)
-    if (!force && Date.now() - this._lastLocalUpdate < 10000) {
+    // This gives the backup enough time to propagation
+    if (Date.now() - this._lastLocalUpdate < 10000) {
       console.log('Sync: Skipping restore (Recent local update)');
       return;
     }
 
     const userId = getCurrentUserId();
-    if (userId === 'guest') {
-      console.log('Sync: Skipping restore (Guest user)');
-      return;
-    }
-
-    console.log(`🔄 Sync: Starting restore for ${userId} (force=${force})`);
+    if (userId === 'guest') return; // Don't cloud sync guests
 
     try {
       this._isSyncing = true;
       useSyncStore.getState().setSyncing(true);
-      
-      const response = await api.get('sync/restore');
+      const response = await api.get('/sync/restore');
       const remoteData = response.data;
 
-      if (!remoteData) {
-        console.log('Sync: No remote data found');
-        useSyncStore.getState().setError('No cloud data found');
-        return;
-      }
-
-      // Check for account mismatch if payload has a record
-      const remoteEmail = remoteData.user?.email?.toLowerCase();
-      const localEmail = userId?.toLowerCase();
-      
-      if (remoteEmail && localEmail && remoteEmail !== localEmail) {
-          console.warn('Sync: account mismatch!', { remote: remoteEmail, local: localEmail });
-          useSyncStore.getState().setError('Account mismatch between devices');
-          return;
-      }
-
-      console.log('Sync: Remote data received:', {
-        subjects: remoteData.subjects?.length || 0,
-        topics: remoteData.topics?.length || 0,
-        logs: remoteData.logs?.length || 0
-      });
+      if (!remoteData) return;
 
       // Migration phase removed: Presets are now part of the global cloud state to sync progress.
 
@@ -610,21 +580,19 @@ export const syncService = {
       // CRITICAL: Ensure structural integrity after restore
       // If any preset subjects were lost or have invalid parentIds, this recreates them
       try {
-          console.log('Sync: Running post-restore structural check...');
           const { initializePresetSubjects } = await import('../utils/initializePresetSubjects');
           await initializePresetSubjects();
-          
-          // Reload stores after structural fix to ensure UI has mapped IDs
+          // Reload stores after structural fix
           await Promise.all([
               useSubjectStore.getState().loadSubjects(),
-              useSubjectStore.getState().loadAllTopics(),
-              useLogStore.getState().loadAllLogs(),
-              useTimetableStore.getState().loadTimetable()
+              useSubjectStore.getState().loadAllTopics()
           ]);
-          console.log('Sync: Restore and mapping completed successfully');
       } catch (err) {
           console.error('Post-restore re-initialization failed:', err);
       }
+
+      await useLogStore.getState().loadAllLogs();
+      await useTimetableStore.getState().loadTimetable();
 
       // Restore Timetable Completions (ID Remapping Required)
       if (remoteData.timetableStore && remoteData.timetableStore.completedSlots) {
@@ -676,18 +644,16 @@ export const syncService = {
           console.log('ℹ️ Restore: No completedSlots found in remote backup.');
       }
 
-      useSyncStore.getState().setError(null);
       useSyncStore.getState().setLastSyncTime(Date.now());
-      console.log('Sync: Restore successful');
+      console.log('Restore successful');
     } catch (err: any) {
+      useSyncStore.getState().setError('Restore failed');
       if (err.response?.status === 404) {
         console.log('No backup found in cloud, skipping restore');
-        useSyncStore.getState().setError('No cloud data found');
         return;
       }
-      const msg = err.response?.data?.message || err.message || 'Restore failed';
-      useSyncStore.getState().setError(`Restore failed: ${msg}`);
       console.error('Restore failed', err);
+      throw err;
     } finally {
       this._isSyncing = false;
       useSyncStore.getState().setSyncing(false);
@@ -696,7 +662,7 @@ export const syncService = {
 
   async clearCloudData(lastResetAt?: number) {
     try {
-      await api.delete('sync/reset', { data: { lastResetAt } } as any);
+      await api.delete('/sync/reset', { data: { lastResetAt } } as any);
       console.log('Cloud data cleared');
     } catch (err) {
       console.error('Failed to clear cloud data', err);
@@ -945,25 +911,6 @@ export const syncService = {
 
   initAutoSync(intervalSeconds = 5) {
     const interval = intervalSeconds * 1000;
-    
-    // Web: Visibility and Focus listeners
-    if (!Capacitor.isNativePlatform()) {
-        window.addEventListener('focus', () => this.restore());
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') this.restore();
-        });
-    }
-
-    // Native: Capacitor App Lifecycle listeners
-    if (Capacitor.isNativePlatform()) {
-        App.addListener('appStateChange', ({ isActive }) => {
-            if (isActive) {
-                console.log('📱 App resumed: Triggering mobile sync');
-                this.restore();
-            }
-        });
-    }
-
     setInterval(async () => {
       const { isAuthenticated, user } = useAuthStore.getState();
       if (isAuthenticated && user && !this._isPaused) {

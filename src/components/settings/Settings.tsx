@@ -795,13 +795,6 @@ export const Settings: React.FC = () => {
                                   {hasGuestData && <span className="text-amber-400/80 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 sm:bg-transparent sm:border-none sm:p-0">Guest Data Found</span>}
                               </div>
                           )}
-
-                          {isAuthenticated && syncStatus.error && (
-                              <div className="mt-2 text-[10px] font-bold text-red-400 bg-red-500/10 px-3 py-2 rounded-xl border border-red-500/20 flex items-center gap-2">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                                  <span>{syncStatus.error}</span>
-                              </div>
-                          )}
                       </div>
                   </div>
 

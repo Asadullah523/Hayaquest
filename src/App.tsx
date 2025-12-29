@@ -58,6 +58,8 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    let focusListener: (() => void) | null = null;
+    
     const bootstrap = async () => {
       setIsReady(false);
       try {
@@ -76,11 +78,22 @@ const App = () => {
         // 4. Cloud Restore on Login
         if (isAuthenticated) {
           try {
-            console.log('🚀 App: Triggering INITIAL FORCED RESTORE after login');
-            await syncService.restore(true);
+            await syncService.restore();
           } catch (err) {
             console.error('Initial restore failed:', err);
           }
+          
+          // 5. Add focus and visibility listeners for active users
+          const handleFocus = async () => {
+             if (useAuthStore.getState().isAuthenticated) {
+               syncService.restore().catch(err => console.error('Focus sync failed', err));
+             }
+          };
+          window.addEventListener('focus', handleFocus);
+          window.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') handleFocus();
+          });
+          focusListener = handleFocus;
         }
       } catch (error) {
         console.error("Failed to bootstrap application:", error);
@@ -92,6 +105,10 @@ const App = () => {
     };
 
     bootstrap();
+
+    return () => {
+      if (focusListener) window.removeEventListener('focus', focusListener);
+    };
   }, [loadSubjects, loadAllTopics, isAuthenticated, user?.email]);
 
 
