@@ -55,12 +55,9 @@ export const syncService = {
             if (type === 'subject' && item.isPreset) {
                 // Hierarchical reconstruction for Presets
                 if (!item.parentId || item.parentId === 0) {
-                    const name = item.name.toLowerCase();
-                    const prefix = name.includes('imat') ? 'imat' : 
-                                 name.includes('mdcat') ? 'mdcat' : 
-                                 name.includes('biology') ? 'biology' :
-                                 name.includes('chemistry') ? 'chemistry' :
-                                 name.includes('physics') ? 'physics' : 'custom';
+                    // FIX: Use dynamic name instead of hardcoded list to prevent collisions
+                    // e.g. "Mathematics" -> "mathematics", "Logic" -> "logic"
+                    const prefix = normalizeName(item.name).replace(/ /g, '_');
                     syncId = generateDeterministicSyncId('subject', prefix);
                 } else {
                     // It's a child. Try to find the parent to build the path
