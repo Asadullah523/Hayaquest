@@ -16,7 +16,8 @@ const getBaseUrl = () => {
     const PROD_CLOUD_URL = 'https://hayaquest.vercel.app/api'; 
     
     // For Web: Use relative path (handled by Vercel/Vite proxy)
-    return (isNative ? PROD_CLOUD_URL : '/api').replace(/\/$/, "");
+    const baseUrl = isNative ? PROD_CLOUD_URL : '/api';
+    return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
 };
 
 const api = axios.create({

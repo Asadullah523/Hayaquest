@@ -19,8 +19,7 @@ let isInitializing = false;
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
-  if (!isAuthenticated || !user || !user.email) return 'guest';
-  return user.email.toLowerCase().trim();
+  return isAuthenticated && user ? user.email : 'guest';
 };
 
 export async function initializePresetSubjects(): Promise<void> {

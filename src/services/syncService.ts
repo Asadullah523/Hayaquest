@@ -19,9 +19,7 @@ import { Capacitor } from '@capacitor/core';
 
 const getCurrentUserId = () => {
   const { user, isAuthenticated } = useAuthStore.getState();
-  if (!isAuthenticated || !user || !user.email) return 'guest';
-  // CRITICAL: Dexie queries are case-sensitive. Ensure consistency.
-  return user.email.toLowerCase().trim();
+  return isAuthenticated && user ? user.email : 'guest';
 };
 
 export const syncService = {
@@ -239,8 +237,11 @@ export const syncService = {
       }
 
       // Check for account mismatch if payload has a record
-      if (remoteData.user?.email && remoteData.user.email.toLowerCase() !== userId) {
-          console.warn('Sync: account mismatch!', { remote: remoteData.user.email, local: userId });
+      const remoteEmail = remoteData.user?.email?.toLowerCase();
+      const localEmail = userId?.toLowerCase();
+      
+      if (remoteEmail && localEmail && remoteEmail !== localEmail) {
+          console.warn('Sync: account mismatch!', { remote: remoteEmail, local: localEmail });
           useSyncStore.getState().setError('Account mismatch between devices');
           return;
       }
@@ -695,7 +696,7 @@ export const syncService = {
 
   async clearCloudData(lastResetAt?: number) {
     try {
-      await api.delete('/sync/reset', { data: { lastResetAt } } as any);
+      await api.delete('sync/reset', { data: { lastResetAt } } as any);
       console.log('Cloud data cleared');
     } catch (err) {
       console.error('Failed to clear cloud data', err);
