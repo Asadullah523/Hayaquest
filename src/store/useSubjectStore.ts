@@ -141,6 +141,12 @@ export const useSubjectStore = create<SubjectState>((set) => ({
 
   deleteSubject: async (id) => {
     try {
+      const subject = await db.subjects.get(id);
+      if (subject?.isPreset) {
+        console.warn('Cannot delete preset subject');
+        return;
+      }
+
       await db.subjects.delete(id);
       // Also delete related topics? Optional for now, but good practice.
       // await db.topics.where('subjectId').equals(id).delete(); 

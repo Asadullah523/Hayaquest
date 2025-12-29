@@ -286,14 +286,16 @@ const SubjectDetailContent: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="md:hidden ml-auto">
-                        <button 
-                            onClick={handleDeleteSubject}
-                            className="p-1.5 rounded-full hover:bg-red-500/10 transition-colors"
-                        >
-                            <Trash2 size={18} className="text-[#b8a594]/50 hover:text-red-500" />
-                        </button>
-                    </div>
+                    {!subject?.isPreset && (
+                        <div className="md:hidden ml-auto">
+                            <button 
+                                onClick={handleDeleteSubject}
+                                className="p-1.5 rounded-full hover:bg-red-500/10 transition-colors"
+                            >
+                                <Trash2 size={18} className="text-[#b8a594]/50 hover:text-red-500" />
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {/* Main Progress Widget */}
@@ -321,15 +323,17 @@ const SubjectDetailContent: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="hidden md:block">
-                    <button 
-                        onClick={handleDeleteSubject}
-                        className="group relative p-2 rounded-full hover:bg-red-500/10 transition-all duration-300"
-                        title="Burn Book"
-                    >
-                        <Trash2 size={20} className="text-[#b8a594] group-hover:text-red-500 transition-colors" />
-                    </button>
-                </div>
+                {!subject?.isPreset && (
+                    <div className="hidden md:block">
+                        <button 
+                            onClick={handleDeleteSubject}
+                            className="group relative p-2 rounded-full hover:bg-red-500/10 transition-all duration-300"
+                            title="Burn Book"
+                        >
+                            <Trash2 size={20} className="text-[#b8a594] group-hover:text-red-500 transition-colors" />
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

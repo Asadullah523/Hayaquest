@@ -266,9 +266,11 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ subject, onClick }) =>
                                <button onClick={handleEdit} className="relative z-10 w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-[#e3d09f] flex items-center gap-2 border-b border-[#8b5a2b]/10">
                                    <Edit2 size={10} className="sm:w-3 sm:h-3" /> Edit
                                </button>
-                               <button onClick={handleDelete} className="relative z-10 w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-[#e3d09f] flex items-center gap-2 text-red-800">
-                                   <Trash2 size={10} className="sm:w-3 sm:h-3" /> Burn
-                               </button>
+                               {!subject.isPreset && (
+                                   <button onClick={handleDelete} className="relative z-10 w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-[#e3d09f] flex items-center gap-2 text-red-800">
+                                       <Trash2 size={10} className="sm:w-3 sm:h-3" /> Burn
+                                   </button>
+                               )}
                            </div>
                        )}
                    </div>
