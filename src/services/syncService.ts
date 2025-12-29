@@ -12,6 +12,7 @@ import { useLogStore } from '../store/useLogStore';
 import { useTimetableStore } from '../store/useTimetableStore';
 import { useSyncStore } from '../store/useSyncStore';
 import { generateDeterministicSyncId, generateRandomSyncId, getLegacySubjectKey, getLegacyTopicKey } from '../utils/syncUtils';
+import { initializePresetSubjects } from '../utils/initializePresetSubjects';
 import api from './api';
 
 const getCurrentUserId = () => {
@@ -203,8 +204,10 @@ export const syncService = {
   async restore() {
     if (this._isSyncing || this._isPaused) return;
     
-    // Don't restore if we just had a local update (within 2 seconds) 
-    if (Date.now() - this._lastLocalUpdate < 2000) {
+    // Don't restore if we just had a local update (within 10 seconds)
+    // This gives the backup enough time to propagation
+    if (Date.now() - this._lastLocalUpdate < 10000) {
+      console.log('Sync: Skipping restore (Recent local update)');
       return;
     }
 
@@ -259,7 +262,6 @@ export const syncService = {
         const remoteSubjects = remoteData.subjects || [];
         const syncIdToLocalSubjectId = new Map<string, number>();
         
-
         // Build existing map and legacy map
         localSubjects.forEach(s => { 
             if (s.syncId) syncIdToLocalSubjectId.set(s.syncId, s.id!); 
@@ -453,13 +455,19 @@ export const syncService = {
             const protectedNames = ['IMAT Prep', 'MDCAT Prep', 'Biology', 'Chemistry', 'Physics', 'Mathematics', 'Math'];
             const toDelete = localItems
                 .filter(i => {
+                    // SAFETY: Don't delete items updated locally in the last 30 seconds
+                    // This prevents race conditions where a new local item hasn't reached cloud yet
+                    const isRecent = (i.updatedAt || 0) > (Date.now() - 30000);
                     const isProtected = i.isPreset || (table.name === 'subjects' && protectedNames.some(pn => normalizeName(i.name) === normalizeName(pn)));
+                    
+                    if (isRecent) return false;
+
                     return i.syncId && !isProtected && !remoteSyncIds.has(i.syncId);
                 })
                 .map(i => i.id);
                 
             if (toDelete.length > 0) {
-                console.log(`Sync Cleanup: Deleting ${toDelete.length} items from ${table.name}`);
+                console.warn(`🔥 Sync Cleanup: Deleting ${toDelete.length} items from ${table.name}`);
                 await table.bulkDelete(toDelete);
             }
         };
@@ -673,6 +681,72 @@ export const syncService = {
     ]);
   },
 
+  async previewMerge() {
+    const { user, isAuthenticated } = useAuthStore.getState();
+    if (!isAuthenticated || !user) return null;
+    
+    const userId = user.email;
+    const guestId = 'guest';
+
+    // Helper to calculate % for a user bucket
+    const calculateProgress = async (uid: string, subjectName: string) => {
+        // Find subject(s) matching name (handling duplicates/presets)
+        const allSubjects = await db.subjects.where('userId').equals(uid).toArray();
+        const targets = allSubjects.filter(s => normalizeName(s.name).includes(normalizeName(subjectName)));
+        
+        if (targets.length === 0) return 0;
+        
+        let totalTopics = 0;
+        let completedTopics = 0;
+        
+        for (const subj of targets) {
+            const topics = await db.topics.where('subjectId').equals(subj.id!).toArray();
+            totalTopics += topics.length;
+            completedTopics += topics.filter(t => t.isCompleted || t.status === 'completed').length;
+            
+            // Also check children
+            const children = allSubjects.filter(s => s.parentId === subj.id);
+            for (const child of children) {
+                const childTopics = await db.topics.where('subjectId').equals(child.id!).toArray();
+                totalTopics += childTopics.length;
+                completedTopics += childTopics.filter(t => t.isCompleted || t.status === 'completed').length;
+            }
+        }
+        
+        return totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
+    };
+
+    const coreSubjects = ['Biology', 'Chemistry', 'Physics', 'Mathematics', 'IMAT Prep', 'MDCAT Prep'];
+    const details = [];
+
+    for (const name of coreSubjects) {
+        const guestPct = await calculateProgress(guestId, name);
+        const userPct = await calculateProgress(userId, name);
+        
+        // Only include if there's a difference/progress
+        if (guestPct > 0 || userPct > 0) {
+            details.push({
+                name,
+                guest: guestPct,
+                user: userPct,
+                result: Math.max(guestPct, userPct)
+            });
+        }
+    }
+    
+    // Also count raw items
+    const guestTopics = await db.topics.where('userId').equals(guestId).count();
+    const guestLogs = await db.logs.where('userId').equals(guestId).count();
+
+    return {
+        details,
+        stats: {
+            topics: guestTopics,
+            logs: guestLogs
+        }
+    };
+  },
+
   async mergeGuestData() {
     const { user, isAuthenticated } = useAuthStore.getState();
     if (!isAuthenticated || !user) throw new Error('Must be logged in to merge data');
@@ -680,148 +754,186 @@ export const syncService = {
     const userId = user.email;
     const guestId = 'guest';
 
-    console.log(`🤝 Merging guest data into [${userId}]...`);
+    console.log(`🤝 Merging guest data into [${userId}] with MAX WINS logic...`);
+
+    // 0. ENSURE DESTINATION SUBJECTS EXIST
+    console.log('Merge: Initializing preset subjects for user...');
+    await initializePresetSubjects();
 
     await db.transaction('rw', [db.subjects, db.topics, db.logs, db.timetable, db.settings, db.resources], async () => {
-        // 1. SUBJECTS (Complex Merge) - SKIP PRESET SUBJECTS
+        // 1. SUBJECTS MAPPING
         const guestSubjects = await db.subjects.where('userId').equals(guestId).toArray();
         const userSubjects = await db.subjects.where('userId').equals(userId).toArray();
-        
-
         
         const subjectMap = new Map<string, number>(); // key: parentId-name, value: userId-id
         userSubjects.forEach(s => subjectMap.set(`${s.parentId || 0}-${normalizeName(s.name)}`, s.id!));
 
         const guestToUserSubjectIdMap = new Map<number, number>();
         
-        console.log(`🤝 Merge: Mapping ${guestSubjects.length} guest subjects into [${userId}]`);
-
         for (const gs of guestSubjects) {
+            // Logic to match preset or custom subjects
             const key = `${gs.parentId || 0}-${normalizeName(gs.name)}`;
             const existingId = subjectMap.get(key);
             
             if (existingId) {
-                console.log(`🤝 Merge: Subject [${gs.name}] matched. Mapping ID ${gs.id} -> ${existingId}`);
                 guestToUserSubjectIdMap.set(gs.id!, existingId);
-                // Update local update time to ensure it syncs
-                await db.subjects.update(existingId, { updatedAt: Date.now() });
             } else if (!gs.isPreset) {
-                // Only add if it's NOT a preset and doesn't exist. 
-                // Missing presets will be handled by initializePresetSubjects after merge.
+                // Create missing CUSTOM subject
                 const { id: oldId, ...data } = gs;
                 const newId = await db.subjects.add({ ...data, userId, updatedAt: Date.now() }) as number;
                 guestToUserSubjectIdMap.set(oldId!, newId);
                 subjectMap.set(key, newId);
             }
+             // Presets are now guaranteed to exist due to Step 0
         }
 
-        // 2. TOPICS (Deduplicate by name + subjectId)
+        // 2. TOPICS (MAX WINS LOGIC)
         const guestTopics = await db.topics.where('userId').equals(guestId).toArray();
         const userTopics = await db.topics.where('userId').equals(userId).toArray();
         
-        const topicMap = new Map<string, number>(); // key: subjectId-name
-        userTopics.forEach(t => topicMap.set(`${t.subjectId}-${normalizeName(t.name)}`, t.id!));
+        const topicMap = new Map<string, any>(); // key: subjectId-name -> Topic
+        userTopics.forEach(t => topicMap.set(`${t.subjectId}-${normalizeName(t.name)}`, t));
 
         for (const gt of guestTopics) {
             const newUserSubjectId = guestToUserSubjectIdMap.get(gt.subjectId);
-            if (!newUserSubjectId) continue;
+            
+            // If we can't map the subject ID, try finding it by Name/Legacy Key since initPresets ran
+            let targetSubjectId = newUserSubjectId;
+            if (!targetSubjectId) {
+                 const guestSubject = guestSubjects.find(s => s.id === gt.subjectId);
+                 if (guestSubject) {
+                     const key = `${guestSubject.parentId || 0}-${normalizeName(guestSubject.name)}`;
+                     const mappedId = subjectMap.get(key);
+                     if (mappedId) targetSubjectId = mappedId;
+                 }
+            }
 
-            const key = `${newUserSubjectId}-${normalizeName(gt.name)}`;
-            const existingTopicId = topicMap.get(key);
+            if (!targetSubjectId) continue;
 
-            if (existingTopicId) {
-                // Merge progress if guest topic is completed
-                if (gt.status === 'completed' || gt.isCompleted) {
-                    await db.topics.update(existingTopicId, { 
+            const key = `${targetSubjectId}-${normalizeName(gt.name)}`;
+            const existingTopic = topicMap.get(key);
+
+            if (existingTopic) {
+                // MAX WINS: If guest is done but user isn't, mark user as done.
+                if ((gt.isCompleted || gt.status === 'completed') && !existingTopic.isCompleted) {
+                    await db.topics.update(existingTopic.id!, { 
                         status: 'completed', 
                         isCompleted: true,
                         updatedAt: Date.now()
                     });
                 }
             } else {
+                // New topic from guest
                 const { id, ...data } = gt;
-                await db.topics.add({ ...data, subjectId: newUserSubjectId, userId, updatedAt: Date.now() });
+                await db.topics.add({ ...data, subjectId: targetSubjectId, userId, updatedAt: Date.now() });
             }
         }
 
-        // 3. LOGS, TIMETABLE, SETTINGS, RESOURCES (Simple Move/Update)
-        const otherTables: any[] = [db.logs, db.timetable, db.settings, db.resources];
-        for (const table of otherTables) {
+        // 3. LOGS & TIMETABLE (Append)
+        const tables: any[] = [db.logs, db.timetable, db.settings, db.resources];
+        for (const table of tables) {
             const guestItems = await table.where('userId').equals(guestId).toArray();
             for (const item of guestItems) {
                 const { id, ...data } = item;
-                // If it's a log, we need to map the subjectId
                 let newData = { ...data, userId, updatedAt: Date.now() };
+                
                 if (table === db.logs && data.subjectId) {
-                    newData.subjectId = guestToUserSubjectIdMap.get(data.subjectId) || data.subjectId;
+                     // Remap subject ID logic
+                    let mapped = guestToUserSubjectIdMap.get(data.subjectId);
+                    if (!mapped) {
+                         // Try fallback lookup
+                         const guestSubject = guestSubjects.find(s => s.id === data.subjectId);
+                         if (guestSubject) {
+                             const key = `${guestSubject.parentId || 0}-${normalizeName(guestSubject.name)}`;
+                             mapped = subjectMap.get(key);
+                         }
+                    }
+                    if (mapped) newData.subjectId = mapped;
+                    else continue; 
                 }
+                 // Avoid duplicating logs? For now append is safer than complex dedupe
                 await table.add(newData);
             }
         }
-
-        // REMOVED: Wipe guest bucket
-        // We now PRESERVE guest data after merge so users can:
-        // 1. Continue using guest mode if needed
-        // 2. Avoid data loss if something goes wrong
-        // Guest and logged-in data are separate buckets anyway
     });
 
-    // 4. MERGE localStorage quiz progress with MAX strategy
-    // Quiz completion is stored in localStorage (GLOBAL, not user-specific):
-    // - quiz_completed_{paperId}: Paper fully completed flag  
-    // - quiz_progress_{paperId}: Current progress (JSON with score, answers, etc.)
-    //
-    // CRITICAL: localStorage is SHARED between guest and logged-in user!
-    // When user logs in, the quiz data is still there from guest mode.
-    // We just need to ensure it's backed up to cloud.
-    
-    console.log('🔄 Preserving quiz progress in cloud backup...');
-    
-    // Count quiz items in localStorage
-    let quizItemCount = 0;
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && (key.startsWith('quiz_completed_') || key.startsWith('quiz_progress_'))) {
-            quizItemCount++;
+    // 4. MERGE STATS (Max Wins) - Update Zustand Stores
+    try {
+        const guestGamification = JSON.parse(localStorage.getItem('gamification-storage') || '{}')?.state;
+        if (guestGamification) {
+            const current = useGamificationStore.getState();
+            // Max XP/Level wins
+            if ((guestGamification.xp || 0) > current.xp) {
+                useGamificationStore.setState({
+                    xp: guestGamification.xp,
+                    level: guestGamification.level,
+                    unlockedBadges: [...new Set([...current.unlockedBadges, ...(guestGamification.unlockedBadges || [])])],
+                    updatedAt: Date.now()
+                });
+            }
         }
-    }
-    
-    console.log(`✅ Found ${quizItemCount} quiz items to preserve.`);
-    
-    // Since localStorage is already shared, all guest quiz data is available
-    // to the logged-in user. We just need to back it up to cloud.
-    await this.backup();
 
-    console.log('🤝 Guest data merged successfully (quiz progress preserved in cloud).');
+        const guestTimer = JSON.parse(localStorage.getItem('timer-storage') || '{}')?.state;
+        if (guestTimer) {
+             const current = useTimerStore.getState();
+             // Merge history? Or just keep max stats?
+             // Let's keep session history from both if possible, or just append guest to current
+             const mergedHistory = [...current.sessionHistory, ...(guestTimer.sessionHistory || [])];
+             // Dedupe by timestamp if needed, but low risk
+             useTimerStore.setState({
+                 sessionHistory: mergedHistory,
+                 todayStats: (guestTimer.todayStats?.totalFocusTime || 0) > current.todayStats.totalFocusTime ? guestTimer.todayStats : current.todayStats,
+                 updatedAt: Date.now()
+             });
+        }
+    } catch (err) {
+        console.error('Error merging store stats:', err);
+    }
+
+    // 5. RELOAD ALL STORES TO INJECT MERGED DATA (Hot Reload)
+    // This makes the UI update immediately without a refresh, and ensures backup() sees the new DB data
+    console.log('🔄 Hot-reloading application state...');
+    await Promise.all([
+        useSubjectStore.getState().loadSubjects(),
+        useSubjectStore.getState().loadAllTopics(),
+        useLogStore.getState().loadAllLogs(),
+        useTimetableStore.getState().loadTimetable()
+    ]);
+
+    // 6. Preserver Quiz Progress (LocalStorage)
+    // Already handled by backup() call below which reads all localStorage
+    
+    console.log('🔄 Triggering cloud backup of merged data...');
+    await this.backup(); // Pushes the merged state to cloud
+
+    console.log('🤝 Guest data merged successfully.');
   },
 
   initAutoSync(intervalSeconds = 5) {
     const interval = intervalSeconds * 1000;
     setInterval(async () => {
-      const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated && !this._isSyncing && !this._isPaused) {
-        try {
-          // PULL-ONLY LOOP: We only fetch updates.
-          // We rely on triggerAutoBackup() to PUSH changes when they happen.
-          // This prevents the "stale overwrite" bug where an idle browser pushes old data 
-          // before receiving new data.
-          await this.restore();
-        } catch (err) {
-          console.error('Auto-sync failed', err);
+      const { isAuthenticated, user } = useAuthStore.getState();
+      if (isAuthenticated && user && !this._isPaused) {
+        if (!document.hidden) {
+            // PULL FIRST strategy: Always restore before assuming local state is authority
+            await this.restore();
+            // We removed automatic backup() from here to prevent stale overwrites.
+            // Backup is now trigger-based (on interactions).
         }
       }
     }, interval);
+    console.log(`Sync service: Auto-sync started (${intervalSeconds}s interval, PULL-FIRST)`);
   },
-
-  _backupTimeout: null as any,
+  
+  // Public method to force a backup (e.g. after critical user action)
   triggerAutoBackup() {
-    this._lastLocalUpdate = Date.now();
-    if (this._backupTimeout) clearTimeout(this._backupTimeout);
-    this._backupTimeout = setTimeout(() => {
-      const { isAuthenticated } = useAuthStore.getState();
-      if (isAuthenticated && !this._isPaused) {
-        this.backup().catch(console.error);
+      if (!this._isPaused && !this._isSyncing) {
+          // Debounce slightly to avoid hammering and PROTECT against immediate restore overwrites
+          if (this._lastLocalUpdate && Date.now() - this._lastLocalUpdate < 10000) return;
+          
+          this._lastLocalUpdate = Date.now();
+          console.log('⚡ Triggering auto-backup...');
+          this.backup();
       }
-    }, 1000); // Reduced to 1 second for "Mirror" effect
   }
 };

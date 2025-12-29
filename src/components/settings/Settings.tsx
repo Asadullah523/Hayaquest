@@ -9,7 +9,7 @@ import { LoginModal } from '../auth/LoginModal';
 import { LogoutConfirmModal } from '../auth/LogoutConfirmModal';
 import { syncService } from '../../services/syncService';
 import clsx from 'clsx';
-import { Cloud, LogOut, LogIn, RefreshCw } from 'lucide-react';
+import { Cloud, LogOut, RefreshCw, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../services/api';
 import { useSyncStore } from '../../store/useSyncStore';
@@ -23,26 +23,16 @@ export const Settings: React.FC = () => {
   const { status: syncStatus } = useSyncStore();
   const [hasGuestData, setHasGuestData] = useState(false);
   const [showMergeConfirm, setShowMergeConfirm] = useState(false);
-  const [guestStats, setGuestStats] = useState({ subjects: 0, topics: 0, logs: 0 });
+  const [previewStats, setPreviewStats] = useState<any>(null);
 
   // Detect guest data for merging
   React.useEffect(() => {
     const checkGuestData = async () => {
         try {
-            const allSubjects = await db.subjects.where('userId').equals('guest').toArray();
-            // Count custom subjects OR preset subjects with non-zero progress/logs
-            const topics = await db.topics.where('userId').equals('guest').toArray();
-            const logs = await db.logs.where('userId').equals('guest').toArray();
-            
-            const hasData = allSubjects.length > 0 || topics.length > 0 || logs.length > 0;
-            
-            if (hasData) {
+            const preview = await syncService.previewMerge();
+            if (preview && (preview.details.length > 0 || preview.stats.topics > 0)) {
                 setHasGuestData(true);
-                setGuestStats({
-                    subjects: allSubjects.filter(s => !s.isPreset).length,
-                    topics: topics.length,
-                    logs: logs.length
-                });
+                setPreviewStats(preview);
             } else {
                 setHasGuestData(false);
             }
@@ -169,12 +159,8 @@ export const Settings: React.FC = () => {
     try {
         await syncService.mergeGuestData();
         
-        // CRITICAL: Re-initialize preset subjects for logged-in user
-        const { initializePresetSubjects } = await import('../../utils/initializePresetSubjects');
-        await initializePresetSubjects();
-        
         setHasGuestData(false);
-        setStatus({ type: 'success', message: 'Local progress merged successfully!' });
+        setStatus({ type: 'success', message: 'Smart Merge complete! Best progress saved.' });
         setTimeout(() => window.location.reload(), 2000);
     } catch (err) {
         console.error(err);
@@ -226,6 +212,7 @@ export const Settings: React.FC = () => {
                   topics,
                   logs,
                   timetable,
+                  
               },
               localStorage: localStorageData,
           };
@@ -716,41 +703,41 @@ export const Settings: React.FC = () => {
               <button 
                 onClick={handleExportData}
                 disabled={status.type === 'loading'}
-                className="relative group flex flex-col items-center justify-center p-3 sm:p-5 bg-white dark:bg-slate-800/50 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all disabled:opacity-50 overflow-hidden"
+                className="relative group flex flex-col items-center justify-center p-2 sm:p-5 bg-white dark:bg-slate-800/50 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all disabled:opacity-50 overflow-hidden"
               >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-2 group-hover:scale-110 transition-transform">
-                    <Download size={18} className="sm:w-5 sm:h-5" />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-1.5 sm:mb-2 group-hover:scale-110 transition-transform">
+                    <Download size={16} className="sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-[10px] sm:text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight sm:tracking-widest">Backup</span>
+                  <span className="text-[9px] sm:text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight sm:tracking-widest">Backup</span>
               </button>
 
               {/* Local Restore Box */}
               <label 
                 className={clsx(
-                    "relative group flex flex-col items-center justify-center p-3 sm:p-5 bg-white dark:bg-slate-800/50 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all cursor-pointer overflow-hidden",
+                    "relative group flex flex-col items-center justify-center p-2 sm:p-5 bg-white dark:bg-slate-800/50 rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all cursor-pointer overflow-hidden",
                     status.type === 'loading' && "opacity-50 pointer-events-none"
                 )}
               >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-2 group-hover:scale-110 transition-transform">
-                    <Upload size={18} className="sm:w-5 sm:h-5" />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-1.5 sm:mb-2 group-hover:scale-110 transition-transform">
+                    <Upload size={16} className="sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-[10px] sm:text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight sm:tracking-widest">Restore</span>
+                  <span className="text-[9px] sm:text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight sm:tracking-widest">Restore</span>
                   <input type="file" accept=".json" onChange={onFileSelect} className="hidden" onClick={(e) => (e.currentTarget.value = '')} />
               </label>
 
               {/* Drive Backup Box */}
               <button 
                 onClick={() => setStatus({ type: 'error', message: 'Google Drive integration is currently in preview.' })}
-                className="relative group flex flex-col items-center justify-center p-3 sm:p-5 bg-gradient-to-br from-blue-50 to-emerald-50 dark:from-blue-900/10 dark:to-emerald-900/10 rounded-2xl sm:rounded-3xl border border-blue-100 dark:border-blue-900/30 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 transition-all overflow-hidden"
+                className="relative group flex flex-col items-center justify-center p-2 sm:p-5 bg-gradient-to-br from-blue-50 to-emerald-50 dark:from-blue-900/10 dark:to-emerald-900/10 rounded-2xl sm:rounded-3xl border border-blue-100 dark:border-blue-900/30 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 transition-all overflow-hidden"
               >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-slate-900 shadow-md flex items-center justify-center text-blue-500 mb-2 group-hover:rotate-12 transition-transform">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="sm:w-5 sm:h-5">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-slate-900 shadow-md flex items-center justify-center text-blue-500 mb-1.5 sm:mb-2 group-hover:rotate-12 transition-transform">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" className="sm:w-5 sm:h-5">
                         <path d="M7.71,3.5L1.15,15L4.58,21L11.13,9.5L7.71,3.5Z" fill="#0066DA" />
                         <path d="M16.19,3.5L9.63,15L13.06,21L19.62,9.5L16.19,3.5Z" fill="#00AC47" />
                         <path d="M12.87,9L9.44,15L16,15L19.43,9L12.87,9Z" fill="#F8B600" />
                     </svg>
                   </div>
-                  <span className="text-[10px] sm:text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight sm:tracking-widest">Drive</span>
+                  <span className="text-[9px] sm:text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight sm:tracking-widest">Drive</span>
               </button>
           </div>
 
@@ -759,185 +746,209 @@ export const Settings: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-8"
           >
-              <div className="relative overflow-hidden bg-slate-900 dark:bg-black rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 text-white border border-white/10 shadow-2xl">
+              <div className="relative overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-900 to-black rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-8 text-white border border-white/10 shadow-2xl">
                   {/* Background Decoration */}
-                  <div className="absolute top-[-20%] right-[-10%] w-[300px] h-[300px] bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
+                  <div className="absolute top-[-20%] right-[-10%] w-[300px] h-[300px] bg-indigo-500/20 blur-[100px] rounded-full pointer-events-none" />
+                  <div className="absolute bottom-[-10%] left-[-10%] w-[200px] h-[200px] bg-blue-500/10 blur-[80px] rounded-full pointer-events-none" />
                   
-                  <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
-                      <div className="flex items-center gap-4 sm:gap-6 w-full">
-                          <div className={clsx(
-                              "w-12 h-12 sm:w-16 sm:h-16 rounded-[1.25rem] bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white transition-all duration-500 shrink-0",
-                              syncStatus.isSyncing && "rotate-[360deg] scale-90"
-                          )}>
-                              <Cloud size={24} className={clsx("sm:w-8 sm:h-8", syncStatus.isSyncing && "animate-pulse")} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
-                                  <h3 className="font-black text-lg sm:text-xl tracking-tight truncate">HayaQuest Cloud</h3>
-                                  {isAuthenticated ? (
-                                      <span className="flex items-center gap-1.5 px-3 py-0.5 bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-emerald-500/30">
-                                          <div className="w-1 h-1 rounded-full bg-emerald-400 animate-ping" />
-                                          Connected
-                                      </span>
-                                  ) : (
-                                      <span className="px-3 py-0.5 bg-slate-700/50 text-slate-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-slate-600/30">
-                                          Offline
-                                      </span>
-                                  )}
+                  {/* Top Section: Status & Info */}
+                  <div className="relative flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6 mb-6 sm:mb-8 border-b border-white/5 pb-6 sm:pb-8">
+                      <div className={clsx(
+                          "w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white shadow-inner transition-all duration-500 shrink-0",
+                          syncStatus.isSyncing && "rotate-[360deg] scale-90 border-indigo-500/50 shadow-indigo-500/20"
+                      )}>
+                          <Cloud size={28} className={clsx("sm:w-9 sm:h-9", syncStatus.isSyncing ? "text-indigo-400 animate-pulse" : "text-white/80")} />
+                      </div>
+                      <div className="flex-1 min-w-0 w-full">
+                          <div className="flex flex-col gap-1 items-center sm:items-start">
+                              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3">
+                                <h3 className="font-black text-xl sm:text-2xl tracking-tight text-white">HayaQuest Cloud</h3>
+                                {isAuthenticated ? (
+                                    <span className="flex items-center gap-1.5 px-2.5 py-0.5 bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20 shadow-sm shadow-emerald-500/10">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_currentColor]" />
+                                        Active
+                                    </span>
+                                ) : (
+                                    <span className="px-2.5 py-0.5 bg-slate-700/50 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-slate-600/30">
+                                        Offline
+                                    </span>
+                                )}
                               </div>
-                              <p className="text-slate-400 text-[11px] sm:text-xs font-medium max-w-xs leading-relaxed">
+                              
+                              <p className="text-slate-400 text-xs sm:text-sm font-medium leading-relaxed w-full">
                                   {isAuthenticated 
-                                      ? `Data safely mirrored to ${user?.email}.`
+                                      ? <span className="flex flex-col sm:flex-row items-center sm:items-baseline gap-1 sm:gap-2">
+                                          <span>Mirrored to</span>
+                                          <span className="text-white font-bold bg-white/10 px-2 py-1 rounded-lg text-[11px] break-all">{user?.email}</span>
+                                        </span>
                                       : "Unlock real-time mirroring across all your devices."}
                               </p>
-                              {isAuthenticated && syncStatus.lastSyncTime && (
-                                  <p className="text-[10px] text-slate-500 mt-2 flex items-center gap-1">
-                                      <Clock size={10} />
-                                      Last synced: {new Date(syncStatus.lastSyncTime).toLocaleTimeString()}
-                                  </p>
-                              )}
                           </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-3 w-full md:w-auto">
-                          {isAuthenticated ? (
-                              <>
-                                   <button
-                                    onClick={async () => {
-                                        try {
-                                            await syncService.backup();
-                                            setStatus({ type: 'success', message: 'Cloud backup finished!' });
-                                            setTimeout(() => setStatus({ type: null, message: '' }), 2000);
-                                        } catch (err) {
-                                            setStatus({ type: 'error', message: 'Manual backup failed.' });
-                                        }
-                                    }}
-                                    disabled={syncStatus.isSyncing}
-                                    className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-white text-slate-900 rounded-2xl font-black text-[13px] sm:text-sm hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
-                                  >
-                                      {syncStatus.isSyncing ? <Loader2 className="animate-spin" size={18} /> : <RefreshCw size={18} />}
-                                      Backup
-                                  </button>
-                                  <button
-                                    onClick={() => setShowLogoutConfirm(true)}
-                                    className="p-4 bg-slate-800 text-slate-400 hover:text-red-400 hover:bg-red-900/20 rounded-2xl border border-white/5 transition-all"
-                                  >
-                                      <LogOut size={20} />
-                                  </button>
-                              </>
-                          ) : (
-                              <button
-                                onClick={() => setShowLoginModal(true)}
-                                className="w-full md:w-auto px-10 py-4 bg-primary text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-[0_20px_40px_-10px_rgba(79,70,229,0.5)] hover:scale-[1.05] hover:shadow-primary/60 active:scale-[0.95] transition-all"
-                              >
-                                  <LogIn size={20} className="mr-2 inline-block" />
-                                  Sign In Now
-                              </button>
+                          
+                          {isAuthenticated && syncStatus.lastSyncTime && (
+                              <div className="mt-4 sm:mt-3 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                  <div className="flex items-center gap-1.5">
+                                    <Clock size={12} className="text-indigo-400" />
+                                    <span>Last Sync: <span className="text-slate-400">{new Date(syncStatus.lastSyncTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></span>
+                                  </div>
+                                  {hasGuestData && <span className="text-amber-400/80 hidden sm:inline">•</span>}
+                                  {hasGuestData && <span className="text-amber-400/80 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 sm:bg-transparent sm:border-none sm:p-0">Guest Data Found</span>}
+                              </div>
                           )}
                       </div>
                   </div>
 
-                  {isAuthenticated && hasGuestData && (
-                    <div className="mt-8 relative group overflow-hidden bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-3xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all hover:shadow-2xl hover:shadow-amber-500/10">
-                        <div className="absolute top-0 right-0 p-8 opacity-[0.05] group-hover:rotate-12 transition-transform pointer-events-none">
-                            <RefreshCw size={120} />
-                        </div>
-                        
-                        <div className="flex items-center gap-4 relative z-10 w-full md:w-auto text-left">
-                            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 shrink-0 shadow-lg shadow-amber-500/20 border border-amber-500/30 group-hover:scale-110 transition-transform">
-                                <RefreshCw size={24} className="sm:w-7 sm:h-7" />
-                            </div>
-                            <div className="text-left flex-1 min-w-0">
-                                <h3 className="text-base sm:text-lg font-black text-amber-200 tracking-tight leading-none mb-1 sm:mb-1.5 text-left">Merge Local Progress</h3>
-                                <p className="text-[11px] sm:text-xs text-amber-400/80 font-medium max-w-xs leading-relaxed truncate-2-lines sm:truncate-none text-left">
-                                    Offline progress detected. Merge now to sync across devices.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <button
-                          onClick={() => setShowMergeConfirm(true)}
-                          disabled={syncStatus.isSyncing}
-                          className="w-full md:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-white font-black text-sm rounded-2xl shadow-xl shadow-amber-500/30 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 relative z-10 flex items-center justify-center gap-2"
-                        >
-                            <RefreshCw size={16} />
-                            Merge Now
-                        </button>
-                    </div>
-                  )}
+                  {/* Bottom Section: Actions */}
+                  <div className="relative">
+                      {!isAuthenticated ? (
+                          <button
+                              onClick={() => setShowLoginModal(true)}
+                              className="w-full py-4 px-6 bg-white text-slate-950 rounded-2xl font-black hover:bg-indigo-50 transition-all shadow-lg shadow-white/5 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
+                          >
+                              <Play size={16} fill="currentColor" /> Sync Now
+                          </button>
+                      ) : (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              {hasGuestData && (
+                                  <button
+                                      onClick={() => setShowMergeConfirm(true)}
+                                      className="py-3.5 px-5 bg-indigo-500 text-white rounded-2xl font-bold shadow-lg shadow-indigo-500/25 hover:bg-indigo-600 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 border border-indigo-400/20"
+                                  >
+                                      <RefreshCw size={18} className="animate-spin-slow" /> 
+                                      <span>Merge Data</span>
+                                  </button>
+                              )}
+                              <button
+                                  onClick={() => setShowLogoutConfirm(true)}
+                                  className={clsx(
+                                    "py-3.5 px-5 rounded-2xl font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-2 border",
+                                    hasGuestData 
+                                        ? "bg-slate-800/50 text-slate-400 border-slate-700 hover:bg-white/5 hover:text-white" 
+                                        : "bg-red-500/10 text-red-300 border-red-500/20 hover:bg-red-500/20 w-full sm:col-span-2" 
+                                  )}
+                              >
+                                  <LogOut size={18} />
+                                  <span>Logout</span>
+                              </button>
+                          </div>
+                      )}
+                  </div>
               </div>
           </motion.div>
-      </div>
 
-      {/* Merge Confirmation Modal */}
-      <AnimatePresence>
-          {showMergeConfirm && (
-              <div className="fixed inset-0 z-[120] bg-slate-950/60 backdrop-blur-xl flex items-center justify-center p-6 animate-in fade-in duration-300">
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl p-6 sm:p-7 rounded-[2.5rem] shadow-[0_32px_64px_-12px_rgba(245,158,11,0.4)] border border-amber-500/20 max-w-[340px] w-full text-center relative overflow-hidden"
-                  >
-                        {/* Background Glow */}
-                        <div className="absolute top-[-20%] right-[-10%] w-[180px] h-[180px] bg-amber-500/15 blur-[60px] rounded-full pointer-events-none" />
+          {/* Login Modal */}
+          <AnimatePresence>
+            {showLoginModal && (
+              <LoginModal 
+                onClose={() => setShowLoginModal(false)}
+              />
+            )}
+          </AnimatePresence>
 
-                        <div className="w-16 h-16 bg-gradient-to-tr from-amber-100 to-orange-50 dark:from-amber-900/40 dark:to-orange-900/20 rounded-2xl flex items-center justify-center mx-auto mb-5 text-amber-600 dark:text-amber-400 rotate-12 shadow-inner border border-amber-200/50 dark:border-amber-500/20 group">
-                            <RefreshCw size={32} className="group-hover:rotate-180 transition-transform duration-700" />
-                        </div>
-                        
-                        <h3 className="font-black text-2xl text-gray-900 dark:text-white mb-2 tracking-tight">Sync & Merge?</h3>
-                        <p className="text-[12px] text-gray-500 dark:text-gray-400 mb-6 leading-relaxed font-medium px-2">
-                            Integrate your local Guest activity into your cloud account. Sync across all devices.
-                        </p>
-
-                        <div className="grid grid-cols-1 gap-2 mb-7">
-                            <div className="flex items-center justify-between bg-amber-50/50 dark:bg-amber-900/10 p-3 rounded-2xl border border-amber-500/10">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-xl bg-white dark:bg-slate-900 flex items-center justify-center text-amber-500 shadow-sm">
-                                        <Target size={14} />
-                                    </div>
-                                    <span className="text-xs font-bold text-gray-600 dark:text-gray-300">Subjects</span>
-                                </div>
-                                <span className="text-sm font-black text-amber-600 dark:text-amber-400">+{guestStats.subjects}</span>
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-2">
-                                <div className="flex items-center justify-between bg-orange-50/50 dark:bg-orange-900/10 p-3 rounded-2xl border border-orange-500/10">
-                                    <div className="flex items-center gap-2">
-                                        <Check size={12} className="text-orange-500" />
-                                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Topics</span>
-                                    </div>
-                                    <span className="text-xs font-black text-orange-600">+{guestStats.topics}</span>
-                                </div>
-                                <div className="flex items-center justify-between bg-red-50/50 dark:bg-red-900/10 p-3 rounded-2xl border border-red-500/10">
-                                    <div className="flex items-center gap-2">
-                                        <Clock size={12} className="text-red-500" />
-                                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Logs</span>
-                                    </div>
-                                    <span className="text-xs font-black text-red-600">+{guestStats.logs}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-2.5">
-                            <button 
-                                onClick={handleMergeGuestData}
-                                className="w-full py-4 bg-amber-500 text-white rounded-2xl font-black shadow-lg shadow-amber-500/30 hover:bg-amber-400 transition-all hover:scale-[1.02] active:scale-[0.98] text-sm"
-                            >
-                                Confirm Merge
-                            </button>
-                            <button 
-                                onClick={() => setShowMergeConfirm(false)}
-                                className="w-full py-3.5 bg-gray-100 dark:bg-slate-800/50 text-gray-600 dark:text-gray-400 rounded-2xl font-bold hover:bg-gray-200 dark:hover:bg-slate-800 transition-all text-xs"
-                            >
-                                Not Now
-                            </button>
-                        </div>
-                  </motion.div>
-              </div>
+          {/* Logout Confirmation */}
+          {showLogoutConfirm && (
+            <LogoutConfirmModal
+                onClose={() => setShowLogoutConfirm(false)}
+            />
           )}
-      </AnimatePresence>
+
+          {/* Merge Confirmation Modal */}
+          {showMergeConfirm && previewStats && (
+            <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300">
+                <div className="bg-white dark:bg-slate-900 w-full max-w-sm sm:max-w-md rounded-[2rem] shadow-2xl border border-white/20 overflow-hidden animate-in zoom-in-95 duration-300">
+                    {/* Header */}
+                    <div className="relative p-5 sm:p-6 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border-b border-indigo-500/10">
+                        <div className="absolute top-4 right-4 text-indigo-500/20">
+                            <RefreshCw size={48} className="sm:w-16 sm:h-16" />
+                        </div>
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-500 mb-3 sm:mb-4 shadow-inner">
+                            <RefreshCw size={20} className="sm:w-6 sm:h-6" />
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">Smart Merge</h3>
+                        <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">
+                            We found progress from your guest session. Let's merge it!
+                        </p>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5 sm:p-6 space-y-4">
+                        {/* Subject Cards List */}
+                        {previewStats.details.length > 0 ? (
+                            <div className="space-y-2 max-h-[35vh] overflow-y-auto custom-scrollbar pr-2">
+                                {previewStats.details.map((stat: any) => (
+                                    <div key={stat.name} className="flex flex-col gap-2 p-3 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-slate-700">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-300">{stat.name}</span>
+                                            <span className="text-[10px] sm:text-xs font-black text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                                                Result: {stat.result}%
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                            <div className="flex-1 flex flex-col gap-1">
+                                                <span>Guest</span>
+                                                <div className="h-1 sm:h-1.5 w-full bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-gray-400 rounded-full transition-all" style={{ width: `${stat.guest}%` }} />
+                                                </div>
+                                            </div>
+                                            <span className="text-gray-300 mb-[-8px] sm:mb-[-12px]">→</span>
+                                            <div className="flex-1 flex flex-col gap-1">
+                                                <span>Merged</span>
+                                                <div className="h-1 sm:h-1.5 w-full bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${stat.result}%` }} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-slate-700 text-center">
+                                <p className="text-xs sm:text-sm text-gray-500">No conflicting subject progress found. Safe to merge!</p>
+                            </div>
+                        )}
+
+                        {/* Stats Summary */}
+                        <div className="grid grid-cols-2 gap-3 text-center">
+                            <div className="p-2 sm:p-3 bg-gray-50 dark:bg-slate-800/30 rounded-xl">
+                                <span className="block text-lg sm:text-xl font-black text-gray-900 dark:text-white">{previewStats.stats.topics}</span>
+                                <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">Topics</span>
+                            </div>
+                            <div className="p-2 sm:p-3 bg-gray-50 dark:bg-slate-800/30 rounded-xl">
+                                <span className="block text-lg sm:text-xl font-black text-gray-900 dark:text-white">{previewStats.stats.logs}</span>
+                                <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest">Logs</span>
+                            </div>
+                        </div>
+
+                        <div className="bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded-xl flex items-start gap-3">
+                            <div className="mt-0.5 p-1 bg-emerald-100 dark:bg-emerald-500/20 rounded-full text-emerald-600 dark:text-emerald-400">
+                                <Check size={10} strokeWidth={3} className="sm:w-3 sm:h-3" />
+                            </div>
+                            <p className="text-[10px] sm:text-xs font-medium text-emerald-800 dark:text-emerald-200/80 leading-relaxed">
+                                <strong className="block text-emerald-900 dark:text-emerald-100 mb-0.5">Best Progress Wins</strong>
+                                We always keep the higher completion percentage. Nothing will be lost or overwritten with lower progress.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Footer Buttons */}
+                    <div className="p-5 sm:p-6 pt-2 grid grid-cols-2 gap-3 bg-gray-50/50 dark:bg-slate-900/50">
+                        <button
+                            onClick={() => setShowMergeConfirm(false)}
+                            className="py-3 px-4 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-xs sm:text-sm rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleMergeGuestData}
+                            className="py-3 px-4 bg-indigo-500 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-indigo-500/30 hover:bg-indigo-600 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                            Confirm Merge
+                        </button>
+                    </div>
+                </div>
+            </div>
+          )}
+      </div>
 
       {/* Danger Zone */}
        <div className="bg-red-50/50 dark:bg-red-900/10 rounded-2xl sm:rounded-3xl p-3 sm:p-6 border border-red-100 dark:border-red-900/30">
