@@ -1,0 +1,8 @@
+{
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "search.useGlobalIgnoreFiles": true,
+    "search.useParentIgnoreFiles": true,
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
